@@ -1,54 +1,62 @@
-// ignore_for_file: sort_child_properties_last
-import 'package:clothshop/core/utils/app_colors.dart';
-import 'package:clothshop/core/widgets/navbar_items.dart';
-import 'package:clothshop/features/home/domain/entities/bottom_nav_bar.dart';
+import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/home/presentation/screens/home_view.dart';
+import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
+import 'package:clothshop/features/notifications/presentation/screens/notification_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-class CustomBottomNav extends StatefulWidget {
-  const CustomBottomNav({super.key});
+class Salmon extends StatefulWidget {
+  const Salmon({Key? key}) : super(key: key);
 
   @override
-  State<CustomBottomNav> createState() => _CustomBottomNavState();
+  _SalmonState createState() => _SalmonState();
 }
 
-class _CustomBottomNavState extends State<CustomBottomNav> {
+class _SalmonState extends State<Salmon> {
+  int _currentIndex = 0;
 
-  int index = 0;
+  final List<Widget> _pages = [
+    const HomeView(),
+    BlocProvider.value(
+      value: sl<NotificationsCubit>(),
+      child: const NotificationView(),
+    ),
+    const HomeView(),
+    const HomeView(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final screenwidth = MediaQuery.of(context).size.width;
-    final screenheight = MediaQuery.of(context).size.height;
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: bottomNavBar.asMap().entries.map((entry) {
-          var index = entry.key;
-          var bottomNavBar = entry.value;
-          return GestureDetector(
-            child: NavigationbarItems(
-              bottomNavBar: bottomNavBar,
-              isSelected: index == this.index,
-            ),
-          );
-        }).toList()
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
       ),
-      height: screenheight * 0.07,
-      width: screenwidth,
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(screenwidth * 0.05),
-          topRight: Radius.circular(screenwidth * 0.05),
-        ),
-        boxShadow: [ 
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,       
-            blurRadius: 2,
-            offset: const Offset(0, 2),
-          )
-        ]
-      )
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() => _currentIndex = index);
+        },
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.home),
+            title: const Text(""),
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.notifications),
+            title: const Text(""),
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.favorite),
+            title: const Text(""),
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.person),
+            title: const Text(""),
+          ),
+        ],
+      ),
     );
   }
 }

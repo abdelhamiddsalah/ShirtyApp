@@ -10,4 +10,5 @@ class Routes {
   static const String detials= '/detials';
   static const String reviews= '/reviews';
   static const String shopbycategories= '/shopbycategories';
+  static const String notifications = '/notifications';
 }

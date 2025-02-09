@@ -120,18 +120,20 @@ class MessagingConfig {
     //   );
   }
 }*/
+import 'dart:developer';
+import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/notifications/data/models/notification_model.dart';
+import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:developer';
+
 
 class MessagingConfig {
-  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
+  static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  
   static Future<void> initFirebaseMessaging() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // طلب الإذن بالإشعارات
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       badge: true,
@@ -141,42 +143,56 @@ class MessagingConfig {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       log("🔔 User granted notification permission.");
 
-      // ✅ اشتراك جميع المستخدمين في موضوع عام "all_users"
       await messaging.subscribeToTopic("all_users");
       log("📢 User subscribed to topic: all_users");
 
-      // ✅ الحصول على الـ FCM Token (إذا أردت تخزينه في Firestore لاحقًا)
       String? token = await messaging.getToken();
       log("📌 FCM Token: $token");
     } else {
       log("❌ User denied notification permission.");
     }
 
-    // ✅ استماع للإشعارات عندما يكون التطبيق مفتوحًا
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       log("📩 Notification received: ${message.notification?.title}");
+
+      final notification = NotificationModel(
+        title: message.notification?.title ?? "No Title",
+        body: message.notification?.body ?? "No Body",
+        timestamp: DateTime.now(),
+      );
+
+      // ✅ استخدام GetIt للوصول إلى NotificationsCubit
+      sl<NotificationsCubit>().addNotification(notification);
+
       showNotification(message);
     });
 
-    // ✅ استماع للإشعارات عند الضغط عليها
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       log("🔄 User opened the app from notification.");
-      // يمكنك التنقل إلى صفحة معينة بناءً على البيانات المستلمة
     });
+
+    _initializeLocalNotifications();
+  }
+
+  static void _initializeLocalNotifications() {
+    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: androidSettings);
+
+    _notificationsPlugin.initialize(initializationSettings);
   }
 
   static void showNotification(RemoteMessage message) async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       'channel_id', 'channel_name',
       importance: Importance.max,
       priority: Priority.high,
     );
 
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidDetails);
+    const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
-    await _localNotificationsPlugin.show(
+    await _notificationsPlugin.show(
       0,
       message.notification?.title,
       message.notification?.body,

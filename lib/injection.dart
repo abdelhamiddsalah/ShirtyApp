@@ -19,8 +19,11 @@ import 'package:clothshop/features/home/domain/usecases/category_usecase.dart';
 import 'package:clothshop/features/home/domain/usecases/products_usecase.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
+import 'package:clothshop/features/notifications/data/models/notification_model.dart';
+import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // مفقود في الكود الأصلي
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,6 +65,9 @@ Future<void> init() async {
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
   sl.registerFactory(() => CategoriesCubit(sl()));
   sl.registerFactory(()=> ProductsCubit(sl()));
+  final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
+sl.registerLazySingleton(() => notificationBox);
+sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
 
   // 6️⃣ تسجيل `datasources`
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasourceImpl(sl())); // هنا يتم تسجيل RemoteDatasource

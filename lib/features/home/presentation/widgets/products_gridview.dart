@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
-
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/widgets/product_item.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
@@ -28,7 +26,7 @@ class ProductsGridView extends StatelessWidget {
     try {
       return double.parse(price);
     } catch (e) {
-      log('Error parsing price: $price');
+      print('Error parsing price: $price');
       return 0.0;
     }
   }

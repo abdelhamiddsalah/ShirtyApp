@@ -1,10 +1,13 @@
 import 'package:clothshop/clothes.dart';
+import 'package:clothshop/features/notifications/data/models/notification_model.dart';
 import 'package:clothshop/firebase_options.dart';
 import 'package:clothshop/injection.dart';
 import 'package:clothshop/messaging_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -15,6 +18,12 @@ void main() async {
   // **🔹 تأكد من تهيئة Firebase قبل أي استخدام له**
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+   await Hive.initFlutter();  // هذا السطر هو المطلوب لحل المشكلة
+  
+
+    Hive.registerAdapter(NotificationModelAdapter());  // 🔹 تسجيل الـ Adapter
+  // **🔹 فتح الصندوق المستخدم**
+  await Hive.openBox<NotificationModel>('notificationsBox'); 
   // **🔹 تهيئة Firestore مع التحقق من التهيئة**
   FirebaseFirestore.instance.settings = Settings(
     persistenceEnabled: true,
@@ -28,7 +37,7 @@ void main() async {
 
   // **🔹 تهيئة Injection و Firebase Messaging**
   init();
-await MessagingConfig.initFirebaseMessaging();
+ await MessagingConfig.initFirebaseMessaging();
 //  FirebaseMessaging.onBackgroundMessage(MessagingConfig.messageHandler);
 
   // **🔹 تشغيل التطبيق بعد التهيئة**

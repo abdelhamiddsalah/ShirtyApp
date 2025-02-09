@@ -1,4 +1,3 @@
-import 'package:clothshop/core/widgets/custom_bottom_nav.dart';
 import 'package:clothshop/features/home/presentation/widgets/custom_appbar.dart';
 import 'package:clothshop/features/home/presentation/widgets/home_categories.dart';
 import 'package:clothshop/features/home/presentation/widgets/topselling_listview.dart';
@@ -18,7 +17,7 @@ class HomeViewBody extends StatelessWidget {
     final safeHorizontalPadding = screenWidth * 0.03;
 
     return Scaffold(
-      bottomNavigationBar: CustomBottomNav(),
+    //  bottomNavigationBar: salmon(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

@@ -102,6 +102,10 @@ class Assets {
   /// assets/images/not_found.svg
   static const String imagesNotFound = "assets/images/not_found.svg";
 
+  /// Assets for imagesNotificationbing
+  /// assets/images/notificationbing.png
+  static const String imagesNotificationbing = "assets/images/notificationbing.png";
+
   /// Assets for imagesOrderPlaced
   /// assets/images/order_placed.png
   static const String imagesOrderPlaced = "assets/images/order_placed.png";
