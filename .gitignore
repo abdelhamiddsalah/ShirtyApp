@@ -43,3 +43,34 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+
+
+# Ignore metadata generation files
+**/metadata_generation_command.txt
+
+# Ignore hash key files
+**/hash_key.txt
+
+# General CMake generated files
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/build.ninja
+**/cache-v2
+**/codemodel-v2
+**/rules.ninja
+**/*.o
+**/*.d
+**/*.bin
+**/*.json
+
+# Android native build files
+**/android/app/cxx/
+**/Debug/
+**/Release/
+
+# Ignore all build outputs
+build/
+output/
