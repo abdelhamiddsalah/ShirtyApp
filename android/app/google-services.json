@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1055120878021",
+    "project_id": "shirtyapp",
+    "storage_bucket": "shirtyapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055120878021:android:c6e90acd1a0c0720c583ac",
+        "android_client_info": {
+          "package_name": "com.example.clothshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXw6zgrV-OiT6GH2ihgbV1A-O54KtwVRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

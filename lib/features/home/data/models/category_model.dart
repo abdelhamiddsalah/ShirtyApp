@@ -1,0 +1,39 @@
+// category_model.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clothshop/features/home/domain/entities/category_entity.dart';
+
+class CategoryModel extends CategoryEntity {
+  const CategoryModel(
+    super.id, {
+    required super.image,
+    required super.title, required super.productPath,
+  });
+
+  factory CategoryModel.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    if (data.isEmpty) {
+      throw Exception("No data found for the category");
+    }
+    return CategoryModel(
+      doc.id,
+      image: data['imageUrl'] ?? '',
+      title: data['title'] ?? '',
+     productPath:  data['productPath'] ?? '',
+    );
+  }
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json, String documentId) {
+    return CategoryModel(
+      documentId,
+      image: json['imageUrl'] ?? '',
+      title: json['title'] ?? '',
+      productPath: json['productPath'] ?? '', // قراءة المسار من JSON
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'imageUrl': image,
+        'title': title,
+   'productPath': productPath, // تضمين المسار في JSON
+      };
+}
