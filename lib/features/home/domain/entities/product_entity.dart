@@ -1,6 +1,7 @@
 class ProductEntity {
    String? name;
-   String ? id;
+   String ? productId;
+   String ? categoryId;
    String? price;
    String? image;
    int? quantity;
@@ -10,9 +11,12 @@ class ProductEntity {
    String? color;
    String? category;
    List? reviews;
+   String ? collectionName;
 
   ProductEntity({
-     this.id,
+     this.categoryId,
+     this.collectionName,
+     this.productId,
      this.name,
      this.price,
      this.image,

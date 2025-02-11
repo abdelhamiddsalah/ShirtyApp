@@ -5,5 +5,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class HomeRepositry {
   Future<Either<Failure, List<CategoryEntity>>> getCategories();
-  Future<Either<Failure, List<ProductEntity>>> getProducts(String path1, String path2,String documentId);
+  Future<Either<Failure, List<ProductEntity>>> getProducts(String categoryId);
 }

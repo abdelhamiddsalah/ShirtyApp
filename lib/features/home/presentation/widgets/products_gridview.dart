@@ -11,12 +11,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductsGridView extends StatelessWidget {
   const ProductsGridView({
     super.key,
-    required this.path2,
-    required this.documentId,
+  // required this.path2,
+    required this.categoryId,
   });
 
-  final String path2;
-  final String documentId;
+  final String categoryId;
 
   // Helper method to safely parse price
   double _parsePrice(String? price) {
@@ -49,9 +48,8 @@ class ProductsGridView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: BlocProvider(
-                create: (context) =>
-                    sl<ProductsCubit>()..getProducts('categories', path2, documentId),
+              child: BlocProvider.value(
+                value: sl<ProductsCubit>()..getProducts(categoryId),
                 child: BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
                     if (state is ProductsLoaded) {
@@ -60,7 +58,7 @@ class ProductsGridView extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.03),
+                            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.03),
                             child: Row(
                               children: [
                                 const Text(
@@ -85,8 +83,7 @@ class ProductsGridView extends StatelessWidget {
                           const SizedBox(height: 20),
                           Expanded(
                             child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
@@ -117,7 +114,12 @@ class ProductsGridView extends StatelessWidget {
                       );
                     }
                     if (state is ProductsError) {
-                      return Center(child: Text(state.message, style: const TextStyle(color: Colors.red)));
+                      return Center(
+                        child: Text(
+                          state.message,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
                     }
                     return const ProductGridSkeleton();
                   },

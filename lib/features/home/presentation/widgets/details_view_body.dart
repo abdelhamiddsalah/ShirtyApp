@@ -1,3 +1,4 @@
+import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/core/widgets/filled_container.dart';
@@ -38,7 +39,7 @@ class DetailsViewBody extends StatelessWidget {
             SizedBox(height: screenHeight * 0.03),
             _buildShippingInfo(),
             SizedBox(height: screenHeight * 0.03),
-            _buildReviewsSection(),
+            _buildReviewsSection(context),
             SizedBox(height: screenHeight * 0.04),
             _buildAddToCartButton(),
           ],
@@ -120,7 +121,7 @@ class DetailsViewBody extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewsSection() {
+  Widget _buildReviewsSection( context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -128,7 +129,14 @@ class DetailsViewBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Reviews', style: TextStyles.textinhome),
-            Text('See All', style: TextStyles.seealltext.copyWith(color: AppColors.primary)),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.reviewspage,arguments: {
+    'productId': product.productId,
+    'categoryId': product.categoryId,
+  },);
+              },
+              child: Text('See All', style: TextStyles.seealltext.copyWith(color: AppColors.primary))),
           ],
         ),
         SizedBox(height: 10),

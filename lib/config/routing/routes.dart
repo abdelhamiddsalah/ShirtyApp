@@ -7,8 +7,10 @@ class Routes {
   static const String onboarding = '/onboarding';
   static const String cart = '/cart';
   static const String emptycontainer= '/emptycontainer';
-  static const String detials= '/detials';
+ static const String details= '/details';
   static const String reviews= '/reviews';
+  static const String addreviews= '/addreviews';
   static const String shopbycategories= '/shopbycategories';
   static const String notifications = '/notifications';
+  static const String reviewspage ='/reviewspage';
 }

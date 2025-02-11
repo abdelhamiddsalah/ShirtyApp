@@ -21,7 +21,12 @@ import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/notifications/data/models/notification_model.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
+import 'package:clothshop/features/reviews/data/repositories/reviews_repositry_Impl.dart';
+import 'package:clothshop/features/reviews/domain/repositories/reviews_repositry.dart';
+import 'package:clothshop/features/reviews/domain/usecases/reviews_usecase.dart';
+import 'package:clothshop/features/reviews/presentation/cubit/reviews_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // مفقود في الكود الأصلي
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -52,12 +57,17 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<ReviewsRepository>(
+    ()=> ReviewsRepositoryImpl(sl()),
+  );
+
   // 4️⃣ تسجيل `usecases`
   sl.registerLazySingleton(() => Authusecase(sl()));
   sl.registerLazySingleton(() => LoginUsecase(sl()));
   sl.registerLazySingleton(() => ForgetpasswordUsecase(sl()));
   sl.registerLazySingleton(() => CategoryUsecase(sl()));
   sl.registerLazySingleton(()=> ProductsUsecase(sl()));
+  sl.registerLazySingleton(()=> ReviewsUsecase(sl()));
 
   // 5️⃣ تسجيل `Cubits`
   sl.registerFactory(() => AuthinticationCubit(sl()));
@@ -68,6 +78,15 @@ Future<void> init() async {
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
 sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
+sl.registerFactoryParam<ReviewsCubit, String, String>(
+  (productId, categoryId) => ReviewsCubit(
+    sl(), 
+    TextEditingController(), 
+    TextEditingController(), 
+    productId,  // 🟢 تمرير productId كمُدخل
+    categoryId  // 🟢 تمرير categoryId كمُدخل
+  ),
+);
 
   // 6️⃣ تسجيل `datasources`
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasourceImpl(sl())); // هنا يتم تسجيل RemoteDatasource

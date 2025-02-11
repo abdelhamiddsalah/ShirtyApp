@@ -51,8 +51,8 @@ class ShopByCategories extends StatelessWidget {
                             (context, index) => GestureDetector(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsGridView(
-                                 path2: state.categories[index].productPath.toString(),
-                           documentId: state.categories[index].id.toString(),
+                                 //path2: state.categories[index].productPath.toString(),
+                           categoryId: state.categories[index].id.toString(),
                                 )));
                               },
                               child: Container(
