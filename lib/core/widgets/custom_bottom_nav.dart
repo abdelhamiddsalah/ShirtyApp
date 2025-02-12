@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/presentation/screens/home_view.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class Salmon extends StatefulWidget {
-  const Salmon({Key? key}) : super(key: key);
+  const Salmon({super.key});
 
   @override
   _SalmonState createState() => _SalmonState();

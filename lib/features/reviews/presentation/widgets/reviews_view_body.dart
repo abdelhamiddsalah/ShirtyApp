@@ -111,7 +111,7 @@ class ReviewsViewBody extends StatelessWidget {
               left: screenWidth * 0.05,
               right: screenWidth * 0.05,
               bottom: screenHeight * 0.03,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

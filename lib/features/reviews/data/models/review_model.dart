@@ -1,21 +1,14 @@
 import 'package:clothshop/features/reviews/domain/entities/review_entity.dart';
 
 class ReviewModel extends ReviewEntity {
-  ReviewModel({
-    required String id,
-    required String name,
-    required String review,
-    required int rating,
-    required String productId,
-    required String categoryId,
-  }) : super(
-          id: id,
-          name: name,
-          review: review,
-          rating: rating,
-          productId: productId,
-          categoryId: categoryId,
-        );
+  const ReviewModel({
+    required super.id,
+    required super.name,
+    required super.review,
+    required super.rating,
+    required super.productId,
+    required super.categoryId,
+  });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(

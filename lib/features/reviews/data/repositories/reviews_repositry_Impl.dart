@@ -1,7 +1,11 @@
-import 'package:clothshop/core/errors/failure.dart';
-import 'package:clothshop/features/reviews/domain/repositories/reviews_repositry.dart';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+
+import 'package:clothshop/core/errors/failure.dart';
+import 'package:clothshop/features/reviews/domain/repositories/reviews_repositry.dart';
+
 import '../../domain/entities/review_entity.dart';
 import '../models/review_model.dart';
 
