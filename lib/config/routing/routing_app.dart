@@ -4,6 +4,7 @@ import 'package:clothshop/core/widgets/custom_bottom_nav.dart';
 import 'package:clothshop/features/authintication/presentation/screens/forgetpassword_view.dart';
 import 'package:clothshop/features/authintication/presentation/screens/login_view.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/cart/presentation/screens/cart_view.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/presentation/screens/details_view.dart';
@@ -15,43 +16,74 @@ import 'package:clothshop/features/reviews/presentation/screens/reviews_page.dar
 import 'package:clothshop/features/reviews/presentation/screens/reviews_view.dart';
 import 'package:clothshop/features/splashscreen/presentation/screens/splashscreen_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 class AppRoutes {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splash:
-        return MaterialPageRoute(builder: (context) => const SplashscreenView());
+        return MaterialPageRoute(
+          builder: (context) => const SplashscreenView(),
+        );
       case Routes.login:
         return MaterialPageRoute(builder: (context) => const LoginView());
       case Routes.register:
         return MaterialPageRoute(builder: (context) => const SignupView());
       case Routes.home:
-        return MaterialPageRoute(builder: (context) =>  Salmon());
+        return MaterialPageRoute(
+          builder:
+              (context) => BlocProvider(
+                create: (context) => CartCubit( Hive.box('cartBox')),
+                child: Salmon(),
+              ),
+        );
       case Routes.forgetpassword:
-        return MaterialPageRoute(builder: (context) => const ForgetpasswordView());
+        return MaterialPageRoute(
+          builder: (context) => const ForgetpasswordView(),
+        );
       case Routes.onboarding:
         return MaterialPageRoute(builder: (context) => const OnboardingView());
-      case Routes.cart:
-        return MaterialPageRoute(builder: (context) => const CartView());
+     case Routes.cart:
+        return MaterialPageRoute(
+          builder: (context) {
+
+            
+            // Create CartEntity from CartModel
+           
+                  
+            return  CartView();
+          },
+        );
       case Routes.details:
-       final product = settings.arguments as ProductEntity;
-        return MaterialPageRoute(builder: (context) =>  DetailsView(product: product,));
+        final product = settings.arguments as ProductEntity;
+        return MaterialPageRoute(
+          builder: (context) => DetailsView(product: product),
+        );
       case Routes.reviews:
         return MaterialPageRoute(builder: (context) => const ReviewsView());
       case Routes.shopbycategories:
-        return MaterialPageRoute(builder: (context) => const ShopByCategories());
+        return MaterialPageRoute(
+          builder: (context) => const ShopByCategories(),
+        );
       case Routes.notifications:
-        return  MaterialPageRoute(builder: (context) => const NotificationView());
-    case Routes.reviewspage:
-  final Map<String, String?> args = settings.arguments as Map<String, String?>;
-  final review = ReviewEntity(
-    productId: args['productId'] ?? '',
-    categoryId: args['categoryId'] ?? '',
-    name: args['name'] ?? 'Unknown',
-    review: args['review'] ?? '',
-    rating: int.tryParse(args['rating'] ?? '0') ?? 0, id: '',
-  );
-  return MaterialPageRoute(builder: (context) => ReviewsPage(review: review));
+        return MaterialPageRoute(
+          builder: (context) => const NotificationView(),
+        );
+      case Routes.reviewspage:
+        final Map<String, String?> args =
+            settings.arguments as Map<String, String?>;
+        final review = ReviewEntity(
+          productId: args['productId'] ?? '',
+          categoryId: args['categoryId'] ?? '',
+          name: args['name'] ?? 'Unknown',
+          review: args['review'] ?? '',
+          rating: int.tryParse(args['rating'] ?? '0') ?? 0,
+          id: '',
+        );
+        return MaterialPageRoute(
+          builder: (context) => ReviewsPage(review: review),
+        );
 
       default:
         return MaterialPageRoute(
@@ -69,7 +101,10 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('No route defined for $routeName', style: TextStyles.authtitle,),
+        child: Text(
+          'No route defined for $routeName',
+          style: TextStyles.authtitle,
+        ),
       ),
     );
   }

@@ -5,16 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProductModel extends ProductEntity{
   ProductModel({
     required super.categoryId,
-    required super.collectionName,
     required super.productId,
    required super.name, 
    required super.price, 
    required super.image, 
    required super.quantity, 
    required super.ratingcount, 
-   required super.size, 
+   required super.sizes, 
    required super.description, 
-   required super.color, 
+   required super.colors, 
    required super.category, 
    required super.reviews});
 
@@ -26,14 +25,15 @@ class ProductModel extends ProductEntity{
       image: json['image'],
       quantity: json['quantity'],
       ratingcount: json['ratingcount'],
-      size: json['size'],
+      sizes: json['size'],
       description: json['description'],
-      color: json['color'],
+      colors: json['colors'],
       category: json['category'],
         reviews: (json['reviews'] as List<dynamic>?)
               ?.map((review) => ReviewModel.fromJson(review))
               .toList() ??
-          [], collectionName: json['collectionName'], categoryId: json['categoryId'],
+          [],
+           categoryId: json['categoryId'],
     );
   }
 
@@ -49,27 +49,27 @@ class ProductModel extends ProductEntity{
       image: data['image'],
       quantity: data['quantity'],
       ratingcount: data['ratingcount'],
-      size: data['size'],
+      sizes: List<String>.from(data['size']),  // تأكد أنها List
       description: data['description'],
-      color: data['color'],
+      colors: List<String>.from(data['colors']),
       category: data['category'],
-      reviews: data['reviews'], collectionName: data['collectionName'], categoryId: data['categoryId'],
+      reviews: data['reviews'], 
+      categoryId: data['categoryId'],
     );
   }
 
   toJson(){
     return {
       'categoryId': categoryId,
-      collectionName: collectionName,
       'productId': productId,
       'name': name,
       'price': price,
       'image': image,
       'quantity': quantity,
       'ratingcount': ratingcount,
-      'size': size,
+      'size': sizes,
       'description': description,
-      'color': color,
+      'colors': colors,
       'category': category,
       'reviews': reviews,
     };

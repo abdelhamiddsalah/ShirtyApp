@@ -48,6 +48,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   flutter_rating_bar: ^4.0.1
   uuid: ^4.5.1
+  flutter_stripe: ^11.4.0
 
 dev_dependencies:
   flutter_test:

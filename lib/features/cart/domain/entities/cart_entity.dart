@@ -1,21 +1,14 @@
-import 'package:equatable/equatable.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 
-class CartEntity extends Equatable {
-  final String id;
-  final String productId;
-  final String title;
-  final double price;
-  final int quantity;
-  final int count;
-
-  const CartEntity({
-    required this.id,
-    required this.productId,
-    required this.title,
-    required this.price,
-    required this.quantity,
-    required this.count,
+class CartEntity {
+  final List<CartItemEntity> items;
+  
+  CartEntity({
+    required this.items,
   });
-  @override
-  List<Object?> get props => [id, productId, title, price, quantity, count];
+
+  double get subtotal => items.fold(0, (sum, item) => sum + item.totalPrice);
+  double get shippingCost => 0.0; // Can be modified based on business logic
+  double get total => subtotal + shippingCost;
+  int get itemCount => items.fold(0, (sum, item) => sum + item.quantity);
 }

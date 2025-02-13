@@ -4,27 +4,27 @@ class ProductEntity {
    String ? categoryId;
    String? price;
    String? image;
-   int? quantity;
-   int? ratingcount;
-   String? size;
+   num? quantity;
+   num? ratingcount;
+   List? sizes;
    String? description;
-   String? color;
+   List? colors;
    String? category;
    List? reviews;
-   String ? collectionName;
+   num? salescount;
 
   ProductEntity({
+     this.salescount,
      this.categoryId,
-     this.collectionName,
      this.productId,
      this.name,
      this.price,
      this.image,
      this.quantity,
      this.ratingcount,
-     this.size,
+     this.sizes,
      this.description,
-     this.color,
+     this.colors,
      this.category,
      this.reviews,
   });
