@@ -1,4 +1,5 @@
 import 'package:clothshop/features/reviews/domain/entities/review_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewModel extends ReviewEntity {
   const ReviewModel({
@@ -7,6 +8,7 @@ class ReviewModel extends ReviewEntity {
     required super.review,
     required super.rating,
     required super.productId,
+    required super.timestamp,
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,12 @@ class ReviewModel extends ReviewEntity {
       review: json['review'] ?? '',
       rating: (json['rating'] as num?)?.toInt() ?? 0,  // تحويل إلى int لمنع أخطاء الأنواع
       productId: json['productId'] ?? '',
+         timestamp: json['timestamp'] is Timestamp
+   ? (json['timestamp'] as Timestamp).toDate()
+   : (json['timestamp'] is String
+       ? DateTime.tryParse(json['timestamp']) ?? DateTime.now()
+       : DateTime.now()),
+
     );
   }
 
@@ -26,6 +34,7 @@ class ReviewModel extends ReviewEntity {
       'review': review,
       'rating': rating,
       'productId': productId,
+      'timestamp': timestamp.toIso8601String(),
     };
   }
 }

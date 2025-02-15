@@ -57,6 +57,7 @@ Future<Either<Failure, List<ReviewEntity>>> getProductReviews(String productId) 
       'review': review.review,
       'rating': review.rating,
       'productId': productId,
+      'timestamp': Timestamp.fromDate(review.timestamp),
     };
 
     // تحديث المستند وإضافة المراجعة

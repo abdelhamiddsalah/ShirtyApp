@@ -38,9 +38,11 @@ class ReviewsView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 color:AppColors.secondBackground),
                               child: ListTile(
-                                title: Text(review.name),
-                                subtitle: Text(review.review),
-                                trailing: Text("⭐ ${review.rating}"),
+                                title: Text(review.name,style: TextStyles.textinhome,),
+                                subtitle: Text(review.review,style: TextStyles.textinhome.copyWith(color: Colors.grey,
+                                 fontSize: screenWidth*0.04
+                                ),),
+                                trailing: Text("⭐ ${review.rating}",style: TextStyles.textinhome.copyWith(color: Colors.white),),
                               ),
                             ),
                           );

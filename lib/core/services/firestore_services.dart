@@ -30,7 +30,7 @@ class FirestoreService {
     }
   }
 
- Future<List<ReviewModel>> getProductReviews(String productId) async {
+Future<List<ReviewModel>> getProductReviews(String productId) async {
   try {
     DocumentSnapshot doc = await firestore.collection('Allproducts').doc(productId).get();
 
@@ -46,12 +46,17 @@ class FirestoreService {
       reviews = (data['reviews'] as List)
           .map((review) => ReviewModel.fromJson(review))
           .toList();
+
+      // **ترتيب المراجعات بالأحدث أولًا**
+      reviews.sort((a, b) => b.timestamp.compareTo(a.timestamp));  
     }
+
     return reviews;
   } catch (e) {
     throw Exception("Error fetching reviews: $e");
   }
 }
+
 
 
   Future<void> addReview(String productId, ReviewModel review) async {

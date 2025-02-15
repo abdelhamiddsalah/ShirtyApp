@@ -91,6 +91,7 @@ class AddReviewViewBody extends StatelessWidget {
                                       review: cubit.reviewController.text,
                                       rating: cubit.selectedRating.toInt(),
                                       productId: cubit.productId,
+                                      timestamp: DateTime.now(),
                                     );
                                     await cubit.addReview(newReview);
                                     if (context.mounted) {
