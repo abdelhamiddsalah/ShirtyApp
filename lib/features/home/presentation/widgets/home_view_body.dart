@@ -1,5 +1,8 @@
+import 'package:clothshop/config/routing/routes.dart';
+import 'package:clothshop/features/home/presentation/screens/search_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/custom_appbar.dart';
 import 'package:clothshop/features/home/presentation/widgets/home_categories.dart';
+import 'package:clothshop/features/home/presentation/widgets/new_in_products.dart';
 import 'package:clothshop/features/home/presentation/widgets/topselling_listview.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/widgets/custom_textfield.dart';
@@ -28,15 +31,38 @@ class HomeViewBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomAppbarinhome(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, Routes.search),
+                  child: CustomAppbarinhome(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                CustomTextFormField(
-                  title: 'Search',
-                  prefixIcon: Icon(Icons.search, size: screenWidth * 0.06),
-                ),
+           InkWell(
+  onTap: () => Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 500),
+      pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    ),
+  ),
+  child: IgnorePointer( // لمنع التفاعل مع TextFormField نفسه
+    child: CustomTextFormField(
+      readOnly: true,
+      title: 'Search',
+      prefixIcon: Icon(Icons.search, size: screenWidth * 0.06),
+    ),
+  ),
+),
+
+
                 SizedBox(height: screenHeight * 0.02),
                 HomeCategories(
                   screenHeight: screenHeight,
@@ -49,7 +75,7 @@ class HomeViewBody extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.02),
                 TextsInHomeview(text: 'New In', color: AppColors.primary),
                 SizedBox(height: screenHeight * 0.02),
-                TopsellingListview(screenHeight: screenHeight),
+                NewInProducts(screenHeight: screenHeight),
               ],
             ),
           ),

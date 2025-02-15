@@ -57,7 +57,6 @@ class HomeCategories extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsGridView(
-                         //  path2: category.productPath.toString(),
                            categoryId: category.id
                          )));
                         },

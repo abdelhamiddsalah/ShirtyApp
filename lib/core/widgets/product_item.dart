@@ -1,17 +1,14 @@
 import 'package:clothshop/constants/images.dart';
+import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  final String? imageUrl;
-  final String productName;
-  final double price;
+  final ProductEntity productEntity;
   final VoidCallback? onTap;
 
   const ProductItem({
     super.key,
-    this.imageUrl,
-    this.productName = 'Product Name',
-    this.price = 148.4,
+    required this.productEntity,
     this.onTap,
   });
 
@@ -45,8 +42,8 @@ class ProductItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
                 image: DecorationImage(
-                  image: imageUrl != null 
-                    ? NetworkImage(imageUrl!) as ImageProvider
+                  image: productEntity.image.isNotEmpty
+                    ? NetworkImage(productEntity.image) as ImageProvider
                     : AssetImage(Assets.imagesRectangle8),
                   fit: BoxFit.cover,
                 ),
@@ -60,7 +57,7 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productName,
+                    productEntity.name,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -70,7 +67,7 @@ class ProductItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '\$${price.toStringAsFixed(2)}',
+                    '\$${productEntity.price}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,

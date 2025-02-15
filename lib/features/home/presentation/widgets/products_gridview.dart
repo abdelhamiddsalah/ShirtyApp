@@ -102,9 +102,7 @@ class ProductsGridView extends StatelessWidget {
                                     );
                                   },
                                   child: ProductItem(
-                                    productName: product.name,
-                                    price: _parsePrice(product.price),
-                                    imageUrl: product.image,
+                                    productEntity: product,
                                   ),
                                 );
                               },

@@ -14,4 +14,5 @@ class Routes {
   static const String notifications = '/notifications';
   static const String reviewspage ='/reviewspage';
   static const String checkout ='/checkout';
+  static const String search ='/search';
 }

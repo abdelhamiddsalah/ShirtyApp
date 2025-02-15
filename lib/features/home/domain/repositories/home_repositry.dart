@@ -8,4 +8,6 @@ abstract class HomeRepositry {
   Future<Either<Failure, List<ProductEntity>>> getProducts(String categoryId);
   Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts();
   Future<Either<Failure, List<ProductEntity>>> getNewProducts();
+  Future<Either<Failure, List<ProductEntity>>> getproductsbytitle(String title);
+    Future<Either<Failure, List<ProductEntity>>> getAllproducts(String query);
 }

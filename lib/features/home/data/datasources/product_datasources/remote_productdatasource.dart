@@ -3,6 +3,7 @@ import 'package:clothshop/features/home/data/models/product_model.dart';
 
 abstract class RemoteProductdatasource {
   Future<List<ProductModel>> getremoteProducts(String categoryId);
+  Future<List<ProductModel>> getnewinProducts();
 }
 
 class RemoteProductdatasourceImpl implements RemoteProductdatasource {
@@ -12,5 +13,8 @@ class RemoteProductdatasourceImpl implements RemoteProductdatasource {
   @override
   Future<List<ProductModel>> getremoteProducts(String categoryId) {
     return firestoreService.getProducts( categoryId);
+  }
+  Future<List<ProductModel>> getnewinProducts() {
+    return firestoreService.fetchnewinProducts();
   }
 }

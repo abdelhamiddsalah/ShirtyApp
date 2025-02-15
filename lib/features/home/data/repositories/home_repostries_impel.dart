@@ -1,5 +1,6 @@
 import 'package:clothshop/core/errors/failure.dart';
 import 'package:clothshop/core/network/network_info.dart';
+import 'package:clothshop/core/services/firestore_services.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/local_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/remote_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/product_datasources/local_productdatasource.dart';
@@ -16,13 +17,14 @@ class HomeRepostriesImpel extends HomeRepositry {
   final LocalDatasource localDatasource;
   final LocalProductdatasource localProductdatasource;
   final RemoteProductdatasource remoteProductdatasource;
+  final FirestoreService firestoreService;
 
   HomeRepostriesImpel(
     this.networkInfo,
     this.remoteDatasource,
     this.localDatasource,
     this.localProductdatasource,
-    this.remoteProductdatasource,
+    this.remoteProductdatasource, this.firestoreService,
   );
 
   /// ✅ جلب الفئات (Categories)
@@ -100,14 +102,38 @@ class HomeRepostriesImpel extends HomeRepositry {
   }
   
   @override
-  Future<Either<Failure, List<ProductEntity>>> getNewProducts() {
+  Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts() {
     // TODO: implement getNewProducts
     throw UnimplementedError();
   }
   
   @override
-  Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts() {
-    // TODO: implement getTopSeelingProducts
-    throw UnimplementedError();
+  Future<Either<Failure, List<ProductEntity>>>getNewProducts () async{
+    try {
+      final products = await remoteProductdatasource.getnewinProducts();
+      return Right(products);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getproductsbytitle(String title) async{
+     try {
+       final products = await  firestoreService.getproductsBytitle(title);
+       return Right(products);
+     } catch (e) {
+       return Left(ServerFailure(e.toString()));
+     }
+  }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getAllproducts( String query) async{
+  try {
+    final products = await firestoreService.getallproducts( query);
+    return Right(products);
+  } catch (e) {
+    return Left(ServerFailure(e.toString()));
+  }
   }
 }

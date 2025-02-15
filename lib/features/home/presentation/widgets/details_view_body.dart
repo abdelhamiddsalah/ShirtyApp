@@ -119,7 +119,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                   });
                 },
               ),
-              SizedBox(height: screenHeight * 0.02),
+              SizedBox(height: screenHeight * 0.01),
               ProductOptionsDisplay(
                 title: 'Colors',
                 options: widget.product.colors.cast<String>(),
@@ -187,7 +187,15 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                           itemCount: 5,
                           itemSize: 24.0,
                         )
-                      : Text('No rating', style: TextStyles.textinhome),
+                      : RatingBarIndicator(
+                          rating: averageRating,
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.grey,
+                          ),
+                          itemCount: 5,
+                          itemSize: 24.0,
+                        )
                 ],
               ),
               SizedBox(height: screenHeight * 0.03),

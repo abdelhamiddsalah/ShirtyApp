@@ -77,8 +77,46 @@ Future<List<ReviewModel>> getProductReviews(String productId) async {
 }
 
 
-Future<void> fetchnewinProducts() async{
-  
+Future<List<ProductModel>> fetchnewinProducts() async{
+   try{
+    final result =await firestore.collection('Allproducts').where('createdate',isGreaterThanOrEqualTo: Timestamp.fromDate(
+      DateTime(2025, 1, 1)
+    )).get();
+
+    return result.docs.map((doc) => ProductModel.fromJson(doc.data(), doc.id)).toList();
+   }
+   catch(e){
+    throw Exception("Error fetching products: $e");
+   }
 }
+
+Future<List<ProductModel>> getproductsBytitle(String name) async{
+   try{
+    final result =await firestore.collection('Allproducts').where('name',isEqualTo: name).get();
+
+    return result.docs.map((doc) => ProductModel.fromJson(doc.data(), doc.id)).toList();
+   }
+   catch(e){
+    throw Exception("Error fetching products: $e");
+   }
+}
+
+Future<List<ProductModel>> getallproducts(String query) async {
+  try {
+    final collection = firestore.collection('Allproducts');
+    
+    // تصفية المنتجات بناءً على البحث إن كان هناك نص مدخل
+    final result = query.isEmpty 
+        ? null
+        : await collection.where('name', isGreaterThanOrEqualTo: query)
+                         .where('name', isLessThanOrEqualTo: '$query\uf8ff')
+                         .get() as QuerySnapshot;
+
+    return result?.docs.map((doc) => ProductModel.fromJson(doc.data() as Map<String, dynamic>, doc.id)).toList() ?? [];
+  } catch (e) {
+    throw Exception("Error fetching products: $e");
+  }
+}
+
 
 }

@@ -18,6 +18,9 @@ import 'package:clothshop/features/home/data/datasources/product_datasources/rem
 import 'package:clothshop/features/home/data/repositories/home_repostries_impel.dart';
 import 'package:clothshop/features/home/domain/repositories/home_repositry.dart';
 import 'package:clothshop/features/home/domain/usecases/category_usecase.dart';
+import 'package:clothshop/features/home/domain/usecases/get_all_products_usecase.dart';
+import 'package:clothshop/features/home/domain/usecases/getproductsbytitle.dart';
+import 'package:clothshop/features/home/domain/usecases/new_products_usecase.dart';
 import 'package:clothshop/features/home/domain/usecases/products_usecase.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
@@ -55,7 +58,7 @@ Future<void> init() async {
     () => HomeRepostriesImpel(
       sl(),
       sl(),
-      sl(), sl(),sl(),
+      sl(), sl(),sl(), sl(),
     ),
   );
 
@@ -65,15 +68,17 @@ Future<void> init() async {
     ),
   );
 
+
   // 4️⃣ تسجيل `usecases`
   sl.registerLazySingleton(() => Authusecase(sl()));
   sl.registerLazySingleton(() => LoginUsecase(sl()));
   sl.registerLazySingleton(() => ForgetpasswordUsecase(sl()));
   sl.registerLazySingleton(() => CategoryUsecase(sl()));
   sl.registerLazySingleton(()=> ProductsUsecase(sl()));
-  sl.registerLazySingleton(() => ReviewsUsecase(
-     sl(),
-  ));
+  sl.registerLazySingleton(() => ReviewsUsecase(sl(),));
+  sl.registerLazySingleton(()=> NewProductsUsecase(sl()));
+  sl.registerLazySingleton(() => Getproductsbytitle(sl()));
+  sl.registerLazySingleton(() => GetAllProductsUsecase(sl()));
 
   sl.registerFactoryParam<TextEditingController, void, void>(
     (_, __) => TextEditingController(),
@@ -88,7 +93,7 @@ sl.registerLazySingleton(() => cartBox);
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
   sl.registerFactory(() => CategoriesCubit(sl()));
-  sl.registerFactory(()=> ProductsCubit(sl()));
+  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl()));
   sl.registerFactory(() => CartCubit());
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
@@ -99,7 +104,6 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
     reviewController: TextEditingController(),
     nameController: TextEditingController(),
     productId: productId, // Pass the productId here
-    //categoryId: '', // You can pass categoryId if needed
   ),
 );
 

@@ -8,6 +8,7 @@ import 'package:clothshop/features/cart/presentation/screens/cart_view.dart';
 import 'package:clothshop/features/checkout/presentation/screens/checkout_view.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/presentation/screens/details_view.dart';
+import 'package:clothshop/features/home/presentation/screens/search_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/shop_by_categories.dart';
 import 'package:clothshop/features/onboarding/presentation/screens/onboarding_view.dart';
 import 'package:clothshop/features/splashscreen/presentation/screens/splashscreen_view.dart';
@@ -26,6 +27,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const SignupView());
       case Routes.home:
         return MaterialPageRoute(builder: (context) => Salmon());
+      case Routes.search:
+        return MaterialPageRoute(builder: (context) => const SearchView());
       case Routes.forgetpassword:
         return MaterialPageRoute(
           builder: (context) => const ForgetpasswordView(),

@@ -6,18 +6,21 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText; // اجعلها غير قابلة لأن تكون null
   final TextEditingController? controller;
   final Widget? suffixIcon;
+  final bool? readOnly ;
   final Widget? prefixIcon;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   const CustomTextFormField({
+    
     super.key,
     required this.title,
-    this.obscureText , this.controller, this.suffixIcon, this.keyboardType, this.prefixIcon, this.validator, // القيمة الافتراضية هنا
+    this.obscureText , this.controller, this.suffixIcon, this.keyboardType, this.prefixIcon, this.validator,  this.readOnly, // القيمة الافتراضية هنا
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly ?? false,
       keyboardType: keyboardType,
       validator: validator,
       controller:controller ,
