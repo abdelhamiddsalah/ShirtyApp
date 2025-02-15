@@ -2,10 +2,10 @@ import 'package:clothshop/features/reviews/presentation/widgets/add_review_view_
 import 'package:flutter/material.dart';
 
 class AddReviewView extends StatelessWidget {
-  const AddReviewView({super.key});
-
+  const AddReviewView({super.key, required this.productId});
+   final String productId;
   @override
   Widget build(BuildContext context) {
-    return AddReviewViewBody();
+    return AddReviewViewBody(productId:  productId,);
   }
 }

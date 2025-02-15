@@ -1,113 +1,60 @@
+import 'package:clothshop/core/utils/app_colors.dart';
+import 'package:clothshop/core/utils/text_styles.dart';
+import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/home/domain/entities/product_entity.dart';
+import 'package:clothshop/features/reviews/presentation/cubit/reviews_cubit.dart';
+import 'package:clothshop/features/reviews/presentation/cubit/reviews_state.dart';
+import 'package:clothshop/features/reviews/presentation/screens/add_review_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clothshop/config/routing/routes.dart';
-import 'package:clothshop/core/utils/text_styles.dart';
-import 'package:clothshop/features/reviews/presentation/cubit/reviews_cubit.dart';
 
-class ReviewsViewBody extends StatelessWidget {
-  const ReviewsViewBody({super.key});
+class ReviewsView extends StatelessWidget {
+  final ProductEntity product;
+  const ReviewsView({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+      final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    return Scaffold(
+    return BlocProvider.value(
+      value: sl<ReviewsCubit>(param1: product.productId.toString()),
+      child: Scaffold(
+        appBar: AppBar(title:  Text("Reviews",style: TextStyles.textinhome,),backgroundColor: AppColors.background,),
         body: Stack(
           children: [
-            SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05,
-                  vertical: screenHeight * 0.05,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: screenHeight * 0.03),
-                    Row(
-                      children: [
-                        Text(
-                          'Reviews',
-                          style: TextStyles.authtitle.copyWith(
-                            fontSize: screenWidth * 0.06,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Expanded(
-                      child: BlocBuilder<ReviewsCubit, ReviewsState>(
-                        builder: (context, state) {
-                          if (state is ReviewsLoaded) {
-                            return ListView.builder(
-                              padding: EdgeInsets.only(bottom: screenHeight * 0.1),
-                              itemCount: state.reviews.length,
-                              itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Card(
-                                  margin: const EdgeInsets.symmetric(vertical: 4),
-                                  color: Colors.white.withOpacity(0.1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          state.reviews[index].name,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          state.reviews[index].review,
-                                          style: TextStyle(
-                                            color: Colors.white.withOpacity(0.7),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          children: List.generate(
-                                            state.reviews[index].rating,
-                                            (i) => Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                              size: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+            BlocBuilder<ReviewsCubit, ReviewsState>(
+            builder: (context, state) {
+              if (state is ReviewsLoaded) {
+                return state.reviews.isEmpty
+                    ? const Center(child: Text("No Reviews",style: TextStyles.textinhome,))
+                    : ListView.builder(
+                        itemCount: state.reviews.length,
+                        itemBuilder: (context, index) {
+                          final review = state.reviews[index];
+                          return Padding(
+                            padding:  EdgeInsets.symmetric(horizontal: screenWidth*0.05, vertical: screenHeight*0.01),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:AppColors.secondBackground),
+                              child: ListTile(
+                                title: Text(review.name),
+                                subtitle: Text(review.review),
+                                trailing: Text("⭐ ${review.rating}"),
                               ),
-                            );
-                          } else if (state is ReviewsError) {
-                            return Center(
-                              child: Text(
-                                state.message,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                          }
-                          return const Center(child: CircularProgressIndicator());
+                            ),
+                          );
                         },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
+                      );
+              } else if (state is ReviewsError) {
+                return Center(child: Text(state.message));
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+
+            
+          ),
+          Positioned(
               left: screenWidth * 0.05,
               right: screenWidth * 0.05,
               bottom: screenHeight * 0.03,
@@ -121,7 +68,7 @@ class ReviewsViewBody extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.addreviews);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddReviewView(productId: product.productId.toString(),)));
                   },
                   child: Text(
                     'Add Review',
@@ -130,8 +77,9 @@ class ReviewsViewBody extends StatelessWidget {
                 ),
               ),
             ),
-          ],
+          ]
         ),
-      );
+      ),
+    );
   }
 }

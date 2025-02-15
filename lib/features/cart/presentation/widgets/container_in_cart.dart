@@ -1,44 +1,35 @@
-import 'package:clothshop/constants/images.dart';
-import 'package:clothshop/core/utils/app_colors.dart';
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ContainerIncart extends StatelessWidget {
-  final String productId;
-  final String productName;
-  final String size;
-  final String color;
-  final double price;
+  final CartItemEntity cartItem;
   final VoidCallback onRemove;
-
   const ContainerIncart({
     super.key,
-    required this.productId,
-    required this.productName,
-    required this.size,
-    required this.color,
-    required this.price,
     required this.onRemove,
+    required this.cartItem,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(productId), // مفتاح فريد لكل منتج
-      direction: DismissDirection.endToStart, // سحب فقط من اليمين لليسار
+      key: Key(cartItem.product.productId),
+      direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-               color: AppColors.primary,
+          color: Colors.red,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         alignment: Alignment.centerRight,
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (direction) {
-        onRemove(); // حذف المنتج من القائمة
+        onRemove();
       },
       child: Container(
-        
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
@@ -47,18 +38,18 @@ class ContainerIncart extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Row(
           children: [
-            Image.asset(Assets.imagesProfile),
+            Image.asset('assets/images/product.png', width: 50, height: 50),
             const SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(productName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(cartItem.product.name, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Text('Size - $size'),
+                    Text('Size - ${cartItem.product.sizes}'),
                     const SizedBox(width: 10),
-                    Text('Color - $color'),
+                    Text('Color - ${cartItem.product.colors}'),
                   ],
                 ),
               ],
@@ -67,19 +58,19 @@ class ContainerIncart extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('\$$price'),
+                Text('\$${cartItem.product.price}'),
                 const SizedBox(height: 10),
                 Row(
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // قم بإنقاص العدد هنا
+                        context.read<CartCubit>().decreaseQuantity(cartItem.product);
                       },
                       child: Container(
                         width: 32,
                         height: 32,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
@@ -89,13 +80,13 @@ class ContainerIncart extends StatelessWidget {
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                        // قم بزيادة العدد هنا
+                        context.read<CartCubit>().increaseQuantity(cartItem.product);
                       },
                       child: Container(
                         width: 32,
                         height: 32,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,

@@ -1,157 +1,190 @@
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:clothshop/features/home/presentation/widgets/container_quantity_details.dart';
+import 'package:clothshop/features/home/presentation/widgets/products_options_details.dart';
+import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
+import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/core/widgets/filled_container.dart';
-import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DetailsViewBody extends StatelessWidget {
+class DetailsViewBody extends StatefulWidget {
   final ProductEntity product;
   const DetailsViewBody({super.key, required this.product});
 
+  @override
+  _DetailsViewBodyState createState() => _DetailsViewBodyState();
+}
+
+class _DetailsViewBodyState extends State<DetailsViewBody> {
+  String? selectedColor; // متغير لتخزين اللون المختار
+  String? selectedSize; // متغير لتخزين الحجم المختار
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.03,
-          vertical: screenHeight * 0.05,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.arrow_back_ios),
-                ),
-                Spacer(),
-                FilledConatiner(
-                  icon: Icons.favorite_border,
-                  screenWidth: screenWidth * 0.9,
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Container(
-              width: screenWidth,
-              height: screenHeight * 0.5,
-              color: Colors.white,
-              child: Image.network(
-                product.image!,
-                height: screenHeight * 0.5,
-                width: screenWidth * 0.9,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            Text(product.name.toString(), style: TextStyles.textinhome),
-            SizedBox(height: 10),
-            Text(
-              '\$${product.price}',
-              style: TextStyles.textinhome.copyWith(color: AppColors.primary),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            ProductColorsDisplay(
-              product: product,
-              onColorSelected: (selectedColor) {
-                print('Selected color: $selectedColor');
-              },
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            ElevatedButton(
-              onPressed: () {
-                context.read<CartCubit>().addToCart(product);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocProvider(
+      create: (context) => sl<CartCubit>(),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.03,
+            vertical: screenHeight * 0.05,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Text('\$${product.price}', style: TextStyles.textinhome),
-                  Text('Add to Cart', style: TextStyles.textinhome),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
+                  const Spacer(),
+                  FilledConatiner(
+                    icon: Icons.favorite_border,
+                    screenWidth: screenWidth * 0.9,
+                    onTap: () {},
+                  ),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: screenHeight * 0.02),
+              Container(
+                width: screenWidth,
+                height: screenHeight * 0.5,
+                color: Colors.white,
+                child: Image.network(
+                  widget.product.image,
+                  height: screenHeight * 0.5,
+                  width: screenWidth * 0.9,
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Row(
+                children: [
+                  Text('Name: ', style: TextStyles.textinhome),
+                  const Spacer(),
+                  Text(
+                    widget.product.name.toString(),
+                    style: TextStyles.textinhome.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Row(
+                children: [
+                  Text('Price: ', style: TextStyles.textinhome),
+                  const Spacer(),
+                  Text(
+                    '\$${widget.product.price}',
+                    style: TextStyles.textinhome.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              ProductOptionsDisplay(
+                title: 'Sizes',
+                options: widget.product.sizes.cast<String>(),
+                selectedOption: selectedSize,
+                onOptionSelected: (option) {
+                  setState(() {
+                    selectedSize = option; // تحديث الحجم المختار
+                  });
+                },
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              ProductOptionsDisplay(
+                title: 'Colors',
+                options: widget.product.colors.cast<String>(),
+                selectedOption: selectedColor,
+                onOptionSelected: (option) {
+                  setState(() {
+                    selectedColor = option; // تحديث اللون المختار
+                  });
+                },
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              ContainerQuantityInDetails(text1: 'Quantity'),
+              SizedBox(height: screenHeight * 0.03),
+              Text(
+                widget.product.description.toString(),
+                style: TextStyles.textinhome.copyWith(
+                  color: Colors.grey,
+                  fontSize: screenWidth * 0.038,
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Text('Shipping & Returns', style: TextStyles.textinhome),
+              SizedBox(height: screenHeight * 0.03),
+              Text(
+                'Free Standard Shipping and free 60 day returns',
+                style: TextStyles.textinhome.copyWith(
+                  color: Colors.grey,
+                  fontSize: screenWidth * 0.038,
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Row(
+                children: [
+                  Text('Reviews', style: TextStyles.textinhome),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => ReviewsView(product: widget.product),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'See All',
+                      style: TextStyles.textinhome.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Row(
+                children: [
+                  Text(
+                    widget.product.reviews.isNotEmpty
+                        ? widget.product.reviews[0].rating.toString()
+                        : 'No rating',
+                    style: TextStyles.textinhome,
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              ElevatedButton(
+                onPressed: () {
+                  context.read<CartCubit>().addProduct(widget.product);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '\$${widget.product.price}',
+                      style: TextStyles.textinhome,
+                    ),
+                    const Text('Add to Cart', style: TextStyles.textinhome),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class ProductColorsDisplay extends StatelessWidget {
-  final ProductEntity product;
-  final Function(String) onColorSelected;
-
-  const ProductColorsDisplay({
-    Key? key,
-    required this.product,
-    required this.onColorSelected,
-  }) : super(key: key);
-
-  List<String> getColors() {
-    if (product.colors == null) return [];
-    
-    // تحويل List? إلى List<String>
-    return List<String>.from(product.colors!.map((color) => color.toString()));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final colors = getColors();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Available Colors:', style: TextStyles.textinhome),
-        SizedBox(height: 10),
-        if (colors.isEmpty)
-          Text(
-            'No colors available',
-            style: TextStyles.textinhome.copyWith(color: Colors.grey),
-          )
-        else
-          Container(
-            width: screenWidth,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.secondBackground,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: colors.map((color) => InkWell(
-                onTap: () => onColorSelected(color),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: AppColors.primary,
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    color,
-                    style: TextStyles.textinhome.copyWith(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              )).toList(),
-            ),
-          ),
-      ],
     );
   }
 }

@@ -12,7 +12,7 @@ class ReviewsUsecase {
     return repository.getProductReviews(productId);
   }
 
-  Future<Either<Failure, Unit>> addReview(ReviewEntity review) {
-    return repository.addReview(review);
+  Future<Either<Failure, Unit>> addReview(ReviewEntity review, String productId) {
+    return repository.addReview(review,productId);
   }
 }

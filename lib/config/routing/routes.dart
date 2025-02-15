@@ -13,4 +13,5 @@ class Routes {
   static const String shopbycategories= '/shopbycategories';
   static const String notifications = '/notifications';
   static const String reviewspage ='/reviewspage';
+  static const String checkout ='/checkout';
 }

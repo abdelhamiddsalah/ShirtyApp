@@ -28,7 +28,7 @@ class HiveHelper {
 
   static void _registerAdapters() {
     if (!Hive.isAdapterRegistered(2)) {
-      Hive.registerAdapter(CartModelAdapter());
+    //  Hive.registerAdapter(CartModelAdapter());
     }
     
     if (!Hive.isAdapterRegistered(3)) {

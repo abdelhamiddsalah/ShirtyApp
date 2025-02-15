@@ -1,4 +1,4 @@
-import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
+/*import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
 import 'package:flutter/material.dart';
 
 class ReviewsView extends StatelessWidget {
@@ -8,4 +8,4 @@ class ReviewsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReviewsViewBody();
   }
-}
+}*/

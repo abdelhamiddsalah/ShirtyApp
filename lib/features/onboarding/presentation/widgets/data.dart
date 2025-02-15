@@ -14,7 +14,7 @@ List movies2 = [
   'assets/images/6faf99048d27486e0964e59c7d7f60ed.jpg',
   'assets/images/6dab44edb18d223a7b18db587bf0bfb3.jpg',
   'assets/images/ce6bc093a8ea85782aaf12e1c2553097.jpg',
-  'assets/images/Ellipse 3.png',
+  'assets/images/927fa198bb27f1f9871a9bb1f8f40c23.jpg',
 ];
 
 List movies3 = [

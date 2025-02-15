@@ -9,6 +9,8 @@ import 'package:clothshop/features/authintication/domain/usecases/signup_usecase
 import 'package:clothshop/features/authintication/presentation/cubit/forgetpassword/cubit/forgetpasswordreset_cubit.dart';
 import 'package:clothshop/features/authintication/presentation/cubit/logincubit/cubit/login_cubit.dart';
 import 'package:clothshop/features/authintication/presentation/cubit/signup/authintication_cubit.dart';
+import 'package:clothshop/features/cart/data/models/cart_model.dart';
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/local_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/remote_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/product_datasources/local_productdatasource.dart';
@@ -57,8 +59,10 @@ Future<void> init() async {
     ),
   );
 
-  sl.registerLazySingleton<ReviewsRepository>(
-    ()=> ReviewsRepositoryImpl(sl()),
+    sl.registerLazySingleton<ReviewsRepository>(
+    () => ReviewsRepositoryImpl(
+       sl(), // يفترض أن FirebaseFirestore مسجل مسبقاً
+    ),
   );
 
   // 4️⃣ تسجيل `usecases`
@@ -67,7 +71,17 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ForgetpasswordUsecase(sl()));
   sl.registerLazySingleton(() => CategoryUsecase(sl()));
   sl.registerLazySingleton(()=> ProductsUsecase(sl()));
-  sl.registerLazySingleton(()=> ReviewsUsecase(sl()));
+  sl.registerLazySingleton(() => ReviewsUsecase(
+     sl(),
+  ));
+
+  sl.registerFactoryParam<TextEditingController, void, void>(
+    (_, __) => TextEditingController(),
+  );
+
+  final cartBox = await Hive.openBox<CartModel>('cartBox');
+sl.registerLazySingleton(() => cartBox);
+
 
   // 5️⃣ تسجيل `Cubits`
   sl.registerFactory(() => AuthinticationCubit(sl()));
@@ -75,16 +89,17 @@ Future<void> init() async {
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
   sl.registerFactory(() => CategoriesCubit(sl()));
   sl.registerFactory(()=> ProductsCubit(sl()));
+  sl.registerFactory(() => CartCubit());
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
 sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
-sl.registerFactoryParam<ReviewsCubit, String, String>(
-  (productId, categoryId) => ReviewsCubit(
-    sl(), 
-    TextEditingController(), 
-    TextEditingController(), 
-    productId,  // 🟢 تمرير productId كمُدخل
-    categoryId  // 🟢 تمرير categoryId كمُدخل
+ sl.registerFactoryParam<ReviewsCubit,  String, void>(
+  (productId, __) => ReviewsCubit(
+    reviewsUsecase: sl(),
+    reviewController: TextEditingController(),
+    nameController: TextEditingController(),
+    productId: productId, // Pass the productId here
+    //categoryId: '', // You can pass categoryId if needed
   ),
 );
 

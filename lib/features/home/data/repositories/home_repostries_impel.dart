@@ -98,4 +98,16 @@ class HomeRepostriesImpel extends HomeRepositry {
       return Left(CacheFailure('Cache error: ${e.toString()}'));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getNewProducts() {
+    // TODO: implement getNewProducts
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts() {
+    // TODO: implement getTopSeelingProducts
+    throw UnimplementedError();
+  }
 }

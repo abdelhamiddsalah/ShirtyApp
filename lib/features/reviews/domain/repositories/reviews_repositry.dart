@@ -4,5 +4,5 @@ import '../entities/review_entity.dart';
 
 abstract class ReviewsRepository {
   Future<Either<Failure, List<ReviewEntity>>> getProductReviews(String productId);
-  Future<Either<Failure, Unit>> addReview(ReviewEntity review);
+  Future<Either<Failure, Unit>> addReview(ReviewEntity review, String productId);
 }

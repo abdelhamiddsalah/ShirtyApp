@@ -1,31 +1,33 @@
+import 'package:clothshop/features/reviews/domain/entities/review_entity.dart';
+
 class ProductEntity {
-   String? name;
-   String ? productId;
-   String ? categoryId;
-   String? price;
-   String? image;
-   num? quantity;
-   num? ratingcount;
-   List? sizes;
-   String? description;
-   List? colors;
-   String? category;
-   List? reviews;
-   num? salescount;
+  final String name;
+  final String productId;
+  final String categoryId;
+  final String price;
+  final String image;
+  int quantity;
+  double ratingcount; 
+  final List<String> sizes; 
+  final String description;
+  final List<String> colors; 
+  final String category;
+  final List<ReviewEntity> reviews;
+  int? salescount;
 
   ProductEntity({
-     this.salescount,
-     this.categoryId,
-     this.productId,
-     this.name,
-     this.price,
-     this.image,
-     this.quantity,
-     this.ratingcount,
-     this.sizes,
-     this.description,
-     this.colors,
-     this.category,
-     this.reviews,
+    this.salescount,
+    required this.categoryId,
+    required this.productId,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.quantity,
+    required this.ratingcount,
+    required this.sizes,
+    required this.description,
+    required this.colors,
+    required this.category,
+    required this.reviews,
   });
 }

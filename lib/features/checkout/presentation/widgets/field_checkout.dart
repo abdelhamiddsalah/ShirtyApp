@@ -8,11 +8,12 @@ class FieldCheckout extends StatelessWidget {
   final String text2;
   @override
   Widget build(BuildContext context) {
-    //final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
     final screenHight = MediaQuery.of(context).size.height;
     return Container(
+       padding: EdgeInsets.symmetric(horizontal: screenWidth*0.05, vertical: screenHight*0.02),
        width: double.infinity,
-       height: screenHight*0.06,
+       height: screenHight*0.13,
        decoration: BoxDecoration(
          color: AppColors.secondBackground,
          borderRadius: BorderRadius.circular(10),
@@ -20,8 +21,9 @@ class FieldCheckout extends StatelessWidget {
        child: Row(
         children: [
          Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(text1, style: TextStyles.textinhome,),
+            Text(text1, style: TextStyles.textinhome.copyWith(color: Colors.grey),),
             SizedBox(height: screenHight*0.01,),
             Text(text2, style: TextStyles.textinhome,),
           ],

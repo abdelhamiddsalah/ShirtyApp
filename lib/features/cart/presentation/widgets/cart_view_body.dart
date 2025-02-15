@@ -1,172 +1,146 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clothshop/core/utils/text_styles.dart';
+import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:clothshop/injection.dart';
+import 'package:flutter/material.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_entity.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:clothshop/features/cart/presentation/widgets/container_in_cart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartViewBody extends StatelessWidget {
-  const CartViewBody({super.key});
+  const CartViewBody({super.key, required this.cartItems});
+  final List<CartItemEntity> cartItems;
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final cart = CartEntity(items: cartItems);
 
-    return Scaffold(
-      body: BlocConsumer<CartCubit, CartState>(
-        listener: (context, state) {
-          if (state is CartError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          } else if (state is CartItemRemoved) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('تم إزالة المنتج من السلة')),
-            );
-          } else if (state is CartCleared) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('تم مسح السلة')),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Stack(
+    return BlocProvider(
+      create: (context) => sl<CartCubit>(),
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.width * 0.06,
+            left: MediaQuery.of(context).size.width * 0.03,
+            right: MediaQuery.of(context).size.width * 0.03,
+          ),
+          child: Column(
             children: [
-              SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.05,
-                    vertical: screenHeight * 0.02,
+              // العنوان
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back_ios),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                          ),
-                          TextButton(
-                            onPressed: () => _showClearCartDialog(context),
-                            child: Text(
-                              'إزالة الكل',
-                              style: TextStyles.authtitle.copyWith(
-                                fontSize: screenWidth * 0.04,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                  Text(
+                    'Cart',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+              // عرض عناصر السلة
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cartItems.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      SizedBox(height: screenHeight * 0.015),
-                      if (state is CartLoaded) ...[
-                        if (state.cart.items.isEmpty)
-                          Expanded(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.shopping_cart_outlined, size: 64, color: Colors.white.withOpacity(0.5)),
-                                  SizedBox(height: 16),
-                                  Text("السلة فارغة", style: TextStyle(color: Colors.white, fontSize: 18)),
-                                ],
-                              ),
-                            ),
-                          )
-                        else
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: state.cart.items.length,
-                              itemBuilder: (context, index) {
-                                final item = state.cart.items[index];
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: screenHeight * 0.02),
-                                  child: ContainerIncart(
-                                    productId: item.product.productId!,
-                                    productName: item.product.name ?? '',
-                                    size: item.selectedSize ?? 'XL',
-                                    color: item.selectedColor ?? 'black',
-                                    price: double.parse(item.product.price ?? '0'),
-                                    onRemove: () => context.read<CartCubit>().removeFromCart(item.product.productId!),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                      ] else
-                        Expanded(child: Center(child: CircularProgressIndicator())),
-                    ],
-                  ),
+                      child: ContainerIncart(
+                        cartItem: cartItems[index],
+                        onRemove: () {
+                          context.read<CartCubit>().removeProduct(
+                            cartItems[index].product,
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
-              if (state is CartLoaded)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.9),
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+
+              // الحاوية السفلية (الإجمالي والشحن + زر الدفع)
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.05,
+                  vertical: 20,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.secondBackground,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // الإجمالي والشحن
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildTotalRow('المجموع الفرعي', '${state.cart.subtotal.toStringAsFixed(2)} د.ك'),
-                        SizedBox(height: 8),
-                        _buildTotalRow('رسوم التوصيل', '${state.cart.shippingCost.toStringAsFixed(2)} د.ك'),
-                        Divider(color: Colors.white.withOpacity(0.1), height: 24),
-                        _buildTotalRow('المجموع', '${state.cart.total.toStringAsFixed(2)} د.ك', isTotal: true),
-                        SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: state.cart.items.isEmpty ? null : () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          child: Text('متابعة الدفع', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text('SubTotal:', style: TextStyle(fontSize: 16)),
+                        Text(
+                          '\$${cart.subtotal.toStringAsFixed(2)}',
+                          style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Shipping:', style: TextStyle(fontSize: 16)),
+                        Text(
+                          '\$${cart.shippingCost.toStringAsFixed(2)}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total:', style: TextStyle(fontSize: 16)),
+                        Text(
+                          '\$${cart.total.toStringAsFixed(2)}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                      height: 20,
+                    ),
+
+                    // زر الدفع
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          // اضف هنا منطق الدفع
+                        },
+                        child: Text('Checkout', style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
             ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildTotalRow(String label, String value, {bool isTotal = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: TextStyle(color: Colors.white.withOpacity(isTotal ? 1 : 0.7), fontSize: isTotal ? 18 : 16, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-        Text(value, style: TextStyle(color: Colors.white, fontSize: isTotal ? 18 : 16, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-      ],
-    );
-  }
-
-  void _showClearCartDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('تأكيد'),
-        content: Text('هل أنت متأكد من رغبتك في إزالة جميع المنتجات من السلة؟'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء')),
-          TextButton(
-            onPressed: () {
-              context.read<CartCubit>().clearCart();
-              Navigator.pop(context);
-            },
-            child: Text('تأكيد', style: TextStyle(color: Colors.red)),
           ),
-        ],
+        ),
       ),
     );
   }

@@ -32,20 +32,21 @@ class FirestoreService {
 
  Future<List<ReviewModel>> getProductReviews(String productId) async {
   try {
-    DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection('Allproducts')
-        .doc(productId)
-        .get();
+    DocumentSnapshot doc = await firestore.collection('Allproducts').doc(productId).get();
 
-    if (!doc.exists) {
-      throw Exception("Product not found");
+    if (!doc.exists || doc.data() == null) {
+      throw Exception("Product not found or has no reviews");
     }
 
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    List<ReviewModel> reviews = (data['reviews'] as List<dynamic>?)
-            ?.map((review) => ReviewModel.fromJson(review))
-            .toList() ??
-        [];
+
+    List<ReviewModel> reviews = [];
+
+    if (data.containsKey('reviews') && data['reviews'] is List) {
+      reviews = (data['reviews'] as List)
+          .map((review) => ReviewModel.fromJson(review))
+          .toList();
+    }
     return reviews;
   } catch (e) {
     throw Exception("Error fetching reviews: $e");
@@ -55,8 +56,12 @@ class FirestoreService {
 
   Future<void> addReview(String productId, ReviewModel review) async {
   try {
-    DocumentReference productRef =
-        FirebaseFirestore.instance.collection('Allproducts').doc(productId);
+    DocumentReference productRef = FirebaseFirestore.instance.collection('Allproducts').doc(productId);
+
+    DocumentSnapshot doc = await productRef.get();
+    if (!doc.exists) {
+      throw Exception("Product not found");
+    }
 
     await productRef.update({
       'reviews': FieldValue.arrayUnion([review.toJson()])
@@ -64,6 +69,11 @@ class FirestoreService {
   } catch (e) {
     throw Exception("Error adding review: $e");
   }
+}
+
+
+Future<void> fetchnewinProducts() async{
+  
 }
 
 }

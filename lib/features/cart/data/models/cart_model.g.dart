@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+/*// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'cart_model.dart';
 
@@ -48,3 +48,4 @@ class CartModelAdapter extends TypeAdapter<CartModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+*/
