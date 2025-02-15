@@ -9,6 +9,7 @@ import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/core/widgets/filled_container.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final ProductEntity product;
@@ -19,8 +20,27 @@ class DetailsViewBody extends StatefulWidget {
 }
 
 class _DetailsViewBodyState extends State<DetailsViewBody> {
-  String? selectedColor; // متغير لتخزين اللون المختار
-  String? selectedSize; // متغير لتخزين الحجم المختار
+  String? selectedColor;
+  String? selectedSize;
+  double averageRating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateAverageRating();
+  }
+
+  void _calculateAverageRating() {
+    if (widget.product.reviews.isNotEmpty) {
+      averageRating = widget.product.reviews
+              .map((review) => review.rating)
+              .reduce((a, b) => a + b) /
+          widget.product.reviews.length;
+    } else {
+      averageRating = 0.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -95,7 +115,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 selectedOption: selectedSize,
                 onOptionSelected: (option) {
                   setState(() {
-                    selectedSize = option; // تحديث الحجم المختار
+                    selectedSize = option;
                   });
                 },
               ),
@@ -106,7 +126,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 selectedOption: selectedColor,
                 onOptionSelected: (option) {
                   setState(() {
-                    selectedColor = option; // تحديث اللون المختار
+                    selectedColor = option;
                   });
                 },
               ),
@@ -140,8 +160,8 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder:
-                              (context) => ReviewsView(product: widget.product),
+                          builder: (context) =>
+                              ReviewsView(product: widget.product),
                         ),
                       );
                     },
@@ -157,12 +177,17 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               SizedBox(height: screenHeight * 0.03),
               Row(
                 children: [
-                  Text(
-                    widget.product.reviews.isNotEmpty
-                        ? widget.product.reviews[0].rating.toString()
-                        : 'No rating',
-                    style: TextStyles.textinhome,
-                  ),
+                  widget.product.reviews.isNotEmpty
+                      ? RatingBarIndicator(
+                          rating: averageRating,
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 24.0,
+                        )
+                      : Text('No rating', style: TextStyles.textinhome),
                 ],
               ),
               SizedBox(height: screenHeight * 0.03),
