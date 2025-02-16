@@ -17,7 +17,7 @@ Future<Either<Failure, List<ReviewEntity>>> getProductReviews(String productId) 
     final docSnapshot = await firestore.collection('Allproducts').doc(productId).get();
 
     if (!docSnapshot.exists) {
-      return Left(ServerFailure('Product not found'));
+      return const Left(ServerFailure('Product not found'));
     }
 
     final data = docSnapshot.data();
@@ -30,7 +30,7 @@ Future<Either<Failure, List<ReviewEntity>>> getProductReviews(String productId) 
       if (reviewData is Map<String, dynamic>) {
         return ReviewModel.fromJson(reviewData);
       }
-      throw FormatException('Invalid review data format');
+      throw const FormatException('Invalid review data format');
     }).toList();
 
     return Right(reviewsList);
@@ -47,7 +47,7 @@ Future<Either<Failure, List<ReviewEntity>>> getProductReviews(String productId) 
     // تحقق مما إذا كان المنتج موجودًا
     final docSnapshot = await productRef.get();
     if (!docSnapshot.exists) {
-      return Left(ServerFailure('Product not found'));
+      return const Left(ServerFailure('Product not found'));
     }
 
     // تحويل ReviewEntity إلى Map

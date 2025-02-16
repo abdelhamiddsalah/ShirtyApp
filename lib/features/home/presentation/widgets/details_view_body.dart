@@ -85,7 +85,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               SizedBox(height: screenHeight * 0.03),
               Row(
                 children: [
-                  Text('Name: ', style: TextStyles.textinhome),
+                  const Text('Name: ', style: TextStyles.textinhome),
                   const Spacer(),
                   Text(
                     widget.product.name.toString(),
@@ -98,7 +98,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               SizedBox(height: screenHeight * 0.03),
               Row(
                 children: [
-                  Text('Price: ', style: TextStyles.textinhome),
+                  const Text('Price: ', style: TextStyles.textinhome),
                   const Spacer(),
                   Text(
                     '\$${widget.product.price}',
@@ -131,7 +131,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 },
               ),
               SizedBox(height: screenHeight * 0.02),
-              ContainerQuantityInDetails(text1: 'Quantity'),
+              const ContainerQuantityInDetails(text1: 'Quantity'),
               SizedBox(height: screenHeight * 0.03),
               Text(
                 widget.product.description.toString(),
@@ -141,7 +141,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 ),
               ),
               SizedBox(height: screenHeight * 0.03),
-              Text('Shipping & Returns', style: TextStyles.textinhome),
+              const Text('Shipping & Returns', style: TextStyles.textinhome),
               SizedBox(height: screenHeight * 0.03),
               Text(
                 'Free Standard Shipping and free 60 day returns',
@@ -153,7 +153,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               SizedBox(height: screenHeight * 0.03),
               Row(
                 children: [
-                  Text('Reviews', style: TextStyles.textinhome),
+                  const Text('Reviews', style: TextStyles.textinhome),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {

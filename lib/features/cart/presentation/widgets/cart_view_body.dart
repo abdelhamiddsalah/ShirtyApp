@@ -34,7 +34,7 @@ class CartViewBody extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_ios),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                  Text(
+                  const Text(
                     'Cart',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -70,7 +70,7 @@ class CartViewBody extends StatelessWidget {
                   horizontal: MediaQuery.of(context).size.width * 0.05,
                   vertical: 20,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.secondBackground,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),
@@ -83,32 +83,32 @@ class CartViewBody extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('SubTotal:', style: TextStyle(fontSize: 16)),
+                        const Text('SubTotal:', style: TextStyle(fontSize: 16)),
                         Text(
                           '\$${cart.subtotal.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Shipping:', style: TextStyle(fontSize: 16)),
+                        const Text('Shipping:', style: TextStyle(fontSize: 16)),
                         Text(
                           '\$${cart.shippingCost.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Total:', style: TextStyle(fontSize: 16)),
+                        const Text('Total:', style: TextStyle(fontSize: 16)),
                         Text(
                           '\$${cart.total.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),

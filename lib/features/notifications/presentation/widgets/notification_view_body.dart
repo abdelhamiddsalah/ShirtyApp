@@ -49,7 +49,7 @@ class NotificationViewBody extends StatelessWidget {
                         child: ListTile(
                           trailing: Text(
                             "${state.notifications[index].timestamp.hour}:${state.notifications[index].timestamp.minute}",
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                           title: Text(state.notifications[index].title),
                           subtitle: Text(state.notifications[index].body),

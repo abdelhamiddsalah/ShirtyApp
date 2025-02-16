@@ -27,9 +27,9 @@ class SplashscreenView extends StatelessWidget {
             Navigator.pushReplacementNamed(context, Routes.onboarding);
           }
         },
-        child: Scaffold(
+        child: const Scaffold(
           backgroundColor: AppColors.primary,
-          body: const SplashscreenViewBody(),
+          body: SplashscreenViewBody(),
         ),
       ),
     );

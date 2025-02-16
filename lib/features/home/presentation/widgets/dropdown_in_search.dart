@@ -38,12 +38,12 @@ class DropDownForChoiceInSearch extends StatelessWidget {
             child: DropdownButtonHideUnderline( // 🔹 إخفاء الخط السفلي الافتراضي
               child: DropdownButton<String>(
                 isExpanded: true, // 🔹 جعل الـ Dropdown يتمدد داخل الـ Container
-                hint: Text(text1, style: TextStyle(color: Colors.grey)), // 🔹 لون النص الافتراضي
+                hint: Text(text1, style: const TextStyle(color: Colors.grey)), // 🔹 لون النص الافتراضي
                 value: selectedValue,
                 items: items.map((item) {
                   return DropdownMenuItem<String>(
                     value: item,
-                    child: Text(item, style: TextStyle(fontSize: 16)), // 🔹 تكبير الخط
+                    child: Text(item, style: const TextStyle(fontSize: 16)), // 🔹 تكبير الخط
                   );
                 }).toList(),
                 onChanged: (value) {

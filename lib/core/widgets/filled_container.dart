@@ -14,7 +14,7 @@ class FilledConatiner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(screenWidth * 0.03),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.primary,
         shape: BoxShape.circle,
       ),

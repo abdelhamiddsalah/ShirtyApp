@@ -48,14 +48,14 @@ class SignupViewBody extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: screenHeight * 0.25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.background,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25),
                       ),
                     ),
-                    child: Column(
+                    child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [AppLogo()],
                     ),
@@ -75,7 +75,7 @@ class SignupViewBody extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.1),
                           spreadRadius: 5,
                           blurRadius: 10,
-                          offset: Offset(0, 5),
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
@@ -85,7 +85,7 @@ class SignupViewBody extends StatelessWidget {
                       maxHeight: screenHeight * 0.8,
                     ),
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.05,
@@ -147,7 +147,7 @@ class SignupViewBody extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: Dropdownages(),
+                                child: const Dropdownages(),
                               ),
                               SizedBox(height: screenHeight * 0.03),
                               SizedBox(

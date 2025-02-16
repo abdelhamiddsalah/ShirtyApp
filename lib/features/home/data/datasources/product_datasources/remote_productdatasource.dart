@@ -14,6 +14,7 @@ class RemoteProductdatasourceImpl implements RemoteProductdatasource {
   Future<List<ProductModel>> getremoteProducts(String categoryId) {
     return firestoreService.getProducts( categoryId);
   }
+  @override
   Future<List<ProductModel>> getnewinProducts() {
     return firestoreService.fetchnewinProducts();
   }

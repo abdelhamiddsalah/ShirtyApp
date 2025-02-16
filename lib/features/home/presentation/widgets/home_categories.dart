@@ -32,12 +32,12 @@ class HomeCategories extends StatelessWidget {
               builder: (context, state) {
                 if (state is CategoriesLoading) {
                   return Skeletonizer(
-                    enabled: true,
+                   // enabled: true,
                     child: Shimmer.fromColors(
                       baseColor: Colors.grey[700]!,
                       highlightColor: Colors.white,
                       period: const Duration(seconds: 2),
-                      direction: ShimmerDirection.ltr,
+                    //  direction: ShimmerDirection.ltr,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: 5,

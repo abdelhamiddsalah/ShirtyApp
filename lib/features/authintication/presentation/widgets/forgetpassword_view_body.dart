@@ -58,14 +58,14 @@ class ForgetpasswordViewBody extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: screenHeight * 0.25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.background,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25),
                       ),
                     ),
-                    child: Column(
+                    child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [AppLogo()],
                     ),

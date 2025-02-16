@@ -111,11 +111,11 @@ class ContainerSelectedOption extends StatelessWidget {
                 Container(
                   width: screenWidth * 0.05,
                   height: screenWidth * 0.05,
-                  decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
                 )
               else
-                Text('S', style: TextStyles.textinhome),
-              Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                const Text('S', style: TextStyles.textinhome),
+              const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
             ],
           )
         ],

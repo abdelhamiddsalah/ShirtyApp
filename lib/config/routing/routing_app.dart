@@ -26,7 +26,7 @@ class AppRoutes {
       case Routes.register:
         return MaterialPageRoute(builder: (context) => const SignupView());
       case Routes.home:
-        return MaterialPageRoute(builder: (context) => Salmon());
+        return MaterialPageRoute(builder: (context) => const Salmon());
       case Routes.search:
         return MaterialPageRoute(builder: (context) => const SearchView());
       case Routes.forgetpassword:
@@ -36,7 +36,7 @@ class AppRoutes {
       case Routes.onboarding:
         return MaterialPageRoute(builder: (context) => const OnboardingView());
       case Routes.cart:
-        return MaterialPageRoute(builder: (context) => CartView());
+        return MaterialPageRoute(builder: (context) => const CartView());
       case Routes.details:
         final product = settings.arguments as ProductEntity?;
         if (product == null) {

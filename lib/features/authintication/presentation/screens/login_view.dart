@@ -11,7 +11,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<LoginCubit>(),
-      child: LoginViewBody(),
+      child: const LoginViewBody(),
     );
   }
 }

@@ -15,6 +15,6 @@ class ForgetpasswordresetCubit extends Cubit<ForgetpasswordresetState> {
     emit(ForgetpasswordresetLoading());
     final result = await forgetpasswordUsecase.call(email);
     result.fold((failure) => emit(ForgetpasswordresetError(message: failure.message)),
-        (r) => emit(ForgetpasswordresetSuccess(message: 'Password reset email sent successfully')));
+        (r) => emit(const ForgetpasswordresetSuccess(message: 'Password reset email sent successfully')));
   }
 }

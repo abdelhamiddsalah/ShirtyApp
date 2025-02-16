@@ -26,23 +26,23 @@ class ContainerQuantityInDetails extends StatelessWidget {
             Container(
               width: screenWidth * 0.07,
               height: screenHeight * 0.07,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.remove, color: Colors.white,),
+              child: const Icon(Icons.remove, color: Colors.white,),
             ),
             SizedBox(width: screenWidth * 0.05,),
-            Text('1', style: TextStyles.textinhome,),
+            const Text('1', style: TextStyles.textinhome,),
             SizedBox(width: screenWidth * 0.05,),
             Container(
               width: screenWidth * 0.07,
               height: screenHeight * 0.07,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.add, color: Colors.white,),
+              child: const Icon(Icons.add, color: Colors.white,),
             ),
           ],
         )

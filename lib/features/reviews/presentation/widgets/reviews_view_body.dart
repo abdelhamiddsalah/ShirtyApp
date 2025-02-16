@@ -72,7 +72,7 @@ class ReviewsView extends StatelessWidget {
                   onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddReviewView(productId: product.productId.toString(),)));
                   },
-                  child: Text(
+                  child: const Text(
                     'Add Review',
                     style: TextStyles.textinhome,
                   ),

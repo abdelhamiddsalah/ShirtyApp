@@ -57,7 +57,7 @@ class HomeRepostriesImpel extends HomeRepositry {
     try {
       final categories = await localDatasource.getLastCategories();
       if (categories.isEmpty) {
-        return Left(CacheFailure('No cached data available'));
+        return const Left(CacheFailure('No cached data available'));
       }
       return Right(categories);
     } catch (e) {

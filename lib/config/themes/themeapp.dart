@@ -10,7 +10,7 @@ ThemeData themeApp = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.primary,
      minimumSize: const Size(double.infinity, 50),
-      textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+      textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -21,15 +21,15 @@ ThemeData themeApp = ThemeData(
     fillColor: AppColors.secondBackground,
     filled: true,
     border: OutlineInputBorder(
-      borderSide: BorderSide(width: 0),
+      borderSide: const BorderSide(width: 0),
       borderRadius: BorderRadius.circular(15),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 0),
+      borderSide: const BorderSide(width: 0),
       borderRadius: BorderRadius.circular(15),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 0),
+      borderSide: const BorderSide(width: 0),
       borderRadius: BorderRadius.circular(15),
     ),
   ),

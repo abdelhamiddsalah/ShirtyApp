@@ -43,7 +43,7 @@ class ContainerIncart extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(cartItem.product.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(cartItem.product.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -69,7 +69,7 @@ class ContainerIncart extends StatelessWidget {
                       child: Container(
                         width: 32,
                         height: 32,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.blue,
                           shape: BoxShape.circle,
                         ),

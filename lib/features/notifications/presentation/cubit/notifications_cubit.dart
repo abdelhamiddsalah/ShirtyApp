@@ -36,7 +36,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   void clearNotifications() {
     try {
       notificationsBox.clear();
-      emit(NotificationsLoaded([]));
+      emit(const NotificationsLoaded([]));
     } catch (e) {
       emit(NotificationsError("Failed to clear notifications: $e"));
     }

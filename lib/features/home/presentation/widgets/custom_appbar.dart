@@ -23,7 +23,7 @@ class CustomAppbarinhome extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: screenHeight * 0.03,
-            backgroundImage: AssetImage(Assets.imagesProfile),
+            backgroundImage: const AssetImage(Assets.imagesProfile),
           ),
           Container(
             decoration: BoxDecoration(

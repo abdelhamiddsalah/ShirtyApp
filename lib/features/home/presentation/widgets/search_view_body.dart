@@ -103,7 +103,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                  DropDownForChoiceInSearch(
                    screenWidth: screenWidth,
                    text1: 'price',
-                   items: ['Low to High', 'High to Low', 'Discount'],
+                   items: const ['Low to High', 'High to Low', 'Discount'],
                    filterType: "price",
                  ),
                ],
@@ -145,7 +145,7 @@ Widget notFound() {
       children: [
         SvgPicture.asset(Assets.imagesNotFound),
         const SizedBox(height: 20),
-        Text(
+        const Text(
           'Sorry, We could not find any matching results for your sear ch',
           style: TextStyles.textinhome,
           textAlign: TextAlign.center,
@@ -155,7 +155,7 @@ Widget notFound() {
           onPressed: () {
             // Navigator.pushNamed(context, Routes.c);
           },
-          child: Text('Explore Categories', style: TextStyles.textinhome),
+          child: const Text('Explore Categories', style: TextStyles.textinhome),
         ),
       ],
     ),

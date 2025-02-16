@@ -28,8 +28,8 @@ class FieldCheckout extends StatelessWidget {
             Text(text2, style: TextStyles.textinhome,),
           ],
          ),
-         Spacer(),
-         Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey,),
+         const Spacer(),
+         const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey,),
        ]),
     );
   }

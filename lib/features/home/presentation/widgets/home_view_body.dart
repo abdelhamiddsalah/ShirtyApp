@@ -43,8 +43,8 @@ class HomeViewBody extends StatelessWidget {
   onTap: () => Navigator.push(
     context,
     PageRouteBuilder(
-      transitionDuration: Duration(milliseconds: 500),
-      pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (context, animation, secondaryAnimation) => const SearchView(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,
@@ -69,11 +69,11 @@ class HomeViewBody extends StatelessWidget {
                   screenWidth: screenWidth,
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                TextsInHomeview(text: 'Top Selling'),
+                const TextsInHomeview(text: 'Top Selling'),
                 SizedBox(height: screenHeight * 0.02),
                 TopsellingListview(screenHeight: screenHeight),
                 SizedBox(height: screenHeight * 0.02),
-                TextsInHomeview(text: 'New In', color: AppColors.primary),
+                const TextsInHomeview(text: 'New In', color: AppColors.primary),
                 SizedBox(height: screenHeight * 0.02),
                 NewInProducts(screenHeight: screenHeight),
               ],

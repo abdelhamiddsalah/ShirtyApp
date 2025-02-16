@@ -24,7 +24,7 @@ class ShopByCategories extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back_ios),
               ),
               SizedBox(height: screenhight * 0.02),
               Text('Shop By Categories', style: TextStyles.textinhome.copyWith(fontSize: screenwidth * 0.06)),
