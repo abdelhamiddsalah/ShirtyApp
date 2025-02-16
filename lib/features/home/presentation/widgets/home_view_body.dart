@@ -1,4 +1,3 @@
-import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/features/home/presentation/screens/search_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/custom_appbar.dart';
 import 'package:clothshop/features/home/presentation/widgets/home_categories.dart';
@@ -31,12 +30,9 @@ class HomeViewBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, Routes.search),
-                  child: CustomAppbarinhome(
-                    screenHeight: screenHeight,
-                    screenWidth: screenWidth,
-                  ),
+                CustomAppbarinhome(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
                 ),
                 SizedBox(height: screenHeight * 0.02),
            InkWell(

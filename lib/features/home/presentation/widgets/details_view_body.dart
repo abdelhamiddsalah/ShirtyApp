@@ -41,6 +41,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -67,7 +68,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                   FilledConatiner(
                     icon: Icons.favorite_border,
                     screenWidth: screenWidth * 0.9,
-                    onTap: () {},
+              
                   ),
                 ],
               ),
@@ -201,7 +202,22 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               SizedBox(height: screenHeight * 0.03),
               ElevatedButton(
                 onPressed: () {
-                  context.read<CartCubit>().addProduct(widget.product);
+                  final productToAdd = ProductEntity(
+                categoryId: widget.product.categoryId,
+                productId: widget.product.productId,
+                name: widget.product.name,
+                price: widget.product.price,
+                image: widget.product.image,
+                quantity: 1, // Start with quantity 1
+                ratingcount: widget.product.ratingcount,
+                sizes: widget.product.sizes,
+                description: widget.product.description,
+                colors: widget.product.colors,
+                category: widget.product.category,
+                reviews: widget.product.reviews,
+                salescount: widget.product.salescount,
+              );
+                  context.read<CartCubit>().addToCart(productToAdd);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

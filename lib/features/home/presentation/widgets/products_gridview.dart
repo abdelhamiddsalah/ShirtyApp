@@ -18,17 +18,6 @@ class ProductsGridView extends StatelessWidget {
   final String categoryId;
 
   // Helper method to safely parse price
-  double _parsePrice(String? price) {
-    if (price == null || price.isEmpty) {
-      return 0.0;
-    }
-    try {
-      return double.parse(price);
-    } catch (e) {
-      print('Error parsing price: $price');
-      return 0.0;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

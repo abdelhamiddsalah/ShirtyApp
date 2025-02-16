@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class FilledConatiner extends StatelessWidget {
   const FilledConatiner({
     super.key,
-    required this.screenWidth,  this.icon, required Null Function() onTap,
+    required this.screenWidth,  this.icon,
   });
 
   final double screenWidth;

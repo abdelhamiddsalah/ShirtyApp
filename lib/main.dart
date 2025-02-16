@@ -13,25 +13,26 @@ void main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-    Stripe.publishableKey = ApiKeys.publisibleKey;
-    // Initialize Hive
-    await HiveHelper.initHive();
+  Stripe.publishableKey = ApiKeys.publisibleKey;
+  // Initialize Hive
+  await HiveHelper.initHive();
 
-    // Initialize Firebase
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-    // Initialize other services
-    await Supabase.initialize(
-      url: 'https://nxlpcezgxgqupxajyyaw.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54bHBjZXpneGdxdXB4YWp5eWF3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczODU3NzgxNCwiZXhwIjoyMDU0MTUzODE0fQ.CEJsRqC_i-f0OSVvcg8pO8UPmvhAEe6MoLGqGgLBm3M',
-    );
+  // Initialize other services
+  await Supabase.initialize(
+    url: 'https://nxlpcezgxgqupxajyyaw.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54bHBjZXpneGdxdXB4YWp5eWF3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczODU3NzgxNCwiZXhwIjoyMDU0MTUzODE0fQ.CEJsRqC_i-f0OSVvcg8pO8UPmvhAEe6MoLGqGgLBm3M',
+  );
 
-    init();
-    await MessagingConfig.initFirebaseMessaging();
+  init();
+  await MessagingConfig.initFirebaseMessaging();
 
-    runApp(Shirty());
-  
+  runApp(
+    Shirty(),
+  );
 }

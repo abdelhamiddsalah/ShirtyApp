@@ -46,7 +46,7 @@ class CustomAppbarinhome extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, Routes.cart);
             },
-            child: FilledConatiner(screenWidth: screenWidth, icon: Icons.shopping_bag_outlined, onTap: () {  },),
+            child: FilledConatiner(screenWidth: screenWidth, icon: Icons.shopping_bag_outlined),
           ),
         ],
       ),
