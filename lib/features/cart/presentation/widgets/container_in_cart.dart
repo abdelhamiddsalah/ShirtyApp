@@ -1,21 +1,21 @@
-import 'package:clothshop/features/home/domain/entities/product_entity.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:flutter/material.dart';
 
-
 class ContainerIncart extends StatelessWidget {
-  final ProductEntity cartItem;
+  final CartItemEntity cartItemEntity;
   final VoidCallback onRemove;
   final int index;
   const ContainerIncart({
     super.key,
     required this.onRemove,
-    required this.cartItem, required this.index,
+    required this.cartItemEntity,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(cartItem.productId),
+      key: Key(cartItemEntity.productId.toString()),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -38,18 +38,18 @@ class ContainerIncart extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Row(
           children: [
-            Image.asset('assets/images/product.png', width: 50, height: 50),
+            Image.network(cartItemEntity.productimage, width: 80, height: 80),
             const SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(cartItem.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(cartItemEntity.productname, style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Text('Size - ${cartItem.sizes}'),
+                    Text('Size - ${cartItemEntity.productSelectedsize}'),
                     const SizedBox(width: 10),
-                    Text('Color - ${cartItem.colors}'),
+                    Text('Color - ${cartItemEntity.productSelectedcolor}'),
                   ],
                 ),
               ],
@@ -58,13 +58,13 @@ class ContainerIncart extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('\$${cartItem.price}'),
+                Text('\$${cartItemEntity.totalprice}', style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
                     GestureDetector(
                       onTap: () {
-                    //    context.read<CartCubit>().decreaseQuantity(cartItem.product);
+                     //   context.read<CartCubit>().decreaseQuantity(cartItemEntity.product);
                       },
                       child: Container(
                         width: 32,
@@ -80,7 +80,7 @@ class ContainerIncart extends StatelessWidget {
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                       // context.read<CartCubit>().increaseQuantity(cartItem.product);
+                        //context.read<CartCubit>().increaseQuantity(cartItemEntity.product);
                       },
                       child: Container(
                         width: 32,

@@ -36,14 +36,18 @@ class AppRoutes {
       case Routes.onboarding:
         return MaterialPageRoute(builder: (context) => const OnboardingView());
       case Routes.cart:
-        return MaterialPageRoute(builder: (context) => const CartView());
+        return MaterialPageRoute(
+          builder:
+              (context) => const CartView(),
+        );
       case Routes.details:
         final product = settings.arguments as ProductEntity?;
         if (product == null) {
           return _errorRoute(settings.name);
         }
         return MaterialPageRoute(
-          builder: (context) => DetailsView(product: product),
+          builder:
+              (context) => DetailsView(product: product),
         );
       case Routes.shopbycategories:
         return MaterialPageRoute(

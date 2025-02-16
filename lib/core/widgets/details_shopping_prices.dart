@@ -1,14 +1,11 @@
 import 'package:clothshop/core/utils/app_colors.dart';
-import 'package:clothshop/features/cart/domain/entities/cart_entity.dart';
 import 'package:flutter/material.dart';
 
 class DetailsAboutShoppingPrices extends StatelessWidget {
   const DetailsAboutShoppingPrices({
     super.key,
-    required this.cart,
   });
 
-  final CartEntity cart;
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +24,35 @@ class DetailsAboutShoppingPrices extends StatelessWidget {
       child: Column(
         children: [
           // الإجمالي والشحن
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('SubTotal:', style: TextStyle(fontSize: 16)),
+              Text('SubTotal:', style: TextStyle(fontSize: 16)),
               Text(
-                '\$${cart.subtotal.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 16),
+                '\$${'dfg'}',
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Shipping:', style: TextStyle(fontSize: 16)),
+              Text('Shipping:', style: TextStyle(fontSize: 16)),
               Text(
-                '\$${cart.shippingCost.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 16),
+                '\$${'tg'}',
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total:', style: TextStyle(fontSize: 16)),
+              Text('Total:', style: TextStyle(fontSize: 16)),
               Text(
-                '\$${cart.total.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 16),
+                '\$${'cart.total.toStringAsFixed(2)'}',
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),

@@ -18,9 +18,7 @@ void main() async {
   await HiveHelper.initHive();
 
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize other services
   await Supabase.initialize(
@@ -32,7 +30,5 @@ void main() async {
   init();
   await MessagingConfig.initFirebaseMessaging();
 
-  runApp(
-    Shirty(),
-  );
+  runApp(Shirty());
 }

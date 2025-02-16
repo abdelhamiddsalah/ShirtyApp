@@ -1,4 +1,3 @@
-/*
 part of 'cart_cubit.dart';
 
 abstract class CartState extends Equatable {
@@ -10,20 +9,15 @@ abstract class CartState extends Equatable {
 
 class CartInitial extends CartState {}
 
+
 class CartLoading extends CartState {}
 
 class CartLoaded extends CartState {
-  final CartEntity cart;
-  const CartLoaded(this.cart);
-
-  @override
-  List<Object> get props => [cart];
+  final List<CartItemEntity> cartItems;
+  const CartLoaded(this.cartItems);
 }
 
 class CartError extends CartState {
   final String message;
   const CartError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}*/
+}

@@ -1,7 +1,5 @@
 
 import 'package:clothshop/core/widgets/appbartop.dart';
-import 'package:clothshop/core/widgets/details_shopping_prices.dart';
-import 'package:clothshop/features/cart/domain/entities/cart_entity.dart';
 import 'package:clothshop/features/checkout/presentation/widgets/field_checkout.dart';
 import 'package:flutter/material.dart';
 

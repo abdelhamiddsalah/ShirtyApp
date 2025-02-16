@@ -3,13 +3,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseAuthServices {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  /// إنشاء مستخدم جديد
   Future<User> createNewUser(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return credential.user!;
+      User user = credential.user!;
+      
+      // حفظ بيانات المستخدم في Firestore
+      await _firestore.collection('Users').doc(user.uid).set({
+        'email': user.email,
+        'userId': user.uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // حفظ FCM Token
+      await saveTokenToDatabase(user.uid);
+
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
@@ -25,13 +41,26 @@ class FirebaseAuthServices {
     }
   }
 
+  /// تسجيل دخول المستخدم
   Future<User> signInUser(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return credential.user!;
+      User user = credential.user!;
+      
+      // تحديث بيانات المستخدم عند تسجيل الدخول
+      await _firestore.collection('Users').doc(user.uid).set({
+        'email': user.email,
+        'userId': user.uid,
+        'lastLogin': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      // حفظ FCM Token
+      await saveTokenToDatabase(user.uid);
+
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
@@ -47,9 +76,10 @@ class FirebaseAuthServices {
     }
   }
 
+  /// إعادة تعيين كلمة المرور
   Future<bool> forgetPasswordService(String email) async {
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -64,9 +94,10 @@ class FirebaseAuthServices {
     }
   }
 
+  /// التحقق مما إذا كان المستخدم مسجل دخول
   Future<bool> isLoggedIn() async {
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      final user = _auth.currentUser;
       return user != null;
     } catch (e) {
       print("Error checking login status: $e");
@@ -74,12 +105,13 @@ class FirebaseAuthServices {
     }
   }
 
+  /// حفظ FCM Token في Firestore
   Future<void> saveTokenToDatabase(String userId) async {
-  String? token = await FirebaseMessaging.instance.getToken();
-  if (token != null) {
-    await FirebaseFirestore.instance.collection('Users').doc(userId).update({
-      'fcmToken': token,
-    });
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await _firestore.collection('Users').doc(userId).update({
+        'fcmToken': token,
+      });
+    }
   }
-}
 }

@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class CartItemEntity extends Equatable{
+class Addtocart {
   final String productId;
   final String productname;
   final int quantity;
@@ -12,7 +10,7 @@ class CartItemEntity extends Equatable{
   final String createDate;
 
 
-  CartItemEntity({
+  Addtocart({
     required this.productId,
     required this.productname,
     required this.quantity,
@@ -23,17 +21,4 @@ class CartItemEntity extends Equatable{
     required this.productimage,
     required this.createDate,
   });
-
-  @override
-  List<Object?> get props => [
-    productId,
-    productname,
-    quantity,
-    productSelectedcolor,
-    productSelectedsize,
-    mainprice,
-    totalprice,
-    productimage,
-    createDate,
-  ];
 }
