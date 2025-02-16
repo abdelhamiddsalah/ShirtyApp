@@ -43,7 +43,7 @@ class NotificationViewBody extends StatelessWidget {
                           vertical: screenhight * 0.01,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
+                          color: const Color(0x1AFFFFFF),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(

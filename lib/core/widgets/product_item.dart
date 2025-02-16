@@ -44,7 +44,7 @@ class ProductItem extends StatelessWidget {
                 image: DecorationImage(
                   image: productEntity.image.isNotEmpty
                     ? NetworkImage(productEntity.image) as ImageProvider
-                    : AssetImage(Assets.imagesRectangle8),
+                    : const AssetImage(Assets.imagesRectangle8),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,7 +68,7 @@ class ProductItem extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '\$${productEntity.price}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,

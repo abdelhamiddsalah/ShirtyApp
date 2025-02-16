@@ -29,7 +29,7 @@ class AuthinticationCubit extends Cubit<AuthinticationState> {
 
   Future<void> signup() async {
     if (selectedAge == null || selectedAge == "Select Age") {
-      emit(AuthinticationFailure(message: "Please select an age."));
+      emit(const AuthinticationFailure(message: "Please select an age."));
       return;
     }
     emit(AuthinticationLoading());

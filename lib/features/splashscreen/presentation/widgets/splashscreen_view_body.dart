@@ -41,7 +41,7 @@ class _SplashscreenViewBodyState extends State<SplashscreenViewBody>
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.4, 1.0, curve: Curves.easeIn),
+        curve: const Interval(0.4, 1.0, curve: Curves.easeIn),
       ),
     );
 

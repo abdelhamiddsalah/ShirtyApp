@@ -1,7 +1,5 @@
 import 'package:clothshop/core/utils/text_styles.dart';
-import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TextFieldSearch extends StatelessWidget {
   final String title;

@@ -132,7 +132,7 @@ class CartViewBody extends StatelessWidget {
                         onPressed: () {
                           // اضف هنا منطق الدفع
                         },
-                        child: Text('Checkout', style: TextStyle(fontSize: 16)),
+                        child: const Text('Checkout', style: TextStyle(fontSize: 16)),
                       ),
                     ),
                   ],

@@ -60,7 +60,7 @@ class ShopByCategories extends StatelessWidget {
                                 height: screenhight * 0.1,
                                 margin: EdgeInsets.only(bottom: screenhight * 0.02),
                                 decoration: BoxDecoration(
-                                   color: Colors.white.withOpacity(0.1),
+                                   color: const Color(0x1AFFFFFF),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 padding: EdgeInsets.symmetric(horizontal: screenwidth * 0.05),

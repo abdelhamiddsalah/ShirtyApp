@@ -15,7 +15,7 @@ class TextsInHomeview extends StatelessWidget {
         Text(text, style: TextStyles.textinhome.copyWith(color: color )),
         GestureDetector(
           onTap: onTap,
-          child: Text('See All', style: TextStyles.seealltext)),
+          child: const Text('See All', style: TextStyles.seealltext)),
       ],
     );
   }

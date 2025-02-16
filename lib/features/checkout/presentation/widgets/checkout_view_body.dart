@@ -16,11 +16,11 @@ class CheckoutViewBody extends StatelessWidget {
         padding:  EdgeInsets.symmetric(horizontal: screenWidth*0.05, vertical: screenHeight*0.05),
         child: Column(
           children: [
-            Appbartop(),
+            const Appbartop(),
             SizedBox(height: screenHeight * 0.05),
-            FieldCheckout(text1: 'Shipping Address', text2: 'Add Shipping Address'),
+            const FieldCheckout(text1: 'Shipping Address', text2: 'Add Shipping Address'),
             SizedBox(height: screenHeight * 0.05),
-            FieldCheckout(text1: 'Payment Method', text2: 'Add Payment Method'),
+            const FieldCheckout(text1: 'Payment Method', text2: 'Add Payment Method'),
             SizedBox(height: screenHeight * 0.05),
         
           

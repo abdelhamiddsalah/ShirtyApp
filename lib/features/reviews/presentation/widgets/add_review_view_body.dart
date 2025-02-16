@@ -33,7 +33,7 @@ class AddReviewViewBody extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.background,
-              title: Text('Add Review', style: TextStyles.textinhome),
+              title: const Text('Add Review', style: TextStyles.textinhome),
             ),
             body: SingleChildScrollView(
               child: Padding(

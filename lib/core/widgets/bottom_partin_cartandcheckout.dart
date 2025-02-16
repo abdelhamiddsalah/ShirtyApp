@@ -48,7 +48,7 @@ class BottomPartIncartandcheckout extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -56,7 +56,7 @@ class BottomPartIncartandcheckout extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, Routes.addreviews);
                 },
-                child: Text('Checkout', style: TextStyles.textinhome),
+                child: const Text('Checkout', style: TextStyles.textinhome),
               ),
             ),
           ],

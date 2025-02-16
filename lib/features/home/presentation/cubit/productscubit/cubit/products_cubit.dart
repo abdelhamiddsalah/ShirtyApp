@@ -51,7 +51,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     if (searchQuery.isNotEmpty) {
       query = query
           .where('name', isGreaterThanOrEqualTo: searchQuery)
-          .where('name', isLessThanOrEqualTo: searchQuery + '\uf8ff');
+          .where('name', isLessThanOrEqualTo: '$searchQuery\uf8ff');
     }
 
     // تطبيق الفلترة الخاصة بالسعر
@@ -70,7 +70,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     emit(ProductsLoaded(products: products));
   } catch (e) {
-    emit(ProductsError(message: "Failed to filter products"));
+    emit(const ProductsError(message: "Failed to filter products"));
   }
 }
 

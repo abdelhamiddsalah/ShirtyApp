@@ -19,7 +19,7 @@ class ReviewsView extends StatelessWidget {
     return BlocProvider.value(
       value: sl<ReviewsCubit>(param1: product.productId.toString()),
       child: Scaffold(
-        appBar: AppBar(title:  Text("Reviews",style: TextStyles.textinhome,),backgroundColor: AppColors.background,),
+        appBar: AppBar(title:  const Text("Reviews",style: TextStyles.textinhome,),backgroundColor: AppColors.background,),
         body: Stack(
           children: [
             BlocBuilder<ReviewsCubit, ReviewsState>(
@@ -64,7 +64,7 @@ class ReviewsView extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

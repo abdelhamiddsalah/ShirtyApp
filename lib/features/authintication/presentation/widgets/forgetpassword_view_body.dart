@@ -74,7 +74,7 @@ class ForgetpasswordViewBody extends StatelessWidget {
                 Positioned(
                   top: screenHeight * 0.084,
                   left: screenWidth * 0.05,
-                  child: Customappbar()
+                  child: const Customappbar()
                 ),
                 Positioned(
                   top: screenHeight * 0.21,
@@ -89,7 +89,7 @@ class ForgetpasswordViewBody extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.1),
                           spreadRadius: 5,
                           blurRadius: 10,
-                          offset: Offset(0, 5),
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
@@ -99,7 +99,7 @@ class ForgetpasswordViewBody extends StatelessWidget {
                       maxHeight: screenHeight * 0.8,
                     ),
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.05,
