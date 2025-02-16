@@ -136,4 +136,14 @@ class HomeRepostriesImpel extends HomeRepositry {
     return Left(ServerFailure(e.toString()));
   }
   }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getSearchProductsByPrice() async{
+    try {
+      final products = await firestoreService.getSearchProductsByPrice();
+      return Right(products);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

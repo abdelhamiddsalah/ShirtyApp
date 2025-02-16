@@ -29,7 +29,7 @@ class CartItemEntity {
 
   double get totalPrice {
     try {
-      return double.parse(product.price.trim()) * count;
+      return (product.price * count).toDouble();
     } catch (e) {
       return 0.0; // Fallback value
     }

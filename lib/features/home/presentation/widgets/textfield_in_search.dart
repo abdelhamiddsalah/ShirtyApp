@@ -12,6 +12,7 @@ class TextFieldSearch extends StatelessWidget {
   final Widget? prefixIcon;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final void Function(String)? onChanged;
 
   const TextFieldSearch({
     super.key,
@@ -22,7 +23,7 @@ class TextFieldSearch extends StatelessWidget {
     this.prefixIcon,
     this.validator,
     this.textController,
-    this.focusNode,
+    this.focusNode, this.onChanged,
   });
 
   @override
@@ -31,9 +32,9 @@ class TextFieldSearch extends StatelessWidget {
       controller: textController, // استخدم الـ Controller الممرر
       focusNode: focusNode, // استخدم FocusNode الممرر
       autofocus: true,
-      onChanged: (value) {
-        context.read<ProductsCubit>().getAllProducts(value);
-      },
+      onChanged:onChanged,
+       // context.read<ProductsCubit>().getAllProducts(value);
+      
       keyboardType: keyboardType,
       validator: validator,
       obscureText: obscureText ?? false,

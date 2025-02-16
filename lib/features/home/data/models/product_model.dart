@@ -21,7 +21,7 @@ class ProductModel extends ProductEntity {
     return ProductModel(
       productId: json['productId'] ?? '',
       name: json['name'] ?? '',
-      price: json['price'] ?? '',
+       price: (json['price'] is num) ? json['price'] : double.tryParse(json['price'].toString()) ?? 0.0,
       image: json['image'] ?? '',
       quantity: json['quantity'] ?? 0,
       ratingcount: json['ratingcount']?.toDouble() ?? 0.0,

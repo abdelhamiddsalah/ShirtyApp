@@ -1,40 +1,63 @@
 import 'package:clothshop/core/utils/app_colors.dart';
-import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/dropdowncubit/dropdown_cubit.dart';
+import '../cubit/dropdowncubit/filter_cubit.dart';
 
 class DropDownForChoiceInSearch extends StatelessWidget {
-  const DropDownForChoiceInSearch({
-    super.key,
-    required this.screenWidth, required this.text1,
-  });
-
   final double screenWidth;
   final String text1;
+  final List<String> items;
+  final String filterType;
+
+  const DropDownForChoiceInSearch({
+    super.key,
+    required this.screenWidth,
+    required this.text1,
+    required this.items,
+    required this.filterType,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.25,
-      height: screenWidth * 0.1, // تأكد من أن العرض والارتفاع متساويان ليكون الشكل دائريًا
-      decoration: BoxDecoration(
-        color: Colors.transparent, // الخلفية شفافة
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary, width: 2), // حدود شفافة قليلاً
-      ),
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              text1,
-              style: TextStyles.textinhome.copyWith(
-                fontSize: screenWidth * 0.04,
+    return BlocProvider(
+      create: (context) => DropdownCubit(),
+      child: BlocBuilder<DropdownCubit, String?>(
+        builder: (context, selectedValue) {
+          return Container(
+            width: screenWidth * 0.4, // 🔹 تحديد العرض بنسبة للشاشة
+            padding:  EdgeInsets.symmetric(horizontal: screenWidth * 0.03), // 🔹 إضافة تباعد داخلي
+            decoration: BoxDecoration(
+              color: Colors.transparent, // 🔹 خلفية بيضاء
+              borderRadius: BorderRadius.circular(20), // 🔹 زوايا دائرية
+              border: Border.all(
+                color: AppColors.primary, // 🔹 تحديد لون الإطار
+                width: 1.5, // 🔹 سمك الإطار
               ),
             ),
-            SizedBox(width: screenWidth * 0.02),
-            Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-          ],
-        ),
+            child: DropdownButtonHideUnderline( // 🔹 إخفاء الخط السفلي الافتراضي
+              child: DropdownButton<String>(
+                isExpanded: true, // 🔹 جعل الـ Dropdown يتمدد داخل الـ Container
+                hint: Text(text1, style: TextStyle(color: Colors.grey)), // 🔹 لون النص الافتراضي
+                value: selectedValue,
+                items: items.map((item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item, style: TextStyle(fontSize: 16)), // 🔹 تكبير الخط
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    context.read<DropdownCubit>().selectItem(value);
+                    if (filterType == "price") {
+                      context.read<FilterCubit>().setFilter(price: value);
+                    }
+                  }
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }

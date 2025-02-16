@@ -118,5 +118,14 @@ Future<List<ProductModel>> getallproducts(String query) async {
   }
 }
 
+Future<List<ProductModel>> getSearchProductsByPrice() async {
+  try {
+    final result = await firestore.collection('Allproducts').where('price', isGreaterThanOrEqualTo: 50).get();
+    return result.docs.map((doc) => ProductModel.fromJson(doc.data(), doc.id)).toList();
+  } catch (e) {
+    throw Exception("Error fetching products: $e");
+  }
+
+}
 
 }

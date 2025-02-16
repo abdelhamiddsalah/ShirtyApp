@@ -4,7 +4,7 @@ class ProductEntity {
   final String name;
   final String productId;
   final String categoryId;
-  final String price;
+  final num price;
   final String image;
   int quantity;
   double ratingcount; 
