@@ -226,6 +226,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
     productSelectedsize: selectedSize!,
     createDate: DateTime.now().toString(),
     totalprice: widget.product.price.toDouble(),
+     widget.product.salescount??1
   ));
 },
                     child: Row(

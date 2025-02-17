@@ -59,7 +59,7 @@ class CartModel {
       productSelectedcolor: productSelectedcolor,
       productSelectedsize: productSelectedsize,
       mainprice: mainprice,
-      totalprice: totalprice,
+      totalPrice: totalprice,
       productimage: productimage,
       createDate: createDate,
     );

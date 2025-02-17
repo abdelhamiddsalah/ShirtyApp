@@ -75,5 +75,26 @@ class ProductsCubit extends Cubit<ProductsState> {
 }
 
 
+Future<void> incrementSalesCount(String productId) async {
+  try {
+    DocumentReference productRef =
+        firestore.collection('Allproducts').doc(productId);
+
+    await firestore.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(productRef);
+
+      if (!snapshot.exists) {
+        throw Exception("المنتج غير موجود!");
+      }
+
+      int currentSalesCount = snapshot['salescount'] ?? 0;
+      transaction.update(productRef, {'salescount': currentSalesCount + 1});
+    });
+
+    print("✅ تم تحديث salescount للمنتج: $productId");
+  } catch (e) {
+    print("❌ خطأ أثناء تحديث salescount: $e");
+  }
+}
 
 }

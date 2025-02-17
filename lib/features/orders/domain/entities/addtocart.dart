@@ -8,9 +8,10 @@ class Addtocart {
   final double totalprice;
   final String productimage;
   final String createDate;
+  final int salescount;
 
 
-  Addtocart({
+  Addtocart(this.salescount, {
     required this.productId,
     required this.productname,
     required this.quantity,

@@ -1,7 +1,7 @@
 import 'package:clothshop/features/orders/domain/entities/addtocart.dart';
 
 class AddtocartModel extends Addtocart{
-  AddtocartModel({
+  AddtocartModel(super.salescount, {
     required super.productId,
      required super.productname,
       required super.quantity,
@@ -15,6 +15,7 @@ class AddtocartModel extends Addtocart{
 
   factory AddtocartModel.fromJson(Map<String, dynamic> json) {
     return AddtocartModel(
+       json['salescount'] ?? '',
       productId: json['productId'] ?? '',
       productname: json['productname']  ?? '',
       quantity: json['quantity'] ?? '',
@@ -29,6 +30,7 @@ class AddtocartModel extends Addtocart{
 
   toJson() {
     return {
+      'salescount': salescount,
       'productId': productId,
       'productname': productname,
       'quantity': quantity,

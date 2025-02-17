@@ -1,18 +1,35 @@
-import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:clothshop/features/checkout/presentation/screens/checkout_view.dart';
+import 'package:clothshop/core/utils/app_colors.dart';
 
 class DetailsAboutShoppingPrices extends StatelessWidget {
+  final List<CartItemEntity> cartItems;
+  final CartCubit cartCubit;
+  final String text1;
+  final void Function()? onPressed;
+
   const DetailsAboutShoppingPrices({
     super.key,
+    required this.cartItems,
+    required this.cartCubit, required this.text1, this.onPressed,
   });
-
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double total = cartItems.fold(
+      0,
+      (sum, item) => sum + item.calculatedTotalPrice(),
+    );
+
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.05,
-        vertical: 20,
+        horizontal: screenWidth * 0.05,
+        vertical: screenHeight * 0.02,
       ),
       decoration: const BoxDecoration(
         color: AppColors.secondBackground,
@@ -23,64 +40,65 @@ class DetailsAboutShoppingPrices extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // الإجمالي والشحن
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('SubTotal:', style: TextStyle(fontSize: 16)),
-              Text(
-                '\$${'dfg'}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Shipping:', style: TextStyle(fontSize: 16)),
-              Text(
-                '\$${'tg'}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Total:', style: TextStyle(fontSize: 16)),
-              Text(
-                '\$${'cart.total.toStringAsFixed(2)'}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-    
-          Divider(
-            thickness: 1,
-            color: Colors.grey.shade300,
-            height: 20,
-          ),
-    
-          // زر الدفع
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                // اضف هنا منطق الدفع
-              },
-              child: const Text('Checkout', style: TextStyle(fontSize: 16)),
-            ),
-          ),
+          _buildPriceRow('SubTotal:', total, screenWidth),
+          SizedBox(height: screenHeight * 0.02),
+          _buildPriceRow('Shipping:', 0.0, screenWidth),
+          SizedBox(height: screenHeight * 0.02),
+          _buildPriceRow('Total:', total, screenWidth),
+          Divider(thickness: 1, color: Colors.grey.shade300, height: 20),
+          _buildCheckoutButton(context, screenHeight, screenWidth),
         ],
       ),
+    );
+  }
+
+  Widget _buildCheckoutButton(
+    BuildContext context,
+    double screenHeight,
+    double screenWidth,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: cartCubit,
+                child: const CheckoutView(),
+              ),
+            ),
+          );
+        },
+        child: Text(
+          text1,
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriceRow(String label, double amount, double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontSize: screenWidth * 0.04)),
+        Text(
+          '\$${amount.toStringAsFixed(2)}',
+          style: const TextStyle(fontSize: 16),
+        ),
+      ],
     );
   }
 }

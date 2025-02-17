@@ -7,7 +7,7 @@ class CartItemEntity extends Equatable{
   final String productSelectedcolor;
   final String productSelectedsize;
   final double mainprice;
-  final double totalprice;
+  final double totalPrice;
   final String productimage;
   final String createDate;
 
@@ -19,7 +19,7 @@ class CartItemEntity extends Equatable{
     required this.productSelectedcolor,
     required this.productSelectedsize,
     required this.mainprice,
-    required this.totalprice,
+    required this.totalPrice,
     required this.productimage,
     required this.createDate,
   });
@@ -32,8 +32,13 @@ class CartItemEntity extends Equatable{
     productSelectedcolor,
     productSelectedsize,
     mainprice,
-    totalprice,
+    totalPrice,
     productimage,
     createDate,
   ];
+
+  
+   double calculatedTotalPrice() {
+    return mainprice * quantity;
+  }
 }

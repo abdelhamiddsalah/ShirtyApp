@@ -59,7 +59,7 @@ class ContainerIncart extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('\$${cartItemEntity.totalprice}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text('\$${cartItemEntity.mainprice}', style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
