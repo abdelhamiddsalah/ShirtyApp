@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class CartRepositry {
   Future<Either<Failure, List<CartItemEntity>>> getcarts();
+  Future<Either<Failure, List<CartItemEntity>>> deletecart(String cartId);
 }

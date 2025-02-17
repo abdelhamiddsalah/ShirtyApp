@@ -48,6 +48,7 @@ class CartViewBody extends StatelessWidget {
 
                 // Cart items count
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('You have ${state.cartItems.length} items in your cart'),
                   ],
@@ -69,6 +70,8 @@ class CartViewBody extends StatelessWidget {
                                 child: ContainerIncart(
                                   index: index,
                                   onRemove: () {
+                                    context.read<CartCubit>().deletecart(
+                                        state.cartItems[index].productId);
                                   },
                                   cartItemEntity: state.cartItems[index],
                                 ),

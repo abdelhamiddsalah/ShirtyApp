@@ -1,3 +1,4 @@
+import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class ContainerIncart extends StatelessWidget {
       background: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.red,
+          color: AppColors.primary,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         alignment: Alignment.centerRight,
@@ -69,8 +70,8 @@ class ContainerIncart extends StatelessWidget {
                       child: Container(
                         width: 32,
                         height: 32,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
+                        decoration:  const BoxDecoration(
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
@@ -86,7 +87,7 @@ class ContainerIncart extends StatelessWidget {
                         width: 32,
                         height: 32,
                         decoration: const BoxDecoration(
-                          color: Colors.blue,
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,

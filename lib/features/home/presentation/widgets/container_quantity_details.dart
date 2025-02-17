@@ -24,61 +24,63 @@ class ContainerQuantityInDetails extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<OrdersCubit>(),
       child: BlocBuilder<OrdersCubit, OrdersState>(
-        builder: (context, state) {
-        
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-            decoration: BoxDecoration(
-              color: AppColors.secondBackground,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(text1, style: TextStyles.textinhome),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                       context.read<OrdersCubit>().decreasecount();
-                      },
-                      child: Container(
-                        width: screenWidth * 0.07,
-                        height: screenHeight * 0.07,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.remove, color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(width: screenWidth * 0.05),
-                    Text(
-                      context.read<OrdersCubit>().quantity.toString(),
-                      style: TextStyles.textinhome,
-                    ),
-                    SizedBox(width: screenWidth * 0.05),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<OrdersCubit>().increasecount();
-                      },
-                      child: Container(
-                        width: screenWidth * 0.07,
-                        height: screenHeight * 0.07,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.add, color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+  builder: (context, state) {
+    int quantity = state is OrdersLoaded ? state.quantity : 0; // ✅ التأكد من حالة الكيوبت
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+      decoration: BoxDecoration(
+        color: AppColors.secondBackground,
+        borderRadius: BorderRadius.circular(10),
       ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(text1, style: TextStyles.textinhome),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.read<OrdersCubit>().decreasecount();
+                },
+                child: Container(
+                  width: screenWidth * 0.07,
+                  height: screenHeight * 0.07,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.remove, color: Colors.white),
+                ),
+              ),
+              SizedBox(width: screenWidth * 0.05),
+              Text(
+                quantity.toString(), // ✅ عرض الكمية المحدثة بشكل صحيح
+                style: TextStyles.textinhome,
+              ),
+              SizedBox(width: screenWidth * 0.05),
+              GestureDetector(
+                onTap: () {
+                  context.read<OrdersCubit>().increasecount();
+                },
+                child: Container(
+                  width: screenWidth * 0.07,
+                  height: screenHeight * 0.07,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.add, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  },
+)
+
     );
   }
 }

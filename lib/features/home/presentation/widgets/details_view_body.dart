@@ -1,4 +1,3 @@
-import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/presentation/widgets/container_quantity_details.dart';
 import 'package:clothshop/features/home/presentation/widgets/products_options_details.dart';
 import 'package:clothshop/features/orders/data/models/addtocart_model.dart';

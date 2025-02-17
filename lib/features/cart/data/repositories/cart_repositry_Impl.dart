@@ -42,6 +42,16 @@ class CartRepositryImpl extends CartRepositry{
       return Left(CacheFailure('Failed to retrieve cached data: ${e.toString()}'));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<CartItemEntity>>> deletecart(String cartId)async {
+    try {
+      await remoteDatasourceCart.deletecart(cartId);
+      return await _fetchRemoteCarts();
+    } catch (e) {
+      return await _getLocalCarts();
+    }
+  }
 
 
 }
