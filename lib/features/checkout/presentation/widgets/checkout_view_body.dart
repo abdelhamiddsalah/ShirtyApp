@@ -5,6 +5,7 @@ import 'package:clothshop/features/checkout/presentation/widgets/address_bottoms
 import 'package:clothshop/features/checkout/presentation/widgets/field_checkout.dart';
 import 'package:clothshop/features/checkout/presentation/widgets/payment_bottomsheet.dart';
 import 'package:clothshop/features/payments/payment_manager.dart';
+import 'package:clothshop/features/payments/paymob_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
@@ -101,7 +102,7 @@ class _CheckoutViewBodyState extends State<CheckoutViewBody> {
           await PaymentManager.makePayment(100, 'USD');
           break;
         case 'paymob':
-          // Navigate to Paymob payment
+          //Uri.parse(PaymobManager().(100, 'EGP'));
           break;
       }
     }

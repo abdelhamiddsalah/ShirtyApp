@@ -19,7 +19,6 @@ class HomeViewBody extends StatelessWidget {
     final safeHorizontalPadding = screenWidth * 0.03;
 
     return Scaffold(
-    //  bottomNavigationBar: salmon(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

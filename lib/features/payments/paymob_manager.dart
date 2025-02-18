@@ -2,7 +2,7 @@ import 'package:clothshop/features/payments/paymob_constants.dart';
 import 'package:dio/dio.dart' as dio;
 
 class PaymobManager {
-  Future<String> getPaymentKey(int amount, String currency) async {
+   Future<String> getPaymentKey(int amount, String currency) async {
   try {
       String AuthinticationToken = await _getAuthToken();
     int orderId = await _getorderId(AuthinticationToken: AuthinticationToken, amount: (amount * 100).toString(), currency: currency);

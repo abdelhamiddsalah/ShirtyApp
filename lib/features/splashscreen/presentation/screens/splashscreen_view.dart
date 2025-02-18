@@ -22,7 +22,7 @@ class SplashscreenView extends StatelessWidget {
       child: BlocListener<SplashscreenCubit, SplashscreenState>(
         listener: (context, state) {
           if (state is Authinticated) {
-            Navigator.pushReplacementNamed(context, Routes.onboarding);
+            Navigator.pushReplacementNamed(context, Routes.home);
           } else if (state is UnAuthinticated) {
             Navigator.pushReplacementNamed(context, Routes.login);
           }

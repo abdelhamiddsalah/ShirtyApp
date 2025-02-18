@@ -209,9 +209,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                   onPressed: () {
   if (selectedSize == null || selectedColor == null) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('يرجى تحديد اللون والمقاس قبل إضافة المنتج إلى السلة'),
-      ),
+      const SnackBar(content: Text('Please select size and color')),
     );
     return;
   }
