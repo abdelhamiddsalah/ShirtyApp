@@ -39,7 +39,6 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
           _scrollController3);
     });
   }
-
   animateToMaxMin(double max, double min, double direction, int seconds,
       ScrollController scrollController) {
     scrollController
