@@ -11,6 +11,7 @@ import 'package:clothshop/features/home/presentation/screens/details_view.dart';
 import 'package:clothshop/features/home/presentation/screens/search_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/shop_by_categories.dart';
 import 'package:clothshop/features/onboarding/presentation/screens/onboarding_view.dart';
+import 'package:clothshop/features/profile/presentation/screens/profile_view.dart';
 import 'package:clothshop/features/splashscreen/presentation/screens/splashscreen_view.dart';
 import 'package:flutter/material.dart';
 
@@ -53,6 +54,8 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) => const ShopByCategories(),
         );
+      case Routes.profile:
+        return MaterialPageRoute(builder: (context) => const ProfileView());
       case Routes.checkout:
         return MaterialPageRoute(builder: (context) => const CheckoutView());
 

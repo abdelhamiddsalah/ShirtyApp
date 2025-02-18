@@ -3,6 +3,7 @@ import 'package:clothshop/features/authintication/presentation/screens/signup_vi
 import 'package:clothshop/features/home/presentation/screens/home_view.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:clothshop/features/notifications/presentation/screens/notification_view.dart';
+import 'package:clothshop/features/profile/presentation/screens/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -24,7 +25,7 @@ class _SalmonState extends State<Salmon> {
       child: const NotificationView(),
     ),
     const SignupView(),
-    const SignupView(),
+    const ProfileView(),
    // const NotificationView(),
   //  const NotificationView(),
   ];

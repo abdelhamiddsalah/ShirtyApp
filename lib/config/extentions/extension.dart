@@ -23,3 +23,14 @@ errormessage(context, error) {
     padding: const EdgeInsets.all(20),
   );
 }
+
+successmessage(context, msg) {
+  return FToast.toast(
+    context,
+    msg: 'Success',
+    subMsg: msg,
+    corner: 20.0,
+    duration: 3000,
+    padding: const EdgeInsets.all(20),
+  );
+}

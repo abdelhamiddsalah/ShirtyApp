@@ -114,4 +114,27 @@ class FirebaseAuthServices {
       });
     }
   }
+
+  Future<Map<String, dynamic>?> getUserData(String userId) async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _firestore.collection('Users').doc(userId).get();
+
+    if (snapshot.exists) {
+      return snapshot.data(); // إرجاع بيانات المستخدم كـ Map
+    } else {
+      return null; // إذا لم يكن هناك بيانات
+    }
+  } catch (e) {
+    throw Exception('Failed to fetch user data: $e');
+  }
 }
+
+
+Future<void> logout()async{
+await _auth.signOut();
+}
+
+}
+
+/// استرجاع بيانات المستخدم من Firestore

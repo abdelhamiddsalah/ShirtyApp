@@ -1,10 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
-
 import 'package:clothshop/config/routing/routes.dart';
-import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
+import 'package:clothshop/core/widgets/custom_button.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/data.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/listview_builder.dart';
+import 'package:clothshop/features/onboarding/presentation/widgets/movies_listview.dart';
 import 'package:flutter/material.dart';
 
 // OnboardingViewBody
@@ -71,12 +71,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.04), // 4% من ارتفاع الشاشة
-                MoviesListView(
-                  scrollController: _scrollController1,
-                  images: movies1,
-                  height: screenHeight * 0.15, // 15% من ارتفاع الشاشة
-                  imageWidth: screenWidth * 0.2, // 20% من عرض الشاشة
-                ),
+                MoviewsListview(scrollController1: _scrollController1, screenHeight: screenHeight, screenWidth: screenWidth),
                 MoviesListView(
                   scrollController: _scrollController2,
                   images: movies2,
@@ -91,32 +86,8 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                 ),
               ],
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.05, // 5% من عرض الشاشة
-                vertical: screenHeight * 0.02, // 2% من ارتفاع الشاشة
-              ),
-              child: Material(
-                elevation: 0,
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.login);
-                  },
-                  minWidth: screenWidth * 0.85, // 85% من عرض الشاشة
-                  height: screenHeight * 0.07, // 7% من ارتفاع الشاشة
-                  child: Text(
-                    'Continue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: screenWidth * 0.05, // 5% من عرض الشاشة
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            )
+            CustomButton(screenWidth: screenWidth, screenHeight: screenHeight,
+                buttontext: 'Get Started', onPressed: () => Navigator.pushNamed(context, Routes.login)),
           ],
         ),
       ),
