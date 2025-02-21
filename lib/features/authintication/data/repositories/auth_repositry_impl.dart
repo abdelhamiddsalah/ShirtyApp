@@ -7,47 +7,56 @@ import 'package:clothshop/features/authintication/domain/entities/signup_entity.
 import 'package:clothshop/features/authintication/domain/repositories/auth_repositries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositryImpl extends AuthRepositries {
   final FirebaseAuthServices firebaseAuthServices;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
   CollectionReference ages = FirebaseFirestore.instance.collection('ages');
 
   AuthRepositryImpl({required this.firebaseAuthServices});
 
   @override
-  Future<Either<Failure, SignupModel>> signup(SignupEntity signupentity) async {
-    try {
-      SignupModel signupModel = SignupModel(
-        firstname: signupentity.firstname,
-        lastname: signupentity.lastname,
-        email: signupentity.email,
-        password: signupentity.password, age: signupentity.age,
-      );
+ Future<Either<Failure, SignupEntity>> signup(SignupEntity signupentity) async {
+  try {
+    // إنشاء مستخدم جديد في Firebase Authentication والحصول على UID
+    String userId = await firebaseAuthServices.createNewUser(
+      signupentity.email, 
+      signupentity.password
+    );
 
-      User userCredential = await firebaseAuthServices.createNewUser(signupentity.email, signupentity.password);
+    // إنشاء نموذج تسجيل المستخدم بعد الحصول على UID
+    SignupModel signupModel = SignupModel(
+      firstname: signupentity.firstname,
+      lastname: signupentity.lastname,
+      email: signupentity.email,
+      password: signupentity.password,
+      age: signupentity.age,
+      userId: userId, // ✅ تخزين UID في SignupModel
+    );
 
-      await FirebaseFirestore.instance.collection('Users').doc(userCredential.uid).set({
-        'firstName': signupModel.firstname,
-        'lastName': signupModel.lastname,
-        'email': signupModel.email,
-        'age': signupModel.age,
-        'password': signupModel.password
-      });
+    // حفظ بيانات المستخدم في Firestore باستخدام UID
+    await users.doc(userId).set({
+      'userId': userId, // ✅ تخزين UID في Firestore
+      'firstName': signupModel.firstname,
+      'lastName': signupModel.lastname,
+      'email': signupModel.email,
+      'age': signupModel.age,
+      'password': signupModel.password, // ⚠️ لا يُفضل تخزين كلمات المرور
+    });
 
-      return Right(signupModel);
-    } catch (e) {
-      return Left(Failure(e.toString()));
-    }
+    return Right(signupModel as SignupEntity); // ✅ إرجاع SignupModel مع UID
+  } catch (e) {
+    return Left(Failure(e.toString()));
   }
+}
+
 
   @override
-  Future<Either<Failure, LoginModel>> login(LoginEntity loginentity) async {
+  Future<Either<Failure, LoginEntity>> login(LoginEntity loginentity) async {
     try {
       LoginModel loginModel = LoginModel(email: loginentity.email, password: loginentity.password);
       await firebaseAuthServices.signInUser(loginentity.email, loginentity.password);
-      return Right(loginModel);
+      return Right(loginModel as LoginEntity);
     } catch (e) {
       return Left(Failure(e.toString()));
     }

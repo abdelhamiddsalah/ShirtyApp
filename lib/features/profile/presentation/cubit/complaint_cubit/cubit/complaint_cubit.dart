@@ -1,0 +1,18 @@
+import 'package:bloc/bloc.dart';
+import 'package:clothshop/features/profile/data/models/complaint_model.dart';
+import 'package:clothshop/features/profile/domain/usecases/complaint_usecase.dart';
+import 'package:flutter/widgets.dart';
+
+part 'complaint_state.dart';
+
+class ComplaintCubit extends Cubit<ComplaintState> {
+  final ComplaintUsecase complaintUsecase;
+  final TextEditingController complaint = TextEditingController();
+  ComplaintCubit(this.complaintUsecase) : super(ComplaintInitial());
+
+  Future<void> addcomplaint(ComplaintModel complaint) async {
+    emit(ComplaintInitial());
+    final result = await complaintUsecase.call(ComplaintModel(userEmail: complaint.userEmail, description: complaint.description,id: complaint.id));
+    result.fold((failure) => emit(ComplaintError(failure.message)), (r) => emit(ComplaintSendSuccess()));
+  }
+}

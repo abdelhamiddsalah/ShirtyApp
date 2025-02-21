@@ -27,7 +27,7 @@ class AuthinticationCubit extends Cubit<AuthinticationState> {
   emit(Authinticationvisibility(isPasswordVisible));  // إصدار الحالة عند تغيير الرؤية
 }
 
-  Future<void> signup() async {
+  Future<void> signup( SignupEntity signupentity) async {
     if (selectedAge == null || selectedAge == "Select Age") {
       emit(const AuthinticationFailure(message: "Please select an age."));
       return;
@@ -35,15 +35,7 @@ class AuthinticationCubit extends Cubit<AuthinticationState> {
     emit(AuthinticationLoading());
 
 
-    final result = await authusecase.call(
-      SignupEntity(
-        firstname: firstnameController.text,
-        lastname: lastnameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        age: selectedAge!,
-      ),
-    );
+    final result = await authusecase(signupentity);
 
     result.fold(
       (failure) => emit(AuthinticationFailure(message: failure.message)),

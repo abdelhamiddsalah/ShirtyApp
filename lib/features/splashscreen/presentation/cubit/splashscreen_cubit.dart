@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:clothshop/features/authintication/domain/usecases/isLoggined_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'splashscreen_state.dart';
 
@@ -12,19 +13,22 @@ class SplashscreenCubit extends Cubit<SplashscreenState> {
   void display() async {
     emit(SplashscreenDisplay());
     await Future.delayed(const Duration(seconds: 3));
-    authinticateduser();  // استدعاء التحقق بعد انتهاء المهلة
+    authinticateduser();
   }
 
- void authinticateduser() async {
+void authinticateduser() async {
   final result = await islogginedUsecase.call();
   result.fold(
     (l) {
-      print("User is NOT authenticated");
       emit(UnAuthinticated());
     },
     (r) {
-      print("User is authenticated");
-      emit(Authinticated());
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        emit(UnAuthinticated());
+      } else {
+        emit(Authinticated());
+      }
     },
   );
 }

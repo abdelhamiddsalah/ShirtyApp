@@ -7,25 +7,25 @@ class FirebaseAuthServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// إنشاء مستخدم جديد
-  Future<User> createNewUser(String email, String password) async {
+  Future<String> createNewUser(String email, String password) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      User user = credential.user!;
+      String userId = credential.user!.uid;
       
       // حفظ بيانات المستخدم في Firestore
-      await _firestore.collection('Users').doc(user.uid).set({
-        'email': user.email,
-        'userId': user.uid,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      await _firestore.collection('Users').doc(userId).set({
+        'email': email,
+        'userId': userId,
+         'lastLogin': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
 
       // حفظ FCM Token
-      await saveTokenToDatabase(user.uid);
+      await saveTokenToDatabase(userId);
 
-      return user;
+      return userId;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
@@ -115,20 +115,39 @@ class FirebaseAuthServices {
     }
   }
 
-  Future<Map<String, dynamic>?> getUserData(String userId) async {
+ Future<Map<String, dynamic>?> getUserData(String userId) async {
   try {
-    DocumentSnapshot<Map<String, dynamic>> snapshot =
+    DocumentSnapshot snapshot =
         await _firestore.collection('Users').doc(userId).get();
 
+    print("Snapshot exists: ${snapshot.exists}");
+    print("Raw Snapshot Data: ${snapshot.data()}");
+
     if (snapshot.exists) {
-      return snapshot.data(); // إرجاع بيانات المستخدم كـ Map
+      var data = snapshot.data();
+      
+      if (data is Map<String, dynamic>) {
+        print("User Data: $data");
+        return data;
+      } else if (data is List<dynamic> && data.isNotEmpty) {
+        print("User Data is a List, extracting first element...");
+        return data.first as Map<String, dynamic>; // تحويل العنصر الأول إلى Map<String, dynamic>
+      } else {
+        print("Unexpected data format.");
+        return null;
+      }
     } else {
-      return null; // إذا لم يكن هناك بيانات
+      print("No data found for userId: $userId");
+      return null;
     }
   } catch (e) {
+    print("Error fetching user data: $e");
     throw Exception('Failed to fetch user data: $e');
   }
 }
+
+
+
 
 
 Future<void> logout()async{
@@ -136,5 +155,3 @@ await _auth.signOut();
 }
 
 }
-
-/// استرجاع بيانات المستخدم من Firestore

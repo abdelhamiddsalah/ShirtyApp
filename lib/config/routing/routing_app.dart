@@ -55,7 +55,8 @@ class AppRoutes {
           builder: (context) => const ShopByCategories(),
         );
       case Routes.profile:
-        return MaterialPageRoute(builder: (context) => const ProfileView());
+      // final userId = settings.arguments as String;
+        return MaterialPageRoute(builder: (context) =>  ProfileView());
       case Routes.checkout:
         return MaterialPageRoute(builder: (context) => const CheckoutView());
 

@@ -1,4 +1,5 @@
 import 'package:clothshop/core/network/network_info.dart';
+import 'package:clothshop/core/services/firebase_add_services.dart';
 import 'package:clothshop/core/services/firebase_auth_services.dart';
 import 'package:clothshop/core/services/firestore_services.dart';
 import 'package:clothshop/features/authintication/data/repositories/auth_repositry_impl.dart';
@@ -36,6 +37,14 @@ import 'package:clothshop/features/orders/data/repositories/addtocart_repositry_
 import 'package:clothshop/features/orders/domain/repositories/addtocart_repositry.dart';
 import 'package:clothshop/features/orders/domain/usecases/addtocart_usecase.dart';
 import 'package:clothshop/features/orders/presentation/cubit/orders_cubit.dart';
+import 'package:clothshop/features/profile/data/datasources/local_profile_datasource.dart';
+import 'package:clothshop/features/profile/data/datasources/remote_profile_datasource.dart';
+import 'package:clothshop/features/profile/data/repositories/profile_repositry_Impl.dart';
+import 'package:clothshop/features/profile/domain/repositories/profile_repositry.dart';
+import 'package:clothshop/features/profile/domain/usecases/complaint_usecase.dart';
+import 'package:clothshop/features/profile/domain/usecases/profile_usecase.dart';
+import 'package:clothshop/features/profile/presentation/cubit/complaint_cubit/cubit/complaint_cubit.dart';
+import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/profile_cubit.dart';
 import 'package:clothshop/features/reviews/data/repositories/reviews_repositry_Impl.dart';
 import 'package:clothshop/features/reviews/domain/repositories/reviews_repositry.dart';
 import 'package:clothshop/features/reviews/domain/usecases/reviews_usecase.dart';
@@ -54,6 +63,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseFirestore.instance); 
   sl.registerLazySingleton(() => FirebaseAuthServices());
   sl.registerLazySingleton(() => FirestoreService(sl())); // تأكد من تسجيل FirestoreService
+  sl.registerLazySingleton(()=> FirebaseAddServices());
 
   // 2️⃣ تسجيل `AuthRepositries`
   sl.registerLazySingleton<AuthRepositries>(
@@ -86,6 +96,12 @@ Future<void> init() async {
         sl()
   ));
 
+  sl.registerLazySingleton<ProfileRepositry>(
+    () => ProfileRepositryImpl(
+         remoteProfileDatasource: sl(),localProfileDatasource: sl(),sl(),sl(), networkInfo: sl(), // يفترض أن FirebaseFirestore مسجل مسبقاً
+    ),
+  );
+
 
   // 4️⃣ تسجيل `usecases`
   sl.registerLazySingleton(() => Authusecase(sl()));
@@ -101,6 +117,8 @@ Future<void> init() async {
   sl.registerLazySingleton(()=> AddtocartUsecase(addtocartRepositry: sl()));
   sl.registerLazySingleton(()=> GetcartsUsecase(sl()));
   sl.registerLazySingleton(()=> DeletecartUsecase(sl()));
+  sl.registerLazySingleton(()=> ProfileUsecase(profileRepositry: sl()));
+  sl.registerLazySingleton(()=> ComplaintUsecase(sl()));
 
   sl.registerFactoryParam<TextEditingController, void, void>(
     (_, __) => TextEditingController(),
@@ -128,6 +146,8 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
   ),
 );
 sl.registerFactory(() => OrdersCubit(sl()));
+sl.registerFactory(() => ProfileCubit(sl()));
+sl.registerFactory(() => ComplaintCubit(sl()));
 
   // 6️⃣ تسجيل `datasources`
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasourceImpl(sl())); // هنا يتم تسجيل RemoteDatasource
@@ -136,6 +156,8 @@ sl.registerFactory(() => OrdersCubit(sl()));
   sl.registerLazySingleton<RemoteProductdatasource>(() => RemoteProductdatasourceImpl(sl()));
   sl.registerLazySingleton<RemoteDatasourceCart>(() => RemoteDatasourceCartImpl( firestoreService: sl()));
   sl.registerLazySingleton<LocalDatasourceCart>(() => LocalDatasourceCartImpl( sl()));
+  sl.registerLazySingleton<RemoteProfileDatasource>(() => RemoteProfileDatasourceImpl(firebaseAuthServices: sl()));
+  sl.registerLazySingleton<LocalProfileDatasource>(() => LocalProfileDatasourceImpl(sl()));
 
   // 7️⃣ تسجيل `NetworkInfo`
   sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());

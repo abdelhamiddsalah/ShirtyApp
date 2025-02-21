@@ -1,53 +1,57 @@
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clothshop/features/authintication/domain/entities/signup_entity.dart';
 
-class SignupModel extends Equatable {
-  final String firstname;
-  final String lastname;
-  final String email;
-  final String password;
-  final String age;
+class SignupModel extends SignupEntity {
+  const SignupModel({required super.firstname, 
+  required super.lastname, required super.email,
+   required super.password, required super.age, required super.userId});
 
-  const SignupModel({
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.password,
-   required this.age,
-  });
-
-  @override
-  List<Object?> get props => [firstname, lastname, email, password, age];
+  factory SignupModel.fromEntity(SignupEntity entity) {
+    return SignupModel(
+      firstname: entity.firstname,
+      lastname: entity.lastname,
+      email: entity.email,
+      password: entity.password,
+      age: entity.age,
+      userId: entity.userId,
+    );
+  }
 
   factory SignupModel.fromJson(Map<String, dynamic> json) {
     return SignupModel(
-      firstname: json['firstname'],
-      lastname: json['lastname'],
+      firstname: json['firstName'],
+      lastname: json['lastName'],
       email: json['email'],
       password: json['password'],
       age: json['age'],
+      userId: json['userId'],
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'firstname': firstname,
-    'lastname': lastname,
+  toJson() => {
+    'firstName': firstname,
+    'lastName': lastname,
     'email': email,
     'password': password,
     'age': age,
+    'userId': userId,
   };
 
-  factory SignupModel.fromfirebase(User user, String age) {
-    final nameParts = user.displayName?.split(' ') ?? [];
-    final firstname = nameParts.isNotEmpty ? nameParts[0] : '';
-    final lastname = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
-
+ SignupModel copyWith({
+    String? userId,
+    String? firstname,
+    String? lastname,
+    String? email,
+    String? password,
+    String? age,
+  }) {
     return SignupModel(
-      firstname: firstname,
-      lastname: lastname,
-      email: user.email ?? '',
-      password: user.uid,  // This is just a placeholder for the password, be cautious here
-      age: age,
+      userId: userId ?? this.userId, // ✅ تحديث userId عند النسخ
+      firstname: firstname ?? this.firstname,
+      lastname: lastname ?? this.lastname,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      age: age ?? this.age,
     );
   }
+
 }

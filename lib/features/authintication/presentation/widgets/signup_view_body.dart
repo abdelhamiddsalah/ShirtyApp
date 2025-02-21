@@ -1,5 +1,4 @@
-import 'package:clothshop/core/widgets/position_appbar_in_auth.dart';
-import 'package:clothshop/features/authintication/presentation/widgets/form_signup.dart';
+import 'package:clothshop/features/authintication/presentation/widgets/signup_stack.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:clothshop/config/extentions/extension.dart';
 import 'package:clothshop/config/routing/routes.dart';
@@ -29,48 +28,11 @@ class SignupViewBody extends StatelessWidget {
           inAsyncCall: state is AuthinticationLoading,
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: Stack(
-              children: [
-                 PositionAppBarInAuth(screenHeight: screenHeight),
-                Positioned(
-                  top: screenHeight * 0.19,
-                  left: screenWidth * 0.05,
-                  right: screenWidth * 0.05,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 5,
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    constraints: BoxConstraints(
-                      minHeight: screenHeight * 0.7,
-                      maxHeight: screenHeight * 0.8,
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.05,
-                          vertical: screenHeight * 0.02,
-                        ),
-                        child: FormSignup(cubit: cubit, screenHeight: screenHeight),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            body: SignupStack(screenHeight: screenHeight, screenWidth: screenWidth, cubit: cubit),
           ),
         );
       },
     );
   }
 }
+

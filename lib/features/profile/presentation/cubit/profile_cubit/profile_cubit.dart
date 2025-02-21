@@ -12,6 +12,20 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> getUserData(String userId) async {
     emit(ProfileLoading());
     final result = await profileUsecase.getUserData(userId);
-    result.fold((l) => emit(ProfileError(l.message)), (r) => emit(ProfileLoaded(r)));
+    result.fold(
+      (failure) {
+        print("Error in getUserData: $failure");
+        emit(ProfileError(failure.message));
+      },
+      (profile) => emit(ProfileLoaded(profile)),
+    );
+  }
+
+  Future<void> logout() async {
+    await profileUsecase.logout();
+    
+    emit(ProfileLogout());
+    print("User logged out");
   }
 }
+

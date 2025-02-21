@@ -10,6 +10,7 @@ import 'package:clothshop/features/authintication/domain/usecases/ages_usecase.d
 import 'package:clothshop/features/authintication/presentation/cubit/agescubit/cubit/ages_cubit.dart';
 import 'package:clothshop/features/authintication/presentation/cubit/signup/authintication_cubit.dart';
 import 'package:clothshop/features/authintication/presentation/widgets/dropdown_ages.dart';
+import 'package:clothshop/features/authintication/presentation/widgets/signup_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -84,24 +85,7 @@ class FormSignup extends StatelessWidget {
             child: const Dropdownages(),
           ),
           SizedBox(height: screenHeight * 0.03),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                if (cubit.formKey.currentState!.validate()) {
-                  cubit.signup();
-                }
-              },
-              child: Text(
-                AppStrings.continueText,
-                style: TextStyles.authtitle.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
+          SignupButton(cubit: cubit),
           SizedBox(height: screenHeight * 0.03),
           RowsInAuth(
             text1: 'Already have an account?',

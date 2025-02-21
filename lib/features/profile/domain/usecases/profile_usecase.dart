@@ -7,5 +7,6 @@ class ProfileUsecase {
   final ProfileRepositry profileRepositry;
   ProfileUsecase({required this.profileRepositry});
 
-  Future<Either<Failure, List<UserEntity>>> getUserData( String userId) => profileRepositry.getUserData ( userId);
+  Future<Either<Failure, UserEntity>> getUserData( String userId) => profileRepositry.getUserData(userId);
+  Future<void> logout() => profileRepositry.logout();
 }
