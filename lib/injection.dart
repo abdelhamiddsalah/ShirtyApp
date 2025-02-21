@@ -113,7 +113,7 @@ Future<void> init() async {
   sl.registerFactory(() => AuthinticationCubit(sl()));
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
-  sl.registerFactory(() => CategoriesCubit(sl()));
+    sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
   sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl()));
   sl.registerFactory(() => CartCubit( sl(), sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');

@@ -1,7 +1,13 @@
-class LoginModel {
+import 'package:equatable/equatable.dart';
+
+class LoginModel extends Equatable{
   final String email;
   final String password;
-  LoginModel({required this.email,required this.password});
+  const LoginModel({required this.email,required this.password});
+
+
+ @override
+  List<Object?> get props => [email, password];
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(

@@ -10,6 +10,7 @@ class ShopByCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final categoriesCubit = sl<CategoriesCubit>(); // استدعاء الكيوبت
     final screenhight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -29,68 +30,66 @@ class ShopByCategories extends StatelessWidget {
               SizedBox(height: screenhight * 0.02),
               Text('Shop By Categories', style: TextStyles.textinhome.copyWith(fontSize: screenwidth * 0.06)),
               SizedBox(height: screenhight * 0.02),
-              BlocProvider(
-                create: (context) => sl<CategoriesCubit>()..fetchCategories(),
-                child: BlocBuilder<CategoriesCubit, CategoriesState>(
-                  builder: (context, state) {
-                    if (state is CategoriesLoading) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: screenwidth * 0.008,
-                        ),
-                      );
-                    }
-                    if (state is CategoriesError) {
-                      return Center(child: Text(state.message));
-                    }
-                    if (state is CategoriesLoaded) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.categories.length,
-                        itemBuilder:
-                            (context, index) => GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsGridView(
-                                 //path2: state.categories[index].productPath.toString(),
-                           categoryId: state.categories[index].id.toString(),
-                                )));
-                              },
-                              child: Container(
-                                width:  screenwidth,
-                                height: screenhight * 0.1,
-                                margin: EdgeInsets.only(bottom: screenhight * 0.02),
-                                decoration: BoxDecoration(
-                                   color: const Color(0x1AFFFFFF),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: screenwidth * 0.05),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: screenwidth * 0.13,
-                                      height: screenwidth * 0.13,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey[300],
-                                      ),
-                                      child: Image.network(
-                                        state.categories[index].image.toString(),
-                                      ),
+              BlocBuilder<CategoriesCubit, CategoriesState>(
+                 bloc: sl<CategoriesCubit>(), 
+                builder: (context, state) {
+                  if (state is CategoriesLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: screenwidth * 0.008,
+                      ),
+                    );
+                  }
+                  if (state is CategoriesError) {
+                    return Center(child: Text(state.message));
+                  }
+                  if (state is CategoriesLoaded) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.categories.length,
+                      itemBuilder:
+                          (context, index) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsGridView(
+                               //path2: state.categories[index].productPath.toString(),
+                         categoryId: state.categories[index].id.toString(),
+                              )));
+                            },
+                            child: Container(
+                              width:  screenwidth,
+                              height: screenhight * 0.1,
+                              margin: EdgeInsets.only(bottom: screenhight * 0.02),
+                              decoration: BoxDecoration(
+                                 color: const Color(0x1AFFFFFF),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: screenwidth * 0.05),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: screenwidth * 0.13,
+                                    height: screenwidth * 0.13,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey[300],
                                     ),
-                                    SizedBox(width: screenwidth * 0.05),
-                                    Text(
-                                      state.categories[index].title.toString(),
-                                      style: TextStyles.textinhome.copyWith(fontSize:  screenwidth * 0.04,fontWeight: FontWeight.w200),
+                                    child: Image.network(
+                                      state.categories[index].image.toString(),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(width: screenwidth * 0.05),
+                                  Text(
+                                    state.categories[index].title.toString(),
+                                    style: TextStyles.textinhome.copyWith(fontSize:  screenwidth * 0.04,fontWeight: FontWeight.w200),
+                                  ),
+                                ],
                               ),
                             ),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
+                          ),
+                    );
+                  }
+                  return Container();
+                },
               ),
             ],
           ),

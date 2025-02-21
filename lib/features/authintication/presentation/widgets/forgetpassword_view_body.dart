@@ -1,14 +1,10 @@
 import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/constants/images.dart';
-import 'package:clothshop/core/utils/app_colors.dart';
-import 'package:clothshop/core/utils/app_strings.dart';
-import 'package:clothshop/core/utils/text_styles.dart';
-import 'package:clothshop/core/validations/validation.dart';
-import 'package:clothshop/core/widgets/applogo.dart';
 import 'package:clothshop/core/widgets/custom_appbar.dart';
-import 'package:clothshop/core/widgets/custom_textfield.dart';
 import 'package:clothshop/core/widgets/empty_container.dart';
+import 'package:clothshop/core/widgets/position_appbar_in_auth.dart';
 import 'package:clothshop/features/authintication/presentation/cubit/forgetpassword/cubit/forgetpasswordreset_cubit.dart';
+import 'package:clothshop/features/authintication/presentation/widgets/form_forgetpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -51,26 +47,7 @@ class ForgetpasswordViewBody extends StatelessWidget {
             backgroundColor: Colors.white,
             body: Stack(
               children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: double.infinity,
-                    height: screenHeight * 0.25,
-                    decoration: const BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      ),
-                    ),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [AppLogo()],
-                    ),
-                  ),
-                ),
+                PositionAppBarInAuth(screenHeight: screenHeight),
                 Positioned(
                   top: screenHeight * 0.084,
                   left: screenWidth * 0.05,
@@ -105,45 +82,7 @@ class ForgetpasswordViewBody extends StatelessWidget {
                           horizontal: screenWidth * 0.05,
                           vertical: screenHeight * 0.02,
                         ),
-                        child: Form(
-                          key: cubit.formkey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Forgot Password',
-                                style: TextStyles.authtitle.copyWith(
-                                  fontSize: screenHeight * 0.03,
-                                ),
-                              ),
-                              SizedBox(height: screenHeight * 0.02),
-                              CustomTextFormField(
-                                title: AppStrings.email,
-                                controller: cubit.emailController,
-                                validator: Validation.validateEmail,
-                              ),
-                              SizedBox(height: screenHeight * 0.03),
-                              SizedBox(
-                                width: double.infinity,
-                                height: screenHeight * 0.06,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (cubit.formkey.currentState!.validate()) {
-                                      cubit.forgetpassword(cubit.emailController.text);
-                                    }
-                                  },
-                                  child: Text(
-                                    AppStrings.continueText,
-                                    style: TextStyles.authtitle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: FormForgetpassword(cubit: cubit, screenHeight: screenHeight),
                       ),
                     ),
                   ),

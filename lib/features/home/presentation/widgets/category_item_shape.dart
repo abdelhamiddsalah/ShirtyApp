@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CtegoryShapeItem extends StatelessWidget {
-  const CtegoryShapeItem({
+class CategoryShapeItem extends StatelessWidget {
+  const CategoryShapeItem({
     super.key,
     required this.screenWidth,
     required this.screenHeight,

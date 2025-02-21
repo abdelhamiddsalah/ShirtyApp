@@ -14,6 +14,4 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     final result = await categoryUsecase.homeRepositry.getCategories();
     result.fold((l) => emit(CategoriesError(message: l.message)), (r) => emit(CategoriesLoaded(categories: r)));
   }
-
-  
 }
