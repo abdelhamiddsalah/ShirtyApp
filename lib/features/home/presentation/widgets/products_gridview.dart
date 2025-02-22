@@ -11,13 +11,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductsGridView extends StatelessWidget {
   const ProductsGridView({
     super.key,
-  // required this.path2,
     required this.categoryId,
   });
-
   final String categoryId;
 
-  // Helper method to safely parse price
 
   @override
   Widget build(BuildContext context) {

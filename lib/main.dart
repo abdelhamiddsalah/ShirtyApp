@@ -1,11 +1,9 @@
 import 'package:clothshop/clothes.dart';
-import 'package:clothshop/core/services/firebase_auth_services.dart';
 import 'package:clothshop/features/payments/payment_keys.dart';
 import 'package:clothshop/firebase_options.dart';
 import 'package:clothshop/injection.dart';
 import 'package:clothshop/local_storage.dart';
 import 'package:clothshop/messaging_config.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -29,7 +27,7 @@ void main() async {
   );
 
   init();
-  await MessagingConfig.initFirebaseMessaging();
+ // await MessagingConfig.initFirebaseMessaging();
 
   runApp(Shirty());
 }

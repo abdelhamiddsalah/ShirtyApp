@@ -102,9 +102,13 @@ class HomeRepostriesImpel extends HomeRepositry {
   }
   
   @override
-  Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts() {
-    // TODO: implement getNewProducts
-    throw UnimplementedError();
+  Future<Either<Failure, List<ProductEntity>>> getTopSeelingProducts() async{
+    try {
+      final products = await remoteProductdatasource.gettopsellingProducts();
+      return Right(products);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
   
   @override

@@ -1,5 +1,6 @@
 import 'package:clothshop/constants/images.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
@@ -35,21 +36,25 @@ class ProductItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Container with rounded corners
             Container(
               height: screenHeight * 0.24,
-              width: screenWidth ,
-              decoration: BoxDecoration(
+              width: screenWidth,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(6)),
+              ),
+              child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-                image: DecorationImage(
-                  image: productEntity.image.isNotEmpty
-                    ? NetworkImage(productEntity.image) as ImageProvider
-                    : const AssetImage(Assets.imagesRectangle8),
+                child: CachedNetworkImage(
+                  imageUrl: productEntity.image,
                   fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Image.asset(
+                    Assets.imagesRectangle8,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-            
+
             // Product Details
             Padding(
               padding: const EdgeInsets.all(8.0),

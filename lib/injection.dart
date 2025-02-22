@@ -25,6 +25,7 @@ import 'package:clothshop/features/home/data/repositories/home_repostries_impel.
 import 'package:clothshop/features/home/domain/repositories/home_repositry.dart';
 import 'package:clothshop/features/home/domain/usecases/category_usecase.dart';
 import 'package:clothshop/features/home/domain/usecases/get_all_products_usecase.dart';
+import 'package:clothshop/features/home/domain/usecases/get_topselling_products.dart';
 import 'package:clothshop/features/home/domain/usecases/getproducts_byprice_usecase.dart';
 import 'package:clothshop/features/home/domain/usecases/getproductsbytitle.dart';
 import 'package:clothshop/features/home/domain/usecases/new_products_usecase.dart';
@@ -119,7 +120,7 @@ Future<void> init() async {
   sl.registerLazySingleton(()=> DeletecartUsecase(sl()));
   sl.registerLazySingleton(()=> ProfileUsecase(profileRepositry: sl()));
   sl.registerLazySingleton(()=> ComplaintUsecase(sl()));
-
+  sl.registerLazySingleton(()=> GetTopsellingProducts(sl()));
   sl.registerFactoryParam<TextEditingController, void, void>(
     (_, __) => TextEditingController(),
   );
@@ -132,7 +133,7 @@ Future<void> init() async {
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
     sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
-  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl()));
+  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl(),sl()));
   sl.registerFactory(() => CartCubit( sl(), sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);

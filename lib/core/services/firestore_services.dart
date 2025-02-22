@@ -85,8 +85,7 @@ Future<List<ProductModel>> fetchnewinProducts() async{
    try{
     final result =await firestore.collection('Allproducts').where('createdate',isGreaterThanOrEqualTo: Timestamp.fromDate(
       DateTime(2025, 1, 1)
-    )).get();
-
+    )).orderBy('createdate',descending: true).limit(10).get();
     return result.docs.map((doc) => ProductModel.fromJson(doc.data(), doc.id)).toList();
    }
    catch(e){
@@ -182,7 +181,21 @@ Future<void> deleteCart(String cartId) async {
     print('Error deleting cart: $e');
   }
 }
+Future<List<ProductModel>> getatopSalesproducts() async {
+  try {
+    final collection = firestore.collection('Allproducts');
+    
+    // تصفية المنتجات بناءً على البحث إن كان هناك نص مدخل
+    final result = 
+        
+        await collection.where('salescount', isGreaterThanOrEqualTo: 5).limit(10)
+                         .get() as QuerySnapshot;
 
+    return result.docs.map((doc) => ProductModel.fromJson(doc.data() as Map<String, dynamic>, doc.id)).toList();
+  } catch (e) {
+    throw Exception("Error fetching products: $e");
+  }
+}
 
 
 }

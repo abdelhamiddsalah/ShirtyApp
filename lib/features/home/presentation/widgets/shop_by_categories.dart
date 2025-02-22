@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
@@ -10,7 +11,7 @@ class ShopByCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final categoriesCubit = sl<CategoriesCubit>(); // استدعاء الكيوبت
+      //final categoriesCubit = sl<CategoriesCubit>(); // استدعاء الكيوبت
     final screenhight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -73,9 +74,12 @@ class ShopByCategories extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       color: Colors.grey[300],
                                     ),
-                                    child: Image.network(
-                                      state.categories[index].image.toString(),
-                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: state.categories[index].image.toString(),
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
+                                    )
                                   ),
                                   SizedBox(width: screenwidth * 0.05),
                                   Text(

@@ -1,16 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+import 'package:clothshop/features/home/presentation/widgets/add_tocart_indetails.dart';
 import 'package:clothshop/features/home/presentation/widgets/container_quantity_details.dart';
 import 'package:clothshop/features/home/presentation/widgets/products_options_details.dart';
-import 'package:clothshop/features/orders/data/models/addtocart_model.dart';
-import 'package:clothshop/features/orders/presentation/cubit/orders_cubit.dart';
-import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
-import 'package:clothshop/injection.dart';
+import 'package:clothshop/features/home/presentation/widgets/reviews_in_details.dart';
 import 'package:flutter/material.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
-import 'package:clothshop/core/widgets/filled_container.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final ProductEntity product;
@@ -62,11 +58,6 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back_ios),
-                ),
-                const Spacer(),
-                FilledConatiner(
-                  icon: Icons.favorite_border,
-                  screenWidth: screenWidth * 0.9,
                 ),
               ],
             ),
@@ -153,94 +144,9 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
-            Row(
-              children: [
-                const Text('Reviews', style: TextStyles.textinhome),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => ReviewsView(product: widget.product),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'See All',
-                    style: TextStyles.textinhome.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            ReviewsInDetails(widget: widget, screenHeight: screenHeight, averageRating: averageRating),
             SizedBox(height: screenHeight * 0.03),
-            Row(
-              children: [
-                widget.product.reviews.isNotEmpty
-                    ? RatingBarIndicator(
-                      rating: averageRating,
-                      itemBuilder:
-                          (context, index) =>
-                              const Icon(Icons.star, color: Colors.amber),
-                      itemCount: 5,
-                      itemSize: 24.0,
-                    )
-                    : RatingBarIndicator(
-                      rating: averageRating,
-                      itemBuilder:
-                          (context, index) =>
-                              const Icon(Icons.star, color: Colors.grey),
-                      itemCount: 5,
-                      itemSize: 24.0,
-                    ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.03),
-
-            BlocProvider(
-              create: (context) => sl<OrdersCubit>(),
-              child: BlocBuilder<OrdersCubit, OrdersState>(
-                builder: (context, state) {
-                  return  
-                  state is OrdersLoading ? const CircularProgressIndicator() : ElevatedButton(
-                  onPressed: () {
-  if (selectedSize == null || selectedColor == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select size and color')),
-    );
-    return;
-  }
-
-  context.read<OrdersCubit>().addtocart(AddtocartModel(
-    productId: widget.product.productId,
-    quantity: 1, 
-    productname: widget.product.name,
-    mainprice: widget.product.price.toDouble(),
-    productimage: widget.product.image,
-    productSelectedcolor: selectedColor!,
-    productSelectedsize: selectedSize!,
-    createDate: DateTime.now().toString(),
-    totalprice: widget.product.price.toDouble(),
-     widget.product.salescount??1
-  ));
-},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '\$${widget.product.price}',
-                          style: TextStyles.textinhome,
-                        ),
-                        const Text('Add to Cart', style: TextStyles.textinhome),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+            AddToCartInDetails(selectedSize: selectedSize, selectedColor: selectedColor, widget: widget),
           ],
         ),
       ),

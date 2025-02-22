@@ -1,3 +1,4 @@
+import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/category_loding_shimmer.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,8 @@ class HomeCategories extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        NewWidget(),
+        const NewWidget(),
         SizedBox(height: screenHeight * 0.026),
-    
         SizedBox(
           height: screenHeight * 0.12,
           child: BlocBuilder<CategoriesCubit, CategoriesState>(
@@ -69,8 +69,9 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextsInHomeview(
       text: 'Categories',
+      text2: 'See All',
       onTap: () {
-      Navigator.pushReplacementNamed(context, '/shopbycategories');
+      Navigator.pushNamed(context, Routes.shopbycategories);
 
       },
     );

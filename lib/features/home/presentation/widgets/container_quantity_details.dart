@@ -26,7 +26,6 @@ class ContainerQuantityInDetails extends StatelessWidget {
       child: BlocBuilder<OrdersCubit, OrdersState>(
   builder: (context, state) {
     int quantity = state is OrdersLoaded ? state.quantity : 0; // ✅ التأكد من حالة الكيوبت
-
     return Container(
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
       decoration: BoxDecoration(
