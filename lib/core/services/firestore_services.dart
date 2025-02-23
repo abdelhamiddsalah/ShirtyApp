@@ -1,4 +1,5 @@
 import 'package:clothshop/features/cart/data/models/cart_model.dart';
+import 'package:clothshop/features/checkout/data/models/address_model.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
 import 'package:clothshop/features/orders/data/models/addtocart_model.dart';
 import 'package:clothshop/features/reviews/data/models/review_model.dart';

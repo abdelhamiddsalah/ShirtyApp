@@ -1,11 +1,11 @@
 import 'package:clothshop/core/widgets/appbartop.dart';
 import 'package:clothshop/core/widgets/details_shopping_prices.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:clothshop/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:clothshop/features/checkout/presentation/widgets/address_bottomsheet.dart';
 import 'package:clothshop/features/checkout/presentation/widgets/field_checkout.dart';
 import 'package:clothshop/features/checkout/presentation/widgets/payment_bottomsheet.dart';
 import 'package:clothshop/features/payments/payment_manager.dart';
-import 'package:clothshop/features/payments/paymob_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
@@ -29,39 +29,50 @@ class _CheckoutViewBodyState extends State<CheckoutViewBody> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.05,
-          vertical: screenHeight * 0.05,
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.05,
+            vertical: screenHeight * 0.05,
+          ),
+          child: Column(
+            children: [
+              const Appbartop(),
+              SizedBox(height: screenHeight * 0.05),
+              FieldCheckout(
+                text1: 'Shipping Address',
+                text2: _selectedAddress,
+                onTap: () {
+                  if ( context.read<CheckoutCubit>().hasAddress == false) {
+                    _showAddressBottomSheet(context);
+                    
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('You already have an address'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                }}
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              FieldCheckout(
+                text1: 'Payment Method',
+                text2: _selectedPayment,
+                onTap: () => _showPaymentBottomSheet(context),
+              ),
+              const Spacer(),
+              DetailsAboutShoppingPrices(
+                text1: 'Pay Now',
+                onPressed: () {
+                  
+                },
+                cartItems: widget.cartItems,
+                cartCubit: context.read<CartCubit>(),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          children: [
-            const Appbartop(),
-            SizedBox(height: screenHeight * 0.05),
-            FieldCheckout(
-              text1: 'Shipping Address',
-              text2: _selectedAddress,
-              onTap: () => _showAddressBottomSheet(context),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            FieldCheckout(
-              text1: 'Payment Method',
-              text2: _selectedPayment,
-              onTap: () => _showPaymentBottomSheet(context),
-            ),
-            const Spacer(),
-            DetailsAboutShoppingPrices(
-              text1: 'Pay Now',
-              onPressed: () {
-                
-              },
-              cartItems: widget.cartItems,
-              cartCubit: context.read<CartCubit>(),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
   }
 
   Future<void> _showAddressBottomSheet(BuildContext context) async {

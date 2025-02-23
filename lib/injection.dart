@@ -17,6 +17,11 @@ import 'package:clothshop/features/cart/domain/repositories/cart_repositry.dart'
 import 'package:clothshop/features/cart/domain/usecases/deletecart_usecase.dart';
 import 'package:clothshop/features/cart/domain/usecases/getcarts_usecase.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:clothshop/features/checkout/data/repositories/checkout_repositries_Impl.dart';
+import 'package:clothshop/features/checkout/domain/repositories/checkout_repositry.dart';
+import 'package:clothshop/features/checkout/domain/usecases/checkout_usecase.dart';
+import 'package:clothshop/features/checkout/domain/usecases/getaddress_usecase.dart';
+import 'package:clothshop/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/local_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/category_datasources/remote_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/product_datasources/local_productdatasource.dart';
@@ -103,6 +108,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<CheckoutRepositry>(
+    () => CheckoutRepositriesImpl(
+      
+    ),
+  );
+
 
   // 4️⃣ تسجيل `usecases`
   sl.registerLazySingleton(() => Authusecase(sl()));
@@ -124,6 +135,9 @@ Future<void> init() async {
   sl.registerFactoryParam<TextEditingController, void, void>(
     (_, __) => TextEditingController(),
   );
+  sl.registerLazySingleton(()=> CheckoutUsecase(sl()));
+  sl
+  .registerLazySingleton(() => GetaddressUsecase(sl()));
 
  
 
@@ -149,6 +163,7 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
 sl.registerFactory(() => OrdersCubit(sl()));
 sl.registerFactory(() => ProfileCubit(sl(), sl()));
 sl.registerFactory(() => ComplaintCubit(sl()));
+sl.registerFactory(() => CheckoutCubit(sl(),sl()));
 
   // 6️⃣ تسجيل `datasources`
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasourceImpl(sl())); // هنا يتم تسجيل RemoteDatasource
