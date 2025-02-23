@@ -147,7 +147,7 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
   ),
 );
 sl.registerFactory(() => OrdersCubit(sl()));
-sl.registerFactory(() => ProfileCubit(sl()));
+sl.registerFactory(() => ProfileCubit(sl(), sl()));
 sl.registerFactory(() => ComplaintCubit(sl()));
 
   // 6️⃣ تسجيل `datasources`

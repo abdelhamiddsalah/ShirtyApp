@@ -1,5 +1,4 @@
 import 'package:clothshop/features/profile/domain/entities/user_entity.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel  extends UserEntity{
   UserModel({required super.userId,

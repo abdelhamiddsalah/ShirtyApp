@@ -9,47 +9,37 @@ class CartViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<CartCubit, CartState>(
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is CartError) {
-            return Center(child: Text(state.message));
-          }
-          if (state is CartLoaded) {
-            return _buildLoadedState(context, state);
-          }
-          return Container();
-        },
-      ),
-    );
-  }
-
-  Widget _buildLoadedState(BuildContext context, CartLoaded state) {
+    final cartCubit = context.read<CartCubit>();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Padding(
-      padding: EdgeInsets.only(
-        top: screenWidth * 0.06,
-        left: screenWidth * 0.03,
-        right: screenWidth * 0.03,
-      ),
-      child: Column(
-        children: [
-          _buildHeader(context),
-          SizedBox(height: screenHeight * 0.02),
-          _buildCartCount(state),
-          _buildCartList(context, state),
-          if (state.cartItems.isNotEmpty)
-            DetailsAboutShoppingPrices(
-              text1: 'Checkout',
-              cartItems: state.cartItems,
-              cartCubit: context.read<CartCubit>(),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.only(
+          top: screenWidth * 0.06,
+          left: screenWidth * 0.03,
+          right: screenWidth * 0.03,
+        ),
+        child: Column(
+          children: [
+            _buildHeader(context),
+            SizedBox(height: screenHeight * 0.02),
+            _buildCartCount(context), // ✅ يتم جلب العدد من الحالة مباشرة بدون BlocBuilder
+            _buildCartList(context),  // ✅ BlocBuilder للعناصر فقط
+            BlocBuilder<CartCubit, CartState>(
+              builder: (context, state) {
+                if (state is CartLoaded && state.cartItems.isNotEmpty) {
+                  return DetailsAboutShoppingPrices(
+                    text1: 'Checkout',
+                    cartItems: state.cartItems,
+                    cartCubit: cartCubit,
+                  );
+                }
+                return const SizedBox(); // إخفاء زر Checkout إذا لم يكن هناك عناصر
+              },
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -73,38 +63,54 @@ class CartViewBody extends StatelessWidget {
     );
   }
 
-  Widget _buildCartCount(CartLoaded state) {
+  Widget _buildCartCount(BuildContext context) {
+    final state = context.watch<CartCubit>().state;
+    final itemCount = state is CartLoaded ? state.cartItems.length : 0;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('You have ${state.cartItems.length} items in your cart'),
+        Text('You have $itemCount items in your cart'),
       ],
     );
   }
 
-  Widget _buildCartList(BuildContext context, CartLoaded state) {
+  Widget _buildCartList(BuildContext context) {
     return Expanded(
-      child: state.cartItems.isEmpty
-          ? const Center(child: Text('Your cart is empty'))
-          : ListView.builder(
-              itemCount: state.cartItems.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  child: ContainerIncart(
-                    index: index,
-                    onRemove: () {
-                      context.read<CartCubit>().deletecart(
-                            state.cartItems[index].productId,
-                          );
+      child: BlocBuilder<CartCubit, CartState>(
+        builder: (context, state) {
+          if (state is CartLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is CartError) {
+            return Center(child: Text(state.message));
+          }
+          if (state is CartLoaded) {
+            return state.cartItems.isEmpty
+                ? const Center(child: Text('Your cart is empty'))
+                : ListView.builder(
+                    itemCount: state.cartItems.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        child: ContainerIncart(
+                          index: index,
+                          onRemove: () {
+                            context.read<CartCubit>().deletecart(
+                                  state.cartItems[index].productId,
+                                );
+                          },
+                          cartItemEntity: state.cartItems[index],
+                        ),
+                      );
                     },
-                    cartItemEntity: state.cartItems[index],
-                  ),
-                );
-              },
-            ),
+                  );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

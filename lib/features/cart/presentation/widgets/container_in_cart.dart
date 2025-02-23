@@ -23,7 +23,7 @@ class ContainerIncart extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: AppColors.primary,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(right: 20),
         alignment: Alignment.centerRight,
         child: const Icon(Icons.delete, color: Colors.white),
       ),
@@ -36,7 +36,7 @@ class ContainerIncart extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         height: 110,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Row(
           children: [
             Image.network(cartItemEntity.productimage, width: 80, height: 80),
@@ -78,6 +78,8 @@ class ContainerIncart extends StatelessWidget {
                         child: const Icon(Icons.remove, color: Colors.white, size: 15),
                       ),
                     ),
+                    const SizedBox(width: 10),
+                    Text('2'),
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {

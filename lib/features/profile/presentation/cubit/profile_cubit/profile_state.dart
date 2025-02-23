@@ -24,3 +24,13 @@ class ProfileError extends ProfileState {
 }
 
 class ProfileLogout extends ProfileState {}
+
+class ImagePicked extends ProfileState {
+  final String imagePath;
+  const ImagePicked(this.imagePath);
+}
+
+class ImagePickedError extends ProfileState {
+  final String message;
+  const ImagePickedError(this.message);
+}
