@@ -1,9 +1,9 @@
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/home/presentation/widgets/details_view_body.dart';
-import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class ReviewsInDetails extends StatelessWidget {
   const ReviewsInDetails({
@@ -27,13 +27,10 @@ class ReviewsInDetails extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => ReviewsView(product: widget.product),
-                  ),
-                );
+                GoRouter.of(context).push(
+      '/reviews',
+      extra: widget.product, // تمرير المنتج عبر extra
+    );
               },
               child: Text(
                 'See All',

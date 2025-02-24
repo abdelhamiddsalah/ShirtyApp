@@ -13,6 +13,7 @@ import 'package:clothshop/features/authintication/presentation/widgets/dropdown_
 import 'package:clothshop/features/authintication/presentation/widgets/signup_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class FormSignup extends StatelessWidget {
   const FormSignup({
@@ -91,7 +92,7 @@ class FormSignup extends StatelessWidget {
             text1: 'Already have an account?',
             text2: AppStrings.signinname,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.login);
+              context.go(Routes.login);
             },
           ),
         ],

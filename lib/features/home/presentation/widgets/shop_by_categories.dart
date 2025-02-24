@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
-import 'package:clothshop/features/home/presentation/widgets/products_gridview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ShopByCategories extends StatelessWidget {
   const ShopByCategories({super.key});
@@ -25,7 +25,7 @@ class ShopByCategories extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => GoRouter.of(context).pop(),
                 icon: const Icon(Icons.arrow_back_ios),
               ),
               SizedBox(height: screenhight * 0.02),
@@ -51,10 +51,10 @@ class ShopByCategories extends StatelessWidget {
                       itemBuilder:
                           (context, index) => GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsGridView(
-                               //path2: state.categories[index].productPath.toString(),
-                         categoryId: state.categories[index].id.toString(),
-                              )));
+                              GoRouter.of(context).push(
+                                '/products',
+                                extra: state.categories[index].id.toString(),
+                              );
                             },
                             child: Container(
                               width:  screenwidth,

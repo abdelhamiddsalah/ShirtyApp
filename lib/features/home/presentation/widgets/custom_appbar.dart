@@ -8,6 +8,7 @@ import 'package:clothshop/features/authintication/presentation/screens/signup_vi
 import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppbarinhome extends StatelessWidget {
   const CustomAppbarinhome({
@@ -83,7 +84,7 @@ class CustomAppbarinhome extends StatelessWidget {
             builder: (context) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.cart);
+                  context.push(Routes.cart);
                 },
                 child: Stack(
                   children: [

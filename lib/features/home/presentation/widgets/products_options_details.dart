@@ -1,6 +1,7 @@
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductOptionsDisplay extends StatelessWidget {
   final String title;
@@ -52,7 +53,7 @@ class ProductOptionsDisplay extends StatelessWidget {
                             return InkWell(
                               onTap: () {
                                 onOptionSelected(option);
-                                Navigator.pop(context);
+                               GoRouter.of(context).pop();
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -71,7 +72,7 @@ class ProductOptionsDisplay extends StatelessWidget {
                         ),
                       const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => GoRouter.of(context).pop(),
                         child: const Text('Close', style: TextStyles.textinhome),
                       ),
                     ],

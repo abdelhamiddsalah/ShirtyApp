@@ -1,9 +1,9 @@
 import 'package:clothshop/core/widgets/product_item.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
-import 'package:clothshop/features/home/presentation/screens/details_view.dart';
 import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewInProducts extends StatelessWidget {
@@ -27,12 +27,11 @@ class NewInProducts extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsView(product: state.products[index]),
-                        ),
-                      );
+                   GoRouter.of(context).push(
+  '/details',
+  extra: state.products[index], // تمرير المنتج عبر extra
+);
+
                     },
                     child: ProductItem(productEntity: state.products[index]),
                   ),

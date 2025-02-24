@@ -3,19 +3,15 @@ import 'package:clothshop/config/themes/themeapp.dart';
 import 'package:flutter/material.dart';
 
 class Shirty extends StatelessWidget {
-  final String initialRoute = '/';
-  final AppRoutes appRoutes = AppRoutes();
-   Shirty({super.key});
+  const Shirty({super.key}); // استخدم `const` لتحسين الأداء
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Shirty',
-      theme: themeApp,
+      theme: themeApp, // تأكد أن `themeApp` معرف في `themeapp.dart`
       debugShowCheckedModeBanner: false,
-      initialRoute: initialRoute,
-      onGenerateRoute: appRoutes.generateRoute,
+      routerConfig: AppRouter.router, // استخدم `GoRouter`
     );
   }
 }
-

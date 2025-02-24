@@ -7,6 +7,7 @@ import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/features/splashscreen/presentation/cubit/splashscreen_cubit.dart';
 import 'package:clothshop/features/splashscreen/presentation/widgets/splashscreen_view_body.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashscreenView extends StatelessWidget {
   const SplashscreenView({super.key});
@@ -22,9 +23,9 @@ class SplashscreenView extends StatelessWidget {
       child: BlocListener<SplashscreenCubit, SplashscreenState>(
         listener: (context, state) {
           if (state is Authinticated) {
-            Navigator.pushReplacementNamed(context, Routes.home);
+            context.go(Routes.home);
           } else if (state is UnAuthinticated) {
-            Navigator.pushReplacementNamed(context, Routes.onboarding);
+            context.go(Routes.login);
           }
         },
         child: const Scaffold(

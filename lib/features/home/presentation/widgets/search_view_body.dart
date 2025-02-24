@@ -9,6 +9,7 @@ import 'package:clothshop/features/home/presentation/widgets/textfield_in_search
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchViewBody extends StatefulWidget {
   const SearchViewBody({super.key});
@@ -45,7 +46,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
               Row(
                 children: [
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => context.pop(),
                     child: Container(
                       width: screenWidth * 0.14,
                       height: screenHeight * 0.064,

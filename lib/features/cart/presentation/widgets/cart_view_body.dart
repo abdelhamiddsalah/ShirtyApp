@@ -1,4 +1,3 @@
-import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/widgets/details_shopping_prices.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:clothshop/injection.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/cart/presentation/widgets/container_in_cart.dart';
+import 'package:go_router/go_router.dart';
 
 class CartViewBody extends StatelessWidget {
   const CartViewBody({super.key});
@@ -70,7 +70,7 @@ Widget _buildHeader(BuildContext context) {
     children: [
       IconButton(
         onPressed: () {
-          Navigator.pushNamed(context, Routes.home);
+          GoRouter.of(context).pop();
         },
         icon: const Icon(Icons.arrow_back_ios),
       ),

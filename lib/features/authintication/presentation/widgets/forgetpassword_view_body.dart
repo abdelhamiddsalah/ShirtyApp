@@ -5,6 +5,7 @@ import 'package:clothshop/features/authintication/presentation/cubit/forgetpassw
 import 'package:clothshop/features/authintication/presentation/widgets/forgetpassword_stack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:clothshop/config/extentions/extension.dart';
 // ... rest of imports
@@ -20,19 +21,17 @@ class ForgetpasswordViewBody extends StatelessWidget {
     return BlocConsumer<ForgetpasswordresetCubit, ForgetpasswordresetState>(
       listener: (context, state) {
         if (state is ForgetpasswordresetSuccess) {
-          Navigator.push(
-            context, 
-            MaterialPageRoute(
-              builder: (context) => EmptyContainer(
-                Assets.imagesEmailSending,
-                'We Sent you an email to reset your password',
-                'Go to login',
-                onPressed: () {
-                  Navigator.pushNamed(context, Routes.login);
-                },
-              )
-            )
-          );
+          GoRoute(
+      path: Routes.emptycontainer,
+      builder: (context, state) => EmptyContainer(
+        Assets.imagesEmailSending,
+        'We Sent you an email to reset your password',
+        'Go to login',
+        onPressed: () {
+          GoRouter.of(context).go(Routes.login);
+        },
+      ),
+    );
         } else if (state is ForgetpasswordresetError) {
           errormessage(context, state.message);
         }

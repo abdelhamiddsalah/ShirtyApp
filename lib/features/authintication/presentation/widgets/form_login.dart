@@ -8,6 +8,7 @@ import 'package:clothshop/features/authintication/domain/entities/login_entity.d
 import 'package:clothshop/features/authintication/presentation/cubit/logincubit/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class FormLogin extends StatelessWidget {
   const FormLogin({
@@ -63,7 +64,7 @@ class FormLogin extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.forgetpassword);
+                  GoRouter.of(context).go(Routes.forgetpassword);
                 },
                 child: Text(
                   'Forgot Password?',
@@ -101,7 +102,7 @@ class FormLogin extends StatelessWidget {
             text1: 'Don\'t have an account?',
             text2: AppStrings.signupname,
             onPressed: () async {
-              Navigator.pushNamed(context, Routes.register);
+              GoRouter.of(context).go(Routes.register);
             },
           ),
         ],

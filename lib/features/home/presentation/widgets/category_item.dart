@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clothshop/features/home/domain/entities/category_entity.dart';
-import 'package:clothshop/features/home/presentation/widgets/products_gridview.dart';
+import 'package:go_router/go_router.dart';
 
 class CategoryItem extends StatelessWidget {
   final CategoryEntity category;
@@ -19,13 +19,7 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (context) =>  ProductsGridView(categoryId: category.id,),
-          ),
-        );
+        context.push('/products/${category.id}');
       },
       child: Padding(
         padding: EdgeInsets.only(right: screenWidth * 0.05),
@@ -45,7 +39,6 @@ class CategoryItem extends StatelessWidget {
                 ],
               ),
               child: ClipOval(
-                // قص الصورة لتكون دائرية
                 child: CachedNetworkImage(
                   imageUrl: category.image.toString(),
                   fit: BoxFit.cover,

@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/presentation/widgets/add_tocart_indetails.dart';
@@ -11,6 +9,7 @@ import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final ProductEntity product;
@@ -63,7 +62,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, Routes.home);
+                      GoRouter.of(context).pop();
                     },
                     icon: const Icon(Icons.arrow_back_ios),
                   ),

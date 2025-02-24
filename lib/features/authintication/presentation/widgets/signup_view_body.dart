@@ -1,4 +1,5 @@
 import 'package:clothshop/features/authintication/presentation/widgets/signup_stack.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:clothshop/config/extentions/extension.dart';
 import 'package:clothshop/config/routing/routes.dart';
@@ -17,7 +18,7 @@ class SignupViewBody extends StatelessWidget {
     return BlocConsumer<AuthinticationCubit, AuthinticationState>(
       listener: (context, state) {
         if (state is AuthinticationSuccess) {
-          Navigator.pushReplacementNamed(context, Routes.home);
+         GoRouter.of(context).go(Routes.home);
         } else if (state is AuthinticationFailure) {
           errormessage(context, state.message);
         }

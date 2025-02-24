@@ -4,6 +4,7 @@ import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/p
 import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TopsellingListview extends StatelessWidget {
@@ -28,11 +29,10 @@ class TopsellingListview extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.details,
-                        arguments: state.products[index],
-                      );
+                      GoRouter.of(context).push(
+      Routes.details,
+      extra: state.products[index],
+    );
                     },
                     child: ProductItem(productEntity: state.products[index]),
                   ),

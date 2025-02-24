@@ -4,6 +4,7 @@ import 'package:clothshop/features/authintication/presentation/cubit/logincubit/
 import 'package:clothshop/features/authintication/presentation/widgets/login_stack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 // ... rest of imports stay the same
 
@@ -18,7 +19,7 @@ class LoginViewBody extends StatelessWidget {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          Navigator.pushReplacementNamed(context, Routes.home);
+          GoRouter.of(context).go(Routes.home);
         } else if (state is LoginFailure) {
           errormessage(context, state.message);
         }

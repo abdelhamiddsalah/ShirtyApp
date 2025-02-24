@@ -3,10 +3,10 @@ import 'package:clothshop/core/widgets/product_item.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
-import 'package:clothshop/features/home/presentation/screens/details_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/product_grid_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsGridView extends StatelessWidget {
   const ProductsGridView({super.key, required this.categoryId});
@@ -80,14 +80,10 @@ class ProductsGridView extends StatelessWidget {
                                     state.products[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) =>
-                                                DetailsView(product: product),
-                                      ),
-                                    );
+                                  GoRouter.of(context).push(
+  '/details',
+  extra: product, // تمرير المنتج عبر extra
+                                  );
                                   },
                                   child: ProductItem(productEntity: product),
                                 );

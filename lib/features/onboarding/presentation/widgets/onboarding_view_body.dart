@@ -6,6 +6,7 @@ import 'package:clothshop/features/onboarding/presentation/widgets/data.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/listview_builder.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/movies_listview.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // OnboardingViewBody
 class OnboardingViewBody extends StatefulWidget {
@@ -86,7 +87,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
               ],
             ),
             CustomButton(screenWidth: screenWidth, screenHeight: screenHeight,
-                buttontext: 'Get Started', onPressed: () => Navigator.pushNamed(context, Routes.login)),
+                buttontext: 'Get Started', onPressed: () => context.go(Routes.home) )
           ],
         ),
       ),
