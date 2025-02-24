@@ -41,6 +41,8 @@ class ContainerQuantityInDetails extends StatelessWidget {
                   if (userId != null) {
                     context.read<CartCubit>().decrementQuantity(
                       CartItemEntity(
+                        product.colors[0],
+                        product.sizes[0],
                         product: product,
                         quantity: product.quantity,
                         totalPrice: product.price.toDouble() * product.quantity,
@@ -59,6 +61,8 @@ class ContainerQuantityInDetails extends StatelessWidget {
                     final cartItem = state.cartItems.firstWhere(
                       (item) => item.product.productId == product.productId,
                       orElse: () => CartItemEntity(
+                        product.colors[0],
+                        product.sizes[0],
                         product: product,
                         quantity: 0,
                         totalPrice: 0,
@@ -82,6 +86,8 @@ class ContainerQuantityInDetails extends StatelessWidget {
                   if (userId != null) {
                     context.read<CartCubit>().incrementQuantity(
                       CartItemEntity(
+                         product.colors[0],
+                         product.sizes[0],
                         product: product,
                         quantity: product.quantity,
                         totalPrice: product.price.toDouble() * product.quantity,

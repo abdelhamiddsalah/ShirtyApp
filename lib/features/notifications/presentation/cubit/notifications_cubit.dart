@@ -7,44 +7,45 @@ part 'notifications_state.dart';
 
 class NotificationsCubit extends Cubit<NotificationsState> {
   final Box<NotificationModel> notificationsBox;
-  
+
   NotificationsCubit(this.notificationsBox) : super(NotificationsInitial()) {
-    // Load notifications immediately when cubit is created
     loadNotifications();
   }
 
-  void loadNotifications() {
+  Future<void> loadNotifications() async {
     try {
-      final notifications = notificationsBox.values.toList();
+      final notifications = notificationsBox.values.toList()
+        ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
       emit(NotificationsLoaded(notifications));
-    } catch (e) {
-      emit(NotificationsError("Failed to load notifications: $e"));
+    } catch (e, stackTrace) {
+      print('Error loading notifications: $e\n$stackTrace');
+      emit(NotificationsError('فشل في تحميل الإشعارات'));
     }
   }
 
-  void addNotification(NotificationModel notification) {
+  Future<void> addNotification(NotificationModel notification) async {
     try {
-      notificationsBox.add(notification);
-      // Reload notifications after adding
-      final notifications = notificationsBox.values.toList();
-      emit(NotificationsLoaded(notifications));
-    } catch (e) {
-      emit(NotificationsError("Failed to add notification: $e"));
+      await notificationsBox.add(notification);
+      await loadNotifications();
+    } catch (e, stackTrace) {
+      print('Error adding notification: $e\n$stackTrace');
+      emit(NotificationsError('فشل في إضافة الإشعار'));
     }
   }
 
-  void clearNotifications() {
+  Future<void> clearNotifications() async {
     try {
-      notificationsBox.clear();
+      await notificationsBox.clear();
       emit(const NotificationsLoaded([]));
-    } catch (e) {
-      emit(NotificationsError("Failed to clear notifications: $e"));
+    } catch (e, stackTrace) {
+      print('Error clearing notifications: $e\n$stackTrace');
+      emit(NotificationsError('فشل في مسح الإشعارات'));
     }
   }
 
   @override
-  Future<void> close() {
-    // Clean up any resources if needed
+  Future<void> close() async {
+    await notificationsBox.close();
     return super.close();
   }
 }

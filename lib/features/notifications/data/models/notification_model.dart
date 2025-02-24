@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 part 'notification_model.g.dart';
 
 @HiveType(typeId: HiveTypeIds.notificationModel)
-
 class NotificationModel extends HiveObject {
   @HiveField(0)
   final String title;

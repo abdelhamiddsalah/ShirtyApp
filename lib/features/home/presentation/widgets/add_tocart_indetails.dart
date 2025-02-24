@@ -68,6 +68,8 @@ class AddToCartInDetails extends StatelessWidget {
 
                   context.read<CartCubit>().addToCart(
                     CartItemModel(
+                       selectedColor!,
+                       selectedSize!,
                       product: widget.product.toModel(),
                       quantity: 1,
                       totalPrice: widget.product.price.toDouble(),

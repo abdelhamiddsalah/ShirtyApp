@@ -3,6 +3,7 @@ import 'package:clothshop/features/payments/payment_keys.dart';
 import 'package:clothshop/firebase_options.dart';
 import 'package:clothshop/injection.dart';
 import 'package:clothshop/local_storage.dart';
+import 'package:clothshop/messaging_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -12,7 +13,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // تهيئة Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // تهيئة نظام الإشعارات
+  await NotificationService.initialize();
 
   // تهيئة Stripe
   Stripe.publishableKey = ApiKeys.publisibleKey;

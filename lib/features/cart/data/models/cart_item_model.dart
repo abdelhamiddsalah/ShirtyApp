@@ -2,7 +2,7 @@ import 'package:clothshop/features/home/data/models/product_model.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 
 class CartItemModel extends CartItemEntity {
-  const CartItemModel({
+  const CartItemModel(super.selectedColor, super.selectedSize, {
     required ProductModel super.product,
     required super.quantity,
     required super.totalPrice,
@@ -13,6 +13,8 @@ class CartItemModel extends CartItemEntity {
       product: ProductModel.fromJson(json['product'] as Map<String, dynamic>,''),
       quantity: json['quantity'] ?? 1,
       totalPrice: (json['totalPrice'] as num).toDouble(),
+       json['selectedColor'],
+       json['selectedSize'],
     );
   }
 
@@ -26,6 +28,8 @@ class CartItemModel extends CartItemEntity {
 
   CartItemEntity toEntity() {
     return CartItemEntity(
+     selectedColor,
+       selectedSize,
       product: product,
       quantity: quantity,
       totalPrice: totalPrice,

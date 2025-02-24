@@ -24,7 +24,7 @@ class SplashscreenView extends StatelessWidget {
           if (state is Authinticated) {
             Navigator.pushReplacementNamed(context, Routes.home);
           } else if (state is UnAuthinticated) {
-            Navigator.pushReplacementNamed(context, Routes.login);
+            Navigator.pushReplacementNamed(context, Routes.onboarding);
           }
         },
         child: const Scaffold(
