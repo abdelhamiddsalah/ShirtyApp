@@ -6,6 +6,7 @@ class ContainerIncart extends StatelessWidget {
   final CartItemEntity cartItemEntity;
   final VoidCallback onRemove;
   final int index;
+
   const ContainerIncart({
     super.key,
     required this.onRemove,
@@ -16,7 +17,7 @@ class ContainerIncart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(cartItemEntity.productId.toString()),
+      key: Key(cartItemEntity.product.productId.toString()),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -35,68 +36,63 @@ class ContainerIncart extends StatelessWidget {
           color: Colors.white.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
-        height: 110,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        height: 140,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Row(
           children: [
-            Image.network(cartItemEntity.productimage, width: 80, height: 80),
+            Image.network(cartItemEntity.product.image, width: 80, height: 80),
             const SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(cartItemEntity.productname, style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('Size - ${cartItemEntity.productSelectedsize}'),
-                    const SizedBox(width: 10),
-                    Text('Color - ${cartItemEntity.productSelectedcolor}'),
-                  ],
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(cartItemEntity.product.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 5),
+                  Text('Size: ${cartItemEntity.product.sizes}'),
+                  const SizedBox(height: 5),
+                  Text('Color: ${cartItemEntity.product.colors}'),
+                  const SizedBox(height: 5),
+                  Text('\$${cartItemEntity.product.price}',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
             ),
-            const Spacer(),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('\$${cartItemEntity.mainprice}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                     //   context.read<CartCubit>().decreaseQuantity(cartItemEntity.product);
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration:  const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(Icons.remove, color: Colors.white, size: 15),
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    // context.read<CartCubit>().increaseQuantity(cartItemEntity.product);
+                  },
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(width: 10),
-                    Text('2'),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        //context.read<CartCubit>().increaseQuantity(cartItemEntity.product);
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(Icons.add, color: Colors.white, size: 15),
-                      ),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.add, color: Colors.white, size: 15),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text('2'), // TODO: استبدلها بالكمية الفعلية من الـ Cubit
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () {
+                    // context.read<CartCubit>().decreaseQuantity(cartItemEntity.product);
+                  },
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
                     ),
-                  ],
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.remove, color: Colors.white, size: 15),
+                  ),
                 ),
               ],
             ),

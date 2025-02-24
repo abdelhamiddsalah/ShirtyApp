@@ -7,6 +7,8 @@ class ProductGridSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -14,7 +16,7 @@ class ProductGridSkeleton extends StatelessWidget {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      itemCount: 6, // عدد العناصر في شاشة التحميل
+      itemCount: 4, // عدد عناصر الهيكل العظمي
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,

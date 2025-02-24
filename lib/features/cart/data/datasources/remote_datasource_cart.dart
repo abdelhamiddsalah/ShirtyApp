@@ -1,8 +1,8 @@
 import 'package:clothshop/core/services/firestore_services.dart';
-import 'package:clothshop/features/cart/data/models/cart_model.dart';
+import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
 
 abstract class RemoteDatasourceCart {
-  Future<List<CartModel>> getCart();
+  Future<List<CartItemModel>> getCart();
   Future<void> deletecart(String cartId);
 }
 
@@ -11,7 +11,7 @@ class RemoteDatasourceCartImpl implements RemoteDatasourceCart {
 
   RemoteDatasourceCartImpl({required this.firestoreService});
   @override
-  Future<List<CartModel>> getCart() async {
+  Future<List<CartItemModel>> getCart() async {
     return firestoreService.getCarts();
   }
 

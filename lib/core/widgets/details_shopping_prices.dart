@@ -21,9 +21,9 @@ class DetailsAboutShoppingPrices extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    double total = cartItems.fold(
-      0,
-      (sum, item) => sum + item.calculatedTotalPrice(),
+    final total = cartItems.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.totalPrice,
     );
 
     return Container(

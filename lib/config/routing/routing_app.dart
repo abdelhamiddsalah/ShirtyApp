@@ -9,6 +9,7 @@ import 'package:clothshop/features/checkout/presentation/screens/checkout_view.d
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/presentation/screens/details_view.dart';
 import 'package:clothshop/features/home/presentation/screens/search_view.dart';
+import 'package:clothshop/features/home/presentation/widgets/products_gridview.dart';
 import 'package:clothshop/features/home/presentation/widgets/shop_by_categories.dart';
 import 'package:clothshop/features/onboarding/presentation/screens/onboarding_view.dart';
 import 'package:clothshop/features/profile/presentation/screens/profile_view.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 
 class AppRoutes {
   Route<dynamic> generateRoute(RouteSettings settings) {
+   // final  cartCubit = sl<CartCubit>();
     switch (settings.name) {
       case Routes.splash:
         return MaterialPageRoute(
@@ -27,7 +29,15 @@ class AppRoutes {
       case Routes.register:
         return MaterialPageRoute(builder: (context) => const SignupView());
       case Routes.home:
-        return MaterialPageRoute(builder: (context) => const Salmon());
+        return MaterialPageRoute(
+          builder:
+              (context) => const Salmon(),
+        );
+      case Routes.products:
+      final categoryId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (context) => ProductsGridView(categoryId: categoryId,),
+        );
       case Routes.search:
         return MaterialPageRoute(builder: (context) => const SearchView());
       case Routes.forgetpassword:
@@ -47,16 +57,15 @@ class AppRoutes {
           return _errorRoute(settings.name);
         }
         return MaterialPageRoute(
-          builder:
-              (context) => DetailsView(product: product),
+          builder: (context) => DetailsView(product: product),
         );
       case Routes.shopbycategories:
         return MaterialPageRoute(
           builder: (context) => const ShopByCategories(),
         );
       case Routes.profile:
-      // final userId = settings.arguments as String;
-        return MaterialPageRoute(builder: (context) =>  ProfileView());
+        // final userId = settings.arguments as String;
+        return MaterialPageRoute(builder: (context) => ProfileView());
       case Routes.checkout:
         return MaterialPageRoute(builder: (context) => const CheckoutView());
 

@@ -1,6 +1,9 @@
+import 'package:clothshop/config/routing/routes.dart';
+import 'package:clothshop/core/widgets/details_shopping_prices.dart';
+import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clothshop/core/widgets/details_shopping_prices.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/cart/presentation/widgets/container_in_cart.dart';
 
@@ -9,11 +12,116 @@ class CartViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return BlocProvider.value(
+      value:sl<CartCubit>(),
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(
+            top: screenWidth * 0.06,
+            left: screenWidth * 0.03,
+            right: screenWidth * 0.03,
+          ),
+          child: Column(
+            children: [
+              _buildHeader(context),
+              SizedBox(height: screenHight * 0.02),
+              BlocConsumer<CartCubit, CartState>(
+                listener: (context, state) {
+                  // TODO: تنفيذ أي منطق عند التغيير في الحالة
+                },
+                builder: (context, state) {
+                  if (state is CartLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state is CartError) {
+                    return Center(child: Text(state.message));
+                  }
+                  if (state is CartLoaded) {
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          _buildCartCount(state.cartItems.length),
+                          _buildCartList(context, state.cartItems),
+                          DetailsAboutShoppingPrices(
+                            text1: 'Checkout',
+                            cartItems: state.cartItems,
+                            cartCubit: context.read<CartCubit>(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget _buildHeader(BuildContext context) {
+  return Row(
+    children: [
+      IconButton(
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.home);
+        },
+        icon: const Icon(Icons.arrow_back_ios),
+      ),
+      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+      const Text(
+        'Cart',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
+}
+
+Widget _buildCartCount(int itemCount) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [Text('You have $itemCount items in your cart')],
+  );
+}
+
+Widget _buildCartList(BuildContext context, List<CartItemEntity> cartItems) {
+  return Expanded(
+    child:
+        cartItems.isEmpty
+            ? const Center(child: Text('Your cart is empty'))
+            : ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  child: ContainerIncart(
+                    index: index,
+                    onRemove: () {
+                      //   context.read<CartCubit>().deletecart(cartItems[index].productId);
+                    },
+                    cartItemEntity: cartItems[index],
+                  ),
+                );
+              },
+            ),
+  );
+}
+
+/* @override
+  Widget build(BuildContext context) {
     final cartCubit = context.read<CartCubit>();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+   return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
           top: screenWidth * 0.06,
@@ -27,6 +135,7 @@ class CartViewBody extends StatelessWidget {
             _buildCartCount(context), // ✅ يتم جلب العدد من الحالة مباشرة بدون BlocBuilder
             _buildCartList(context),  // ✅ BlocBuilder للعناصر فقط
             BlocBuilder<CartCubit, CartState>(
+           //   bloc: cartCubit,
               builder: (context, state) {
                 if (state is CartLoaded && state.cartItems.isNotEmpty) {
                   return DetailsAboutShoppingPrices(
@@ -43,26 +152,6 @@ class CartViewBody extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-        const Text(
-          'Cart',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildCartCount(BuildContext context) {
     final state = context.watch<CartCubit>().state;
     final itemCount = state is CartLoaded ? state.cartItems.length : 0;
@@ -76,8 +165,10 @@ class CartViewBody extends StatelessWidget {
   }
 
   Widget _buildCartList(BuildContext context) {
+  //   final cartCubit = sl<CartCubit>(); 
     return Expanded(
       child: BlocBuilder<CartCubit, CartState>(
+       // bloc: cartCubit,
         builder: (context, state) {
           if (state is CartLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -113,4 +204,4 @@ class CartViewBody extends StatelessWidget {
       ),
     );
   }
-}
+}*/

@@ -14,6 +14,7 @@ import 'package:clothshop/features/cart/data/datasources/local_datasource_cart.d
 import 'package:clothshop/features/cart/data/datasources/remote_datasource_cart.dart';
 import 'package:clothshop/features/cart/data/repositories/cart_repositry_Impl.dart';
 import 'package:clothshop/features/cart/domain/repositories/cart_repositry.dart';
+import 'package:clothshop/features/cart/domain/usecases/addcart_usecase.dart';
 import 'package:clothshop/features/cart/domain/usecases/deletecart_usecase.dart';
 import 'package:clothshop/features/cart/domain/usecases/getcarts_usecase.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
@@ -99,7 +100,7 @@ Future<void> init() async {
   sl.registerLazySingleton<CartRepositry>(
     () => CartRepositryImpl(
        remoteDatasourceCart: sl(), localDatasourceCart: sl(),
-        sl()
+        sl(), sl(), // يفترض أن FirebaseFirestore مسجل مسبقاً
   ));
 
   sl.registerLazySingleton<ProfileRepositry>(
@@ -138,6 +139,7 @@ Future<void> init() async {
   sl.registerLazySingleton(()=> CheckoutUsecase(sl()));
   sl
   .registerLazySingleton(() => GetaddressUsecase(sl()));
+  sl.registerLazySingleton(() => AddcartUsecase(sl()));
 
  
 
@@ -148,7 +150,7 @@ Future<void> init() async {
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
     sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
   sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl(),sl()));
-  sl.registerFactory(() => CartCubit( sl(), sl()));
+  sl.registerLazySingleton(() => CartCubit( sl(),sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
 sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));

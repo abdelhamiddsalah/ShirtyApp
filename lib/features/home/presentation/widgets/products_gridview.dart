@@ -1,21 +1,16 @@
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/widgets/product_item.dart';
+import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/home/presentation/screens/details_view.dart';
 import 'package:clothshop/features/home/presentation/widgets/product_grid_skeleton.dart';
-import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsGridView extends StatelessWidget {
-  const ProductsGridView({
-    super.key,
-    required this.categoryId,
-  });
-  final String categoryId;
-
-
+  const ProductsGridView({super.key, required this.categoryId});
+  final String categoryId; 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +29,8 @@ class ProductsGridView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: BlocProvider.value(
-                value: sl<ProductsCubit>()..getProducts(categoryId),
+              child: BlocProvider(
+                create: (context) => sl<ProductsCubit>()..getProducts( categoryId),
                 child: BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
                     if (state is ProductsLoaded) {
@@ -44,7 +39,9 @@ class ProductsGridView extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.03),
+                            padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.03,
+                            ),
                             child: Row(
                               children: [
                                 const Text(
@@ -69,27 +66,30 @@ class ProductsGridView extends StatelessWidget {
                           const SizedBox(height: 20),
                           Expanded(
                             child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 0.75,
-                              ),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 0.75,
+                                  ),
+                              physics: const BouncingScrollPhysics(),
                               itemCount: state.products.length,
                               itemBuilder: (context, index) {
-                                final ProductEntity product = state.products[index];
+                                final ProductEntity product =
+                                    state.products[index];
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DetailsView(product: product),
+                                        builder:
+                                            (context) =>
+                                                DetailsView(product: product),
                                       ),
                                     );
                                   },
-                                  child: ProductItem(
-                                    productEntity: product,
-                                  ),
+                                  child: ProductItem(productEntity: product),
                                 );
                               },
                             ),

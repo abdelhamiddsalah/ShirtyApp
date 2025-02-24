@@ -21,7 +21,10 @@ class CategoryItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductsGridView(categoryId: category.id)),
+          MaterialPageRoute(
+            builder:
+                (context) =>  ProductsGridView(categoryId: category.id,),
+          ),
         );
       },
       child: Padding(
@@ -41,11 +44,14 @@ class CategoryItem extends StatelessWidget {
                   ),
                 ],
               ),
-              child: ClipOval( // قص الصورة لتكون دائرية
+              child: ClipOval(
+                // قص الصورة لتكون دائرية
                 child: CachedNetworkImage(
                   imageUrl: category.image.toString(),
                   fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
+                  errorWidget:
+                      (context, url, error) =>
+                          const Icon(Icons.error, color: Colors.red),
                 ),
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../features/cart/data/models/cart_model.dart';
+import 'features/cart/data/models/cart_item_model.dart';
 import '../../features/notifications/data/models/notification_model.dart';
 
 class HiveHelper {
@@ -39,14 +39,14 @@ class HiveHelper {
 
   static Future<void> _openBoxes() async {
     await Future.wait([
-      Hive.openBox<CartModel>('cartBox'),
+      Hive.openBox<CartItemModel>('cartBox'),
       Hive.openBox<NotificationModel>('notificationsBox'),
     ]);
   }
 
   static Future<void> closeBoxes() async {
     await Future.wait([
-      Hive.box<CartModel>('cartBox').close(),
+      Hive.box<CartItemModel>('cartBox').close(),
       Hive.box<NotificationModel>('notificationsBox').close(),
     ]);
   }

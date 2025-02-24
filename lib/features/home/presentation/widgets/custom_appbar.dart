@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
@@ -19,6 +21,7 @@ class CustomAppbarinhome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   //  final cartCubit = sl<CartCubit>(); 
     return SizedBox(
       height: screenHeight * 0.08,
       child: Row(
@@ -37,10 +40,9 @@ class CustomAppbarinhome extends StatelessWidget {
                     ProfileCubit.KEY_PROFILE_IMAGE,
                   );
                 }
-
+    
                 return GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: CircleAvatar(
                     radius: screenHeight * 0.03,
                     backgroundImage:
@@ -56,7 +58,7 @@ class CustomAppbarinhome extends StatelessWidget {
               },
             ),
           ),
-
+    
           // Men Text Container
           Container(
             decoration: BoxDecoration(
@@ -75,16 +77,43 @@ class CustomAppbarinhome extends StatelessWidget {
               ),
             ),
           ),
-
+    
           // Cart Icon
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.cart);
+          Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.cart);
+                },
+                child: Stack(
+                  children: [
+                    FilledConatiner(
+                      screenWidth: screenWidth,
+                      icon: Icons.shopping_bag_outlined,
+                    ),
+                 
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                         '0',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
             },
-            child: FilledConatiner(
-              screenWidth: screenWidth,
-              icon: Icons.shopping_bag_outlined,
-            ),
           ),
         ],
       ),

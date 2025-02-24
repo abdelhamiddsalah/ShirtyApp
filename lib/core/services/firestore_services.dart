@@ -1,5 +1,4 @@
-import 'package:clothshop/features/cart/data/models/cart_model.dart';
-import 'package:clothshop/features/checkout/data/models/address_model.dart';
+import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
 import 'package:clothshop/features/orders/data/models/addtocart_model.dart';
 import 'package:clothshop/features/reviews/data/models/review_model.dart';
@@ -151,7 +150,7 @@ Future<Either> addToCart(AddtocartModel addtocartModel) async {
   }
 }
 
-Future<List<CartModel>> getCarts() async {
+Future<List<CartItemModel>> getCarts() async {
   try {
     var user =FirebaseAuth.instance.currentUser;
     var result = await FirebaseFirestore.instance
@@ -161,7 +160,7 @@ Future<List<CartModel>> getCarts() async {
         .get();
 
     return result.docs
-        .map((doc) => CartModel.fromJson(doc.data()))
+        .map((doc) => CartItemModel.fromJson(doc.data()))
         .toList();
   } catch (e) {
     print('Error fetching carts: $e');

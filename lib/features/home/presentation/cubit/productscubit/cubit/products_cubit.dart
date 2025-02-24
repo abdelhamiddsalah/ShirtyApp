@@ -18,7 +18,8 @@ class ProductsCubit extends Cubit<ProductsState> {
   final GetTopsellingProducts gettopsellingproductUsecase;
   final GetAllProductsUsecase getAllProductsUsecase;
   final GetproductsBypriceUsecase getproductsBypriceUsecase;
-  ProductsCubit(this.productsUseCase, this.newProductsUsecase, this.getAllProductsUsecase, this.getproductsBypriceUsecase, this.gettopsellingproductUsecase) : super(ProductsInitial());
+  ProductsCubit(this.productsUseCase, this.newProductsUsecase, 
+  this.getAllProductsUsecase, this.getproductsBypriceUsecase, this.gettopsellingproductUsecase) : super(ProductsInitial());
 
   Future<void> getProducts(String categoryId) async {
     emit(ProductsLoading());
