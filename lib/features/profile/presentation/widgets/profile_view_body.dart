@@ -1,10 +1,12 @@
 import 'package:clothshop/config/extentions/extension.dart';
+import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/profile_cubit.dart';
 import 'package:clothshop/features/profile/presentation/widgets/complaint_widget.dart';
 import 'package:clothshop/features/profile/presentation/widgets/profile_header.dart';
 import 'package:clothshop/features/profile/presentation/widgets/profile_info_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
@@ -21,7 +23,7 @@ class ProfileViewBody extends StatelessWidget {
               errormessage(context, state.message);
             }
             if (state is ProfileLogout) {
-              Navigator.of(context).pushReplacementNamed('/login');
+              GoRouter.of(context).go(Routes.login);
             }
           },
           builder: (context, state) {

@@ -2,6 +2,7 @@ import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/prof
 import 'package:clothshop/features/profile/presentation/widgets/profile_info_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileInfoList extends StatelessWidget {
   const ProfileInfoList({super.key});
@@ -56,11 +57,11 @@ class ProfileInfoList extends StatelessWidget {
         content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => GoRouter.of(context).pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () =>GoRouter.of(context).pop(),
             child: const Text('Logout'),
           ),
         ],

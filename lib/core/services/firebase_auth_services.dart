@@ -6,7 +6,7 @@ class FirebaseAuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// إنشاء مستخدم جديد
+  ///------------------------------------------------------------------------ إنشاء مستخدم جديد
   Future<String> createNewUser(String email, String password) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
@@ -41,7 +41,7 @@ class FirebaseAuthServices {
     }
   }
 
-  /// تسجيل دخول المستخدم
+  //--------------------------------------------------------------- تسجيل دخول المستخدم
   Future<User> signInUser(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
@@ -59,7 +59,6 @@ class FirebaseAuthServices {
 
       // حفظ FCM Token
       await saveTokenToDatabase(user.uid);
-
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -75,7 +74,7 @@ class FirebaseAuthServices {
       throw Exception('Failed to sign in user: $e');
     }
   }
-
+//---------------------------------------------------------------------------------------------------
   /// إعادة تعيين كلمة المرور
   Future<bool> forgetPasswordService(String email) async {
     try {
@@ -93,8 +92,7 @@ class FirebaseAuthServices {
       throw Exception('Failed to send password reset email: $e');
     }
   }
-
-  /// التحقق مما إذا كان المستخدم مسجل دخول
+/// ----------------------------------------------------------------------------------------------التحقق مما إذا كان المستخدم مسجل دخول
   Future<bool> isLoggedIn() async {
     try {
       final user = _auth.currentUser;

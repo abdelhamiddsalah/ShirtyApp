@@ -1,9 +1,9 @@
 import 'package:clothshop/features/authintication/domain/entities/signup_entity.dart';
 
 class SignupModel extends SignupEntity {
-  const SignupModel({required super.firstname, 
+  const SignupModel(super.userId, {required super.firstname, 
   required super.lastname, required super.email,
-   required super.password, required super.age, required super.userId});
+   required super.password, required super.age});
 
   factory SignupModel.fromEntity(SignupEntity entity) {
     return SignupModel(
@@ -12,7 +12,7 @@ class SignupModel extends SignupEntity {
       email: entity.email,
       password: entity.password,
       age: entity.age,
-      userId: entity.userId,
+       entity.userId
     );
   }
 
@@ -23,7 +23,7 @@ class SignupModel extends SignupEntity {
       email: json['email'],
       password: json['password'],
       age: json['age'],
-      userId: json['userId'],
+      json['userId']
     );
   }
 
@@ -33,7 +33,7 @@ class SignupModel extends SignupEntity {
     'email': email,
     'password': password,
     'age': age,
-    'userId': userId,
+    'userId': userId
   };
 
  SignupModel copyWith({
@@ -45,12 +45,12 @@ class SignupModel extends SignupEntity {
     String? age,
   }) {
     return SignupModel(
-      userId: userId ?? this.userId, // ✅ تحديث userId عند النسخ
       firstname: firstname ?? this.firstname,
       lastname: lastname ?? this.lastname,
       email: email ?? this.email,
       password: password ?? this.password,
       age: age ?? this.age,
+      userId ?? this.userId
     );
   }
 

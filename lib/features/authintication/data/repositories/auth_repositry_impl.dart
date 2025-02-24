@@ -16,7 +16,7 @@ class AuthRepositryImpl extends AuthRepositries {
   AuthRepositryImpl({required this.firebaseAuthServices});
 
   @override
- Future<Either<Failure, SignupEntity>> signup(SignupEntity signupentity) async {
+ Future<Either<Failure, SignupModel>> signup(SignupEntity signupentity) async {
   try {
     // إنشاء مستخدم جديد في Firebase Authentication والحصول على UID
     String userId = await firebaseAuthServices.createNewUser(
@@ -31,7 +31,7 @@ class AuthRepositryImpl extends AuthRepositries {
       email: signupentity.email,
       password: signupentity.password,
       age: signupentity.age,
-      userId: userId, // ✅ تخزين UID في SignupModel
+      userId,
     );
 
     // حفظ بيانات المستخدم في Firestore باستخدام UID
@@ -41,10 +41,9 @@ class AuthRepositryImpl extends AuthRepositries {
       'lastName': signupModel.lastname,
       'email': signupModel.email,
       'age': signupModel.age,
-      'password': signupModel.password, // ⚠️ لا يُفضل تخزين كلمات المرور
     });
 
-    return Right(signupModel as SignupEntity); // ✅ إرجاع SignupModel مع UID
+    return Right(signupModel); // ✅ إرجاع SignupModel مع UID
   } catch (e) {
     return Left(Failure(e.toString()));
   }
@@ -52,11 +51,11 @@ class AuthRepositryImpl extends AuthRepositries {
 
 
   @override
-  Future<Either<Failure, LoginEntity>> login(LoginEntity loginentity) async {
+  Future<Either<Failure, LoginModel>> login(LoginEntity loginentity) async {
     try {
       LoginModel loginModel = LoginModel(email: loginentity.email, password: loginentity.password);
       await firebaseAuthServices.signInUser(loginentity.email, loginentity.password);
-      return Right(loginModel as LoginEntity);
+      return Right(loginModel);
     } catch (e) {
       return Left(Failure(e.toString()));
     }

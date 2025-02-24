@@ -4,6 +4,7 @@ import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -94,7 +95,7 @@ class ProfileHeader extends StatelessWidget {
               leading: const Icon(Icons.photo_library),
               title: const Text('Choose from Gallery'),
               onTap: () {
-                Navigator.pop(bottomSheetContext);
+             GoRouter.of(context).pop();
                 cubit.pickImage(ImageSource.gallery);
               },
             ),
@@ -102,7 +103,8 @@ class ProfileHeader extends StatelessWidget {
               leading: const Icon(Icons.camera_alt),
               title: const Text('Take a Photo'),
               onTap: () {
-                Navigator.pop(bottomSheetContext);
+               // Navigator.pop(bottomSheetContext);
+                 GoRouter.of(context).pop();
                 cubit.pickImage(ImageSource.camera);
               },
             ),
