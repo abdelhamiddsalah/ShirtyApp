@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
-import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +10,9 @@ class ShopByCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      //final categoriesCubit = sl<CategoriesCubit>(); // استدعاء الكيوبت
     final screenhight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -29,10 +28,14 @@ class ShopByCategories extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_ios),
               ),
               SizedBox(height: screenhight * 0.02),
-              Text('Shop By Categories', style: TextStyles.textinhome.copyWith(fontSize: screenwidth * 0.06)),
+              Text(
+                'Shop By Categories',
+                style: TextStyles.textinhome.copyWith(
+                  fontSize: screenwidth * 0.06,
+                ),
+              ),
               SizedBox(height: screenhight * 0.02),
               BlocBuilder<CategoriesCubit, CategoriesState>(
-                 bloc: sl<CategoriesCubit>(), 
                 builder: (context, state) {
                   if (state is CategoriesLoading) {
                     return Center(
@@ -57,14 +60,18 @@ class ShopByCategories extends StatelessWidget {
                               );
                             },
                             child: Container(
-                              width:  screenwidth,
+                              width: screenwidth,
                               height: screenhight * 0.1,
-                              margin: EdgeInsets.only(bottom: screenhight * 0.02),
+                              margin: EdgeInsets.only(
+                                bottom: screenhight * 0.02,
+                              ),
                               decoration: BoxDecoration(
-                                 color: const Color(0x1AFFFFFF),
+                                color: const Color(0x1AFFFFFF),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: screenwidth * 0.05),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenwidth * 0.05,
+                              ),
                               child: Row(
                                 children: [
                                   Container(
@@ -75,16 +82,27 @@ class ShopByCategories extends StatelessWidget {
                                       color: Colors.grey[300],
                                     ),
                                     child: CachedNetworkImage(
-                                      imageUrl: state.categories[index].image.toString(),
+                                      imageUrl:
+                                          state.categories[index].image
+                                              .toString(),
                                       fit: BoxFit.cover,
-                                      placeholder: (context, url) => const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
-                                    )
+                                      placeholder:
+                                          (context, url) =>
+                                              const CircularProgressIndicator(),
+                                      errorWidget:
+                                          (context, url, error) => const Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
+                                    ),
                                   ),
                                   SizedBox(width: screenwidth * 0.05),
                                   Text(
                                     state.categories[index].title.toString(),
-                                    style: TextStyles.textinhome.copyWith(fontSize:  screenwidth * 0.04,fontWeight: FontWeight.w200),
+                                    style: TextStyles.textinhome.copyWith(
+                                      fontSize: screenwidth * 0.04,
+                                      fontWeight: FontWeight.w200,
+                                    ),
                                   ),
                                 ],
                               ),

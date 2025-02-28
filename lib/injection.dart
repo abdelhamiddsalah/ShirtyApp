@@ -1,6 +1,7 @@
 import 'package:clothshop/core/network/network_info.dart';
 import 'package:clothshop/core/services/firebase_add_services.dart';
 import 'package:clothshop/core/services/firebase_auth_services.dart';
+import 'package:clothshop/core/services/firebase_topsellingandnewin_services.dart';
 import 'package:clothshop/core/services/firestore_services.dart';
 import 'package:clothshop/features/authintication/data/repositories/auth_repositry_impl.dart';
 import 'package:clothshop/features/authintication/domain/repositories/auth_repositries.dart';
@@ -40,10 +41,6 @@ import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/notifications/data/models/notification_model.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
-import 'package:clothshop/features/orders/data/repositories/addtocart_repositry_Impl.dart';
-import 'package:clothshop/features/orders/domain/repositories/addtocart_repositry.dart';
-import 'package:clothshop/features/orders/domain/usecases/addtocart_usecase.dart';
-import 'package:clothshop/features/orders/presentation/cubit/orders_cubit.dart';
 import 'package:clothshop/features/profile/data/datasources/local_profile_datasource.dart';
 import 'package:clothshop/features/profile/data/datasources/remote_profile_datasource.dart';
 import 'package:clothshop/features/profile/data/repositories/profile_repositry_Impl.dart';
@@ -71,6 +68,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAuthServices());
   sl.registerLazySingleton(() => FirestoreService(sl())); // تأكد من تسجيل FirestoreService
   sl.registerLazySingleton(()=> FirebaseAddServices());
+  sl.registerLazySingleton(()=> FirebaseTopsellingandnewinServices());
 
   // 2️⃣ تسجيل `AuthRepositries`
   sl.registerLazySingleton<AuthRepositries>(
@@ -95,7 +93,7 @@ Future<void> init() async {
     ),
   );
 
-  sl.registerLazySingleton<AddtocartRepositry>(()=> AddtocartRepositryImpl(firestoreService: sl()));
+  //sl.registerLazySingleton<cartr>(()=> AddtocartRepositryImpl(firestoreService: sl()));
 
   sl.registerLazySingleton<CartRepositry>(
     () => CartRepositryImpl(
@@ -127,7 +125,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Getproductsbytitle(sl()));
   sl.registerLazySingleton(() => GetAllProductsUsecase(sl()));
   sl.registerLazySingleton(()=> GetproductsBypriceUsecase(sl()));
-  sl.registerLazySingleton(()=> AddtocartUsecase(addtocartRepositry: sl()));
+ // sl.registerLazySingleton(()=> AddcartUsecase( sl()));
   sl.registerLazySingleton(()=> GetcartsUsecase(sl()));
   sl.registerLazySingleton(()=> DeletecartUsecase(sl()));
   sl.registerLazySingleton(()=> ProfileUsecase(profileRepositry: sl()));
@@ -148,9 +146,10 @@ Future<void> init() async {
   sl.registerFactory(() => AuthinticationCubit(sl()));
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
-    sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
+   // sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
+  sl.registerFactory(() => CategoriesCubit(sl()));
   sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl(),sl()));
-  sl.registerLazySingleton(() => CartCubit( sl(),sl()));
+  sl.registerLazySingleton(() => CartCubit( sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
 sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
@@ -162,7 +161,7 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
     productId: productId, // Pass the productId here
   ),
 );
-sl.registerFactory(() => OrdersCubit(sl()));
+//sl.registerFactory(() => OrdersCubit(sl()));
 sl.registerFactory(() => ProfileCubit(sl(), sl()));
 sl.registerFactory(() => ComplaintCubit(sl()));
 sl.registerFactory(() => CheckoutCubit(sl(),sl()));
@@ -171,7 +170,7 @@ sl.registerFactory(() => CheckoutCubit(sl(),sl()));
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasourceImpl(sl())); // هنا يتم تسجيل RemoteDatasource
   sl.registerLazySingleton<LocalDatasource>(() => LocalDatasourceImpl(sl()));
   sl.registerLazySingleton<LocalProductdatasource>(()=> LocalProductdatasourceImpl(sharedPreferences: sl()));
-  sl.registerLazySingleton<RemoteProductdatasource>(() => RemoteProductdatasourceImpl(sl()));
+  sl.registerLazySingleton<RemoteProductdatasource>(() => RemoteProductdatasourceImpl(sl(),sl()));
   sl.registerLazySingleton<RemoteDatasourceCart>(() => RemoteDatasourceCartImpl( firestoreService: sl()));
   sl.registerLazySingleton<LocalDatasourceCart>(() => LocalDatasourceCartImpl( sl()));
   sl.registerLazySingleton<RemoteProfileDatasource>(() => RemoteProfileDatasourceImpl(firebaseAuthServices: sl()));

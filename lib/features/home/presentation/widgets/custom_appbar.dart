@@ -5,6 +5,7 @@ import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/widgets/filled_container.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/profile/presentation/cubit/profile_cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,6 @@ class CustomAppbarinhome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   //  final cartCubit = sl<CartCubit>(); 
     return SizedBox(
       height: screenHeight * 0.08,
       child: Row(
@@ -41,7 +41,7 @@ class CustomAppbarinhome extends StatelessWidget {
                     ProfileCubit.KEY_PROFILE_IMAGE,
                   );
                 }
-    
+
                 return GestureDetector(
                   onTap: () {},
                   child: CircleAvatar(
@@ -59,7 +59,7 @@ class CustomAppbarinhome extends StatelessWidget {
               },
             ),
           ),
-    
+
           // Men Text Container
           Container(
             decoration: BoxDecoration(
@@ -78,44 +78,69 @@ class CustomAppbarinhome extends StatelessWidget {
               ),
             ),
           ),
-    
+
           // Cart Icon
-          Builder(
-            builder: (context) {
-              return GestureDetector(
-                onTap: () {
-                  context.push(Routes.cart);
-                },
-                child: Stack(
-                  children: [
-                    FilledConatiner(
-                      screenWidth: screenWidth,
-                      icon: Icons.shopping_bag_outlined,
-                    ),
-                 
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                         '0',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
+       // Cart Icon
+GestureDetector(
+  onTap: () {
+    context.push(Routes.cart);
+  },
+  child: Stack(
+    children: [
+      FilledConatiner(
+        screenWidth: screenWidth,
+        icon: Icons.shopping_bag_outlined,
+      ),
+
+      Positioned(
+        top: 0,
+        right: 0,
+        child: Builder(
+          builder: (context) {
+            // Print this message to confirm the widget is being rebuilt
+            print('Building cart badge widget');
+            
+            final cartCubit = sl<CartCubit>();
+            // Try to access cart items directly
+            print('Direct cart items count: ${cartCubit.cartItems.length}');
+            
+            return BlocConsumer<CartCubit, CartState>(
+              
+              listener: (context, state) {
+                // Print in the listener to catch all state changes
+                print('Cart state changed: $state');
+                if (state is CartLoaded) {
+                  print('CartLoaded state items count: ${state.cartItems.length}');
+                }
+              },
+              builder: (context, state) {
+                int itemCount = cartCubit.cartItems.length; // Use direct access
+                print('Building with cart count: $itemCount');
+                
+                return itemCount > 0 
+                  ? Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        itemCount.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
                         ),
                       ),
-                  ],
-                ),
-              );
-            },
-          ),
+                    )
+                  : const SizedBox(); // Hide if cart is empty
+              },
+            );
+          }
+        ),
+      ),
+    ],
+  ),
+),
         ],
       ),
     );

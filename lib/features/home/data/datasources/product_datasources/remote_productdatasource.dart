@@ -1,3 +1,4 @@
+import 'package:clothshop/core/services/firebase_topsellingandnewin_services.dart';
 import 'package:clothshop/core/services/firestore_services.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
 
@@ -9,19 +10,20 @@ abstract class RemoteProductdatasource {
 
 class RemoteProductdatasourceImpl implements RemoteProductdatasource {
   final FirestoreService firestoreService;
+  final FirebaseTopsellingandnewinServices firebaseTopsellingandnewinServices;
 
-  RemoteProductdatasourceImpl(this.firestoreService);
+  RemoteProductdatasourceImpl(this.firestoreService, this.firebaseTopsellingandnewinServices);
   @override
   Future<List<ProductModel>> getremoteProducts(String categoryId) {
     return firestoreService.getProducts( categoryId);
   }
   @override
   Future<List<ProductModel>> getnewinProducts() {
-    return firestoreService.fetchnewinProducts();
+    return firebaseTopsellingandnewinServices.getNewin();
   }
   
   @override
   Future<List<ProductModel>> gettopsellingProducts() {
-    return firestoreService.getatopSalesproducts();
+    return firebaseTopsellingandnewinServices.getTopselling();
   }
 }

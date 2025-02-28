@@ -23,7 +23,7 @@ class SplashscreenView extends StatelessWidget {
       child: BlocListener<SplashscreenCubit, SplashscreenState>(
         listener: (context, state) {
           if (state is Authinticated) {
-            context.go(Routes.login);
+            context.go(Routes.home);
           } else if (state is UnAuthinticated) {
             context.go(Routes.login);
           }

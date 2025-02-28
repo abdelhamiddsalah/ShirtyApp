@@ -1,11 +1,10 @@
 import 'package:clothshop/config/routing/routes.dart';
-import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
-import 'package:clothshop/features/home/presentation/widgets/category_loding_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:clothshop/features/home/presentation/widgets/texts_in_homeview.dart';
 import 'package:clothshop/features/home/presentation/widgets/category_list.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeCategories extends StatelessWidget {
   final double screenHeight;
@@ -19,7 +18,7 @@ class HomeCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesCubit = sl<CategoriesCubit>(); // استدعاء الكيوبت
+   final categoriesCubit = context.read<CategoriesCubit>(); // استخدم الكيوبت الموجود بالفعل
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,13 +27,15 @@ class HomeCategories extends StatelessWidget {
         SizedBox(
           height: screenHeight * 0.12,
           child: BlocBuilder<CategoriesCubit, CategoriesState>(
-             bloc: categoriesCubit, // استخدم نفس الكيوبت
+            bloc: categoriesCubit,
+            // bloc: categoriesCubit, // استخدم نفس الكيوبت
             builder: (context, state) {
               if (state is CategoriesLoading) {
-                return CategoryLoadingShimmer(
-                  screenWidth: screenWidth,
-                  screenHeight: screenHeight,
-                );
+                // return CategoryLoadingShimmer(
+                //  screenWidth: screenWidth,
+                //  screenHeight: screenHeight,
+                //  );
+                return const CircularProgressIndicator();
               } else if (state is CategoriesLoaded) {
                 return CategoryList(
                   categories: state.categories,
@@ -61,9 +62,7 @@ class HomeCategories extends StatelessWidget {
 }
 
 class NewWidget extends StatelessWidget {
-  const NewWidget({
-    super.key,
-  });
+  const NewWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,7 @@ class NewWidget extends StatelessWidget {
       text: 'Categories',
       text2: 'See All',
       onTap: () {
-      Navigator.pushNamed(context, Routes.shopbycategories);
+       GoRouter.of(context).push(Routes.shopbycategories);
 
       },
     );

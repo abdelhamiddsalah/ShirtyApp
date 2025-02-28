@@ -22,7 +22,7 @@ class LocalDatasourceImpl implements LocalDatasource {
       if (categoriesJson != null && categoriesJson.isNotEmpty) {
         List<dynamic> decodedList = json.decode(categoriesJson);
         return decodedList
-            .map((category) => CategoryModel.fromJson(category, category['id']))
+            .map((category) => CategoryModel.fromJson(category))
             .toList();
       }
       return []; // Return empty list if no cached data

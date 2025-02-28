@@ -7,11 +7,11 @@ class CategoryModel extends CategoryEntity {
     required super.title, required super.productPath, required super.id,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json, String documentId) {
+  factory CategoryModel.fromJson(Map<String, dynamic> json,) {
     return CategoryModel(
       image: json['imageUrl'] ?? '',
       title: json['title'] ?? '',
-      productPath: json['productPath'] ?? '', id: documentId, // قراءة المسار من JSON
+      productPath: json['productPath'] ?? '', id:json['id'] , // قراءة المسار من JSON
     );
   }
 

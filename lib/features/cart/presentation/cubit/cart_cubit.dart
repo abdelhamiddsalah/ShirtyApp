@@ -1,7 +1,4 @@
-import 'package:clothshop/features/cart/domain/usecases/getcarts_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:clothshop/features/cart/domain/usecases/addcart_usecase.dart';
 
@@ -9,262 +6,92 @@ part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   final AddcartUsecase addcartUsecase;
-  final GetcartsUsecase getcartsUsecase;
-  CartCubit(this.addcartUsecase, this.getcartsUsecase) : super(CartInitial()){
-    getcarts();
+
+  CartCubit(this.addcartUsecase) : super(CartInitial());
+  final List<CartItemEntity> cartItems = [];
+
+  /// 🔹 دالة لحساب السعر الإجمالي بناءً على السعر والكمية
+  double calculateUpdatedTotalPrice(double price, int quantity) {
+    return price * quantity;
   }
 
-  final List<CartItemEntity> _cartItems = [];
-  List<CartItemEntity> get cartItems => _cartItems;
+  /// 🔹 دالة لتحديث العنصر داخل السلة وإعادة الإرسال للحالة
+  void updateCartItemQuantity(int index, int newQuantity) {
+    if (index >= 0 && index < cartItems.length) {
+      final cart = cartItems[index];
 
-  double get totalCartPrice => _cartItems.fold(
-        0,
-        (sum, item) => sum + item.totalPrice,
+      double updatedTotalPrice = calculateUpdatedTotalPrice(cart.price, newQuantity);
+
+      cartItems[index] = cart.copyWith(
+        quantity: newQuantity,
+        totalPrice: updatedTotalPrice,
       );
 
-  Future<void> addToCart(CartItemModel cart, String userId) async {
-    try {
-      emit(CartLoading());
-      
-      // Check if item already exists in cart
-      final existingItemIndex = _cartItems.indexWhere(
-        (item) => item.product.productId == cart.product.productId,
-      );
-
-      if (existingItemIndex != -1) {
-        // Update quantity if item exists
-        await _updateCartItemQuantity(
-          _cartItems[existingItemIndex],
-          _cartItems[existingItemIndex].quantity + 1,
-          userId,
-        );
-      } else {
-        // Add new item if it doesn't exist
-        final result = await addcartUsecase.call(cart, userId);
-        result.fold(
-          (failure) => emit(CartError(failure.message)),
-          (cartItem) {
-            _cartItems.add(cartItem);
-            _emitUpdatedState();
-          },
-        );
-      }
-    } catch (e) {
-      emit(CartError(e.toString()));
+      emit(CartUpdated(cartItems));
     }
   }
 
-  Future<void> incrementQuantity(CartItemEntity cartItem, String userId) async {
-    try {
-      final index = _cartItems.indexWhere(
-        (item) => item.product.productId == cartItem.product.productId,
-      );
-      
-      if (index != -1) {
-        await _updateCartItemQuantity(
-          cartItem,
-          cartItem.quantity + 1,
-          userId,
-        );
-      }
-    } catch (e) {
-      emit(CartError(e.toString()));
-    }
-  }
-
-  Future<void> decrementQuantity(CartItemEntity cartItem, String userId) async {
-    try {
-      final index = _cartItems.indexWhere(
-        (item) => item.product.productId == cartItem.product.productId,
-      );
-      
-      if (index != -1) {
-        if (cartItem.quantity > 1) {
-          await _updateCartItemQuantity(
-            cartItem,
-            cartItem.quantity - 1,
-            userId,
-          );
-        } else {
-          await removeFromCart(cartItem, userId);
-        }
-      }
-    } catch (e) {
-      emit(CartError(e.toString()));
-    }
-  }
-
-  Future<void> removeFromCart(CartItemEntity cartItem, String userId) async {
-  try {
-    _cartItems.removeWhere(
-      (item) => item.product.productId == cartItem.product.productId,
-    );
-    _emitUpdatedState(); // لا نستخدم CartLoading()
-  } catch (e) {
-    emit(CartError(e.toString()));
-  }
-}
-
-
-  Future<void> _updateCartItemQuantity(
-    CartItemEntity cartItem,
-    int newQuantity,
-    String userId,
-  ) async {
-    try {
-      emit(CartLoading());
-      // Add your update quantity API call here if needed
-      
-      final index = _cartItems.indexWhere(
-        (item) => item.product.productId == cartItem.product.productId,
-      );
-      
-      if (index != -1) {
-        _cartItems[index] = cartItem.copyWith(
-          quantity: newQuantity,
-          totalPrice: cartItem.product.price.toDouble() * newQuantity,
-        );
-        _emitUpdatedState();
-      }
-    } catch (e) {
-      emit(CartError(e.toString()));
-    }
-  }
-
-  void _emitUpdatedState() {
-    emit(CartLoaded(
-      List.from(_cartItems),
-      _calculateTotalQuantity(),
-      totalCartPrice,
-    ));
-  }
-
-  int _calculateTotalQuantity() {
-    return _cartItems.fold(0, (sum, item) => sum + item.quantity);
-  }
-
-  void clearCart() {
-    _cartItems.clear();
-    _emitUpdatedState();
-  }
-
- Future<void> getcarts() async {
-  emit(CartLoading());
-  final result = await getcartsUsecase.call();
-  result.fold(
-    (failure) => emit(CartError(failure.message)), 
-    (carts) {
-      _cartItems.clear();
-      _cartItems.addAll(carts);
-      int totalQuantity = carts.fold(0, (sum, item) => sum + item.quantity);
-      double totalPrice = carts.fold(0, (sum, item) => sum + item.totalPrice);
-      emit(CartLoaded(carts, totalQuantity, totalPrice));
-    }
+ Future<void> addToCart(CartItemEntity cart, String userId) async {
+   print('Adding item to cart: ${cart.id}, current count: ${cartItems.length}');
+  final existingItemIndex = cartItems.indexWhere((item) => 
+    item.id == cart.id && 
+    item.selectedSize == cart.selectedSize && 
+    item.selectedColor == cart.selectedColor
   );
-}
-
-}
-
-/*int quantity = 1;
-Future<void> getcarts() async {
-  emit(CartLoading());
-  final result = await getcartsUsecase.call();
-  result.fold(
-    (failure) => emit(CartError(failure.message)), 
-    (carts) {
-      int totalQuantity = carts.fold(0, (sum, item) => sum + item.quantity);
-      emit(CartLoaded(carts, totalQuantity));
-    }
-  );
-}
-
-
-  Future<void> deletecart(String cartId) async {
-  if (state is CartLoaded) {
-    final currentState = state as CartLoaded;
-    final updatedCartItems = List<CartItemEntity>.from(currentState.cartItems);
+  
+  if (existingItemIndex != -1) {
+    // إذا كان المنتج موجودًا، قم بتحديث الكمية فقط
+    final existingItem = cartItems[existingItemIndex];
     
-    final itemIndex = updatedCartItems.indexWhere((item) => item.productId == cartId);
-    if (itemIndex == -1) return;
-
-    final removedItem = updatedCartItems.removeAt(itemIndex);
-    int updatedQuantity = currentState.quantity - removedItem.quantity;
-
-    emit(CartLoaded(updatedCartItems, updatedQuantity));
-
-    final result = await deletecartUsecase.call(cartId);
-    result.fold(
-      (failure) {
-        updatedCartItems.insert(itemIndex, removedItem);
-        emit(CartLoaded(updatedCartItems, currentState.quantity));
-        emit(CartError(failure.message));
-      },
-      (_) {},
+    int updatedQuantity = existingItem.quantity + cart.quantity;
+    double updatedTotalPrice = calculateUpdatedTotalPrice(existingItem.price, updatedQuantity);
+    
+    final updatedItem = existingItem.copyWith(
+      quantity: updatedQuantity,
+      totalPrice: updatedTotalPrice,
     );
+    
+    final result = await addcartUsecase.call(updatedItem, userId);
+    result.fold(
+      (failure) => emit(CartError(failure.message)),
+      (cartItem) {
+        cartItems[existingItemIndex] = cartItem;
+        emit(CartLoaded(List.from(cartItems))); // ✅ تحديث عدد المنتجات
+      },
+    );
+  } else {
+    // إضافة منتج جديد للسلة
+    final result = await addcartUsecase.call(cart, userId);
+    result.fold(
+      (failure) => emit(CartError(failure.message)),
+      (cartItem) {
+        cartItems.add(cartItem);
+        emit(CartLoaded(List.from(cartItems))); // ✅ تحديث عدد المنتجات
+      },
+    );
+  }
+  print('After adding, cart count: ${cartItems.length}');
+} 
+
+
+ void increaseQuantity(int index) {
+    if (index >= 0 && index < cartItems.length) {
+      updateCartItemQuantity(index, cartItems[index].quantity + 1);
+    }
+  }
+
+  void decreaseQuantity(int index) {
+    if (index >= 0 && index < cartItems.length && cartItems[index].quantity > 1) {
+      updateCartItemQuantity(index, cartItems[index].quantity - 1);
+       emit(CartLoaded(List.from(cartItems)));
+    }
+  }
+
+  void updateQuantity(int index, int additionalQuantity) {
+    if (index >= 0 && index < cartItems.length) {
+      updateCartItemQuantity(index, cartItems[index].quantity + additionalQuantity);
+       emit(CartLoaded(List.from(cartItems)));
+    }
   }
 }
 
-
-  // Add this method to handle cart updates from other screens
-  void refreshCart() {
-    getcarts();
-  }
-
-  Future<void> addtocart(AddtocartModel params, BuildContext context) async {
-  final userid = FirebaseAuth.instance.currentUser;
-  if (userid == null) return;
-
-  final cartRef = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(userid.uid)
-      .collection('cart')
-      .doc(params.productId);
-
-  try {
-    final cartSnapshot = await cartRef.get();
-
-    if (cartSnapshot.exists) {
-      final currentData = cartSnapshot.data() as Map<String, dynamic>;
-      final currentQuantity = currentData['quantity'] as int;
-      final newQuantity = currentQuantity + params.quantity;
-
-      quantity = newQuantity;
-      final updatedCartItems = (state as CartLoaded).cartItems;
-      emit(CartLoaded(updatedCartItems, quantity));
-
-      await cartRef.update({
-        'quantity': newQuantity,
-        'totalprice': params.mainprice * newQuantity,
-      });
-
-    } else {
-      quantity = params.quantity;
-      emit(CartLoaded((state is CartLoaded) ? (state as CartLoaded).cartItems : [], quantity));
-
-      await cartRef.set({
-        'productId': params.productId,
-        'quantity': params.quantity,
-        'productname': params.productname,
-        'mainprice': params.mainprice,
-        'productimage': params.productimage,
-        'productSelectedcolor': params.productSelectedcolor,
-        'productSelectedsize': params.productSelectedsize,
-        'createDate': params.createDate,
-        'totalprice': params.mainprice * params.quantity,
-      });
-
-      // تحديث salescount فقط إذا كان المنتج جديدًا
-      await FirebaseFirestore.instance
-          .collection('Allproducts')
-          .doc(params.productId)
-          .update({
-        'salescount': FieldValue.increment(params.quantity)
-      });
-    }
-
-    /// **تحديث بيانات السلة بعد الإضافة مباشرة**
-    context.read<CartCubit>().getcarts();
-  } catch (e) {
-    emit(CartError(e.toString()));
-  }
-}*/

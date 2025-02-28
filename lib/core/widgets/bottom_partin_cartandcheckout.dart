@@ -2,6 +2,7 @@ import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomPartIncartandcheckout extends StatelessWidget {
   const BottomPartIncartandcheckout({
@@ -54,7 +55,7 @@ class BottomPartIncartandcheckout extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.addreviews);
+                  GoRouter.of(context).go(Routes.addreviews);
                 },
                 child: const Text('Checkout', style: TextStyles.textinhome),
               ),

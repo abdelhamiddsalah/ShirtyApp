@@ -57,15 +57,31 @@ class CartRepositryImpl extends CartRepositry{
     }
   }
   
-  @override
-  Future<Either<Failure, CartItemEntity>> addtocart(CartItemModel cartItem, String userId) async{
+  
+   @override
+  Future<Either<Failure, CartItemEntity>> addtocart(CartItemEntity cartItem, String userId) async {
     try {
-      await firebaseAddServices.addCart(cartItem, userId);
-      return  Right(cartItem);
+     
+    final CartItemModel cartItemModel = CartItemModel(
+      selectedColor: cartItem.selectedColor,
+      selectedSize: cartItem.selectedSize,
+      quantity: cartItem.quantity,
+      totalPrice: cartItem.totalPrice,
+      name: cartItem.name,
+      image: cartItem.image,
+      price: cartItem.price,
+      id: cartItem.id,
+    );
+      await firebaseAddServices.addCartItem(cartItemModel, userId);
+      
+      return Right(cartItem); // إرجاع CartItemEntity وليس CartItemModel
     } catch (e) {
       return Left(CacheFailure('Failed to add product to cart: ${e.toString()}'));
     }
   }
+  
+  
+  
 
 
 }

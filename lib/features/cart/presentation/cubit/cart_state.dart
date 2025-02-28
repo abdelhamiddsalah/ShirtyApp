@@ -1,10 +1,7 @@
 part of 'cart_cubit.dart';
 
-abstract class CartState extends Equatable {
+abstract class CartState  {
   const CartState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class CartInitial extends CartState {}
@@ -13,19 +10,32 @@ class CartLoading extends CartState {}
 
 class CartLoaded extends CartState {
   final List<CartItemEntity> cartItems;
-  final int totalQuantity;
-    final double totalPrice;
-
-  const CartLoaded(this.cartItems, this.totalQuantity, this.totalPrice);
-
-  @override
-  List<Object> get props => [cartItems, totalQuantity];
+  const CartLoaded(this.cartItems);
 }
 
 class CartError extends CartState {
   final String message;
   const CartError(this.message);
-
-  @override
-  List<Object> get props => [message];
 }
+
+class DeleteFromCart extends CartState{
+  final CartItemEntity cartItemEntity;
+  const DeleteFromCart(this.cartItemEntity);
+}
+
+class CartQuantityandTotalpriceUpdated extends CartState {
+   final String newQuantity;
+   final double totalPrice;
+  const CartQuantityandTotalpriceUpdated(this.newQuantity, this.totalPrice);
+}
+
+class Addtocart extends CartState {
+  final CartItemEntity cartItem;
+  const Addtocart(this.cartItem);
+}
+
+class CartUpdated extends CartState {
+  final List<CartItemEntity> cart;
+  const CartUpdated(this.cart);
+}
+

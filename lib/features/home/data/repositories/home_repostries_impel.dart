@@ -5,8 +5,8 @@ import 'package:clothshop/features/home/data/datasources/category_datasources/lo
 import 'package:clothshop/features/home/data/datasources/category_datasources/remote_datasource.dart';
 import 'package:clothshop/features/home/data/datasources/product_datasources/local_productdatasource.dart';
 import 'package:clothshop/features/home/data/datasources/product_datasources/remote_productdatasource.dart';
+import 'package:clothshop/features/home/data/models/category_model.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
-import 'package:clothshop/features/home/domain/entities/category_entity.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/domain/repositories/home_repositry.dart';
 import 'package:dartz/dartz.dart';
@@ -29,7 +29,7 @@ class HomeRepostriesImpel extends HomeRepositry {
 
   /// ✅ جلب الفئات (Categories)
   @override
-  Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
+  Future<Either<Failure, List<CategoryModel>>> getCategories() async {
     try {
       if (await networkInfo.isConnected) {
         return await _fetchRemoteCategories();
@@ -42,7 +42,7 @@ class HomeRepostriesImpel extends HomeRepositry {
   }
 
   /// 🔹 دالة خاصة لجلب البيانات من Firestore
-  Future<Either<Failure, List<CategoryEntity>>> _fetchRemoteCategories() async {
+  Future<Either<Failure, List<CategoryModel>>> _fetchRemoteCategories() async {
     try {
       final categories = await remoteDatasource.getCategories();
       await localDatasource.cacheCategories(categories); // Cache البيانات
@@ -53,7 +53,7 @@ class HomeRepostriesImpel extends HomeRepositry {
   }
 
   /// 🔹 دالة خاصة لجلب البيانات من الكاش
-  Future<Either<Failure, List<CategoryEntity>>> _getLocalCategories() async {
+  Future<Either<Failure, List<CategoryModel>>> _getLocalCategories() async {
     try {
       final categories = await localDatasource.getLastCategories();
       if (categories.isEmpty) {
@@ -65,7 +65,7 @@ class HomeRepostriesImpel extends HomeRepositry {
     }
   }
 
-  /// ✅ جلب المنتجات (Products)
+  /// -----------------------------------------------------------------------------✅ جلب المنتجات (Products)
   @override
   Future<Either<Failure, List<ProductEntity>>> getProducts(String categoryId) async {
     return await _fetchProducts( categoryId );

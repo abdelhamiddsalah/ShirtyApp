@@ -24,14 +24,16 @@ class HomeViewBody extends StatelessWidget {
             /// ✅ الـ App Bar
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: safeHorizontalPadding),
+                padding: EdgeInsets.symmetric(
+                  horizontal: safeHorizontalPadding,
+                ),
                 child: CustomAppbarinhome(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                 ),
               ),
             ),
-
+    
             /// ✅ البحث
             SliverPadding(
               padding: EdgeInsets.symmetric(
@@ -40,31 +42,48 @@ class HomeViewBody extends StatelessWidget {
               ),
               sliver: SliverToBoxAdapter(
                 child: InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SearchView(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(
+                            milliseconds: 500,
+                          ),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const SearchView(),
+                          transitionsBuilder: (
+                            context,
+                            animation,
+                            secondaryAnimation,
+                            child,
+                          ) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      ),
                   child: IgnorePointer(
                     child: CustomTextFormField(
                       readOnly: true,
                       title: 'Search',
-                      prefixIcon: Icon(Icons.search, size: screenWidth * 0.06),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: screenWidth * 0.06,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-
+    
             /// ✅ الفئات (Categories)
             SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: safeHorizontalPadding),
+              padding: EdgeInsets.symmetric(
+                horizontal: safeHorizontalPadding,
+              ),
               sliver: SliverToBoxAdapter(
                 child: HomeCategories(
                   screenHeight: screenHeight,
@@ -72,7 +91,7 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ),
             ),
-
+    
             /// ✅ "Top Selling" العنوان
             SliverPadding(
               padding: EdgeInsets.only(
@@ -83,7 +102,7 @@ class HomeViewBody extends StatelessWidget {
                 child: TextsInHomeview(text: 'Top Selling'),
               ),
             ),
-
+    
             /// ✅ قائمة المنتجات الأكثر مبيعًا
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
@@ -91,17 +110,18 @@ class HomeViewBody extends StatelessWidget {
                 child: TopsellingListview(screenHeight: screenHeight),
               ),
             ),
-
+    
             /// ✅ "New In" العنوان
             SliverPadding(
-              padding: EdgeInsets.only(
-                left: safeHorizontalPadding,
-              ),
+              padding: EdgeInsets.only(left: safeHorizontalPadding),
               sliver: const SliverToBoxAdapter(
-                child: TextsInHomeview(text: 'New In', color: AppColors.primary),
+                child: TextsInHomeview(
+                  text: 'New In',
+                  color: AppColors.primary,
+                ),
               ),
             ),
-
+    
             /// ✅ قائمة المنتجات الجديدة
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
