@@ -17,8 +17,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // تهيئة نظام الإشعارات
-  await NotificationService.initialize();
+try {
+    await NotificationService.initialize();
+    print('✅ تم تهيئة خدمة الإشعارات بنجاح');
+  } catch (e) {
+    print('❌ خطأ في تهيئة خدمة الإشعارات: $e');
+  }
 
   // تهيئة Stripe
   Stripe.publishableKey = ApiKeys.publisibleKey;
@@ -36,5 +40,5 @@ void main() async {
   // تهيئة الاعتمادات الأخرى
   init();
 
-  runApp(Shirty());
+  runApp(const Shirty());
 }

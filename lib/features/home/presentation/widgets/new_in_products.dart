@@ -1,5 +1,5 @@
 import 'package:clothshop/core/widgets/product_item.dart';
-import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
+import 'package:clothshop/features/home/presentation/cubit/topsellingandnewin/cubit/topsellingandnewin_cubit.dart';
 import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,27 +13,27 @@ class NewInProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ProductsCubit>()..getNewProducts(),
-      child: BlocBuilder<ProductsCubit, ProductsState>(
+      create: (context) => sl<TopsellingandnewinCubit>()..getNewProducts(),
+      child: BlocBuilder<TopsellingandnewinCubit, TopsellingandnewinState>(
         builder: (context, state) {
-          if (state is ProductsLoaded) {
+          if (state is TopsellingandnewinLoaded) {
             return SizedBox(
               height: screenHeight * 0.32,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
-                itemCount: state.products.length,
+                itemCount: state.topsellingandnewincubit.length,
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: GestureDetector(
                     onTap: () {
                    GoRouter.of(context).push(
   '/details',
-  extra: state.products[index], // تمرير المنتج عبر extra
+  extra: state.topsellingandnewincubit[index], // تمرير المنتج عبر extra
 );
 
                     },
-                    child: ProductItem(productEntity: state.products[index]),
+                    child: ProductItem(productEntity: state.topsellingandnewincubit[index]),
                   ),
                 ),
               ),

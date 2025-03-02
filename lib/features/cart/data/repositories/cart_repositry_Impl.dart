@@ -47,15 +47,6 @@ class CartRepositryImpl extends CartRepositry{
 }
 
   
-  @override
-  Future<Either<Failure, List<CartItemEntity>>> deletecart(String cartId)async {
-    try {
-      await remoteDatasourceCart.deletecart(cartId);
-      return await _fetchRemoteCarts();
-    } catch (e) {
-      return await _getLocalCarts();
-    }
-  }
   
   
    @override
@@ -73,7 +64,6 @@ class CartRepositryImpl extends CartRepositry{
       id: cartItem.id,
     );
       await firebaseAddServices.addCartItem(cartItemModel, userId);
-      
       return Right(cartItem); // إرجاع CartItemEntity وليس CartItemModel
     } catch (e) {
       return Left(CacheFailure('Failed to add product to cart: ${e.toString()}'));
@@ -81,7 +71,15 @@ class CartRepositryImpl extends CartRepositry{
   }
   
   
-  
+@override
+Future<Either<Failure, List<CartItemEntity>>> deletecart(String cartId,String selectedSize, String selectedColor) async {
+  try {
+    await firebaseAddServices.deletecart(cartId, selectedSize, selectedColor);
+    return Right([]);
+  } catch (e) {
+    return Left(CacheFailure('Failed to delete product from cart: ${e.toString()}'));
+  }
+}
 
 
 }

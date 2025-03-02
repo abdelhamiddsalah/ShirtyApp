@@ -39,6 +39,7 @@ import 'package:clothshop/features/home/domain/usecases/new_products_usecase.dar
 import 'package:clothshop/features/home/domain/usecases/products_usecase.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
+import 'package:clothshop/features/home/presentation/cubit/topsellingandnewin/cubit/topsellingandnewin_cubit.dart';
 import 'package:clothshop/features/notifications/data/models/notification_model.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:clothshop/features/profile/data/datasources/local_profile_datasource.dart';
@@ -148,8 +149,8 @@ Future<void> init() async {
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
    // sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
   sl.registerFactory(() => CategoriesCubit(sl()));
-  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl(),sl(),sl()));
-  sl.registerLazySingleton(() => CartCubit( sl()));
+  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl()));
+  sl.registerLazySingleton(() => CartCubit( sl(),sl(),sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
 sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
@@ -161,6 +162,7 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
     productId: productId, // Pass the productId here
   ),
 );
+sl.registerFactory(()=> TopsellingandnewinCubit(sl(), sl()));
 //sl.registerFactory(() => OrdersCubit(sl()));
 sl.registerFactory(() => ProfileCubit(sl(), sl()));
 sl.registerFactory(() => ComplaintCubit(sl()));

@@ -6,12 +6,19 @@ class FirebaseTopsellingandnewinServices {
 
   Future<List<ProductModel>> getTopselling() async {
   try {
-    final result=   await firestore.collection('Allproducts').where('salescount', isGreaterThanOrEqualTo: 5).limit(10).get();
+    final result = await firestore
+        .collection('Allproducts')
+        .where('salescount', isGreaterThanOrEqualTo: 5)
+        .orderBy('salescount', descending: true) 
+        .limit(10)
+        .get();
+     print("✅ المنتجات المحملة: ${result.docs.length}");    
     return result.docs.map((doc) => ProductModel.fromJson(doc.data(), doc.id)).toList();
   } catch (e) {
     throw Exception("Error fetching products: $e");
   }
-  }
+}
+
 
   Future<List<ProductModel>> getNewin() async {
 try {

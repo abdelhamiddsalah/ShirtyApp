@@ -1,29 +1,30 @@
+import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/home/presentation/widgets/details_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class AddToCartInDetails extends StatelessWidget {
   final DetailsViewBody widget;
   final String? selectedSize;
   final String? selectedColor;
   final int quantity;
-  
+
   const AddToCartInDetails({
-    Key? key,
+    super.key,
     required this.widget,
     required this.selectedSize,
     required this.selectedColor,
     required this.quantity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-     onPressed: () {
+    onPressed: () {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   if (userId == null) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +35,7 @@ class AddToCartInDetails extends StatelessWidget {
     );
     return;
   }
-  
+
   if (selectedSize == null || selectedColor == null) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -44,21 +45,15 @@ class AddToCartInDetails extends StatelessWidget {
     );
     return;
   }
-  
+
+  final productscubit = context.read<ProductsCubit>();
   final cartCubit = context.read<CartCubit>();
-  // Check if the exact same product with same size and color exists
-  final existingItemIndex = cartCubit.cartItems.indexWhere(
-    (item) => 
-      item.id == widget.product.productId &&
-      item.selectedSize == selectedSize &&
-      item.selectedColor == selectedColor,
-  );
-  
-  // Create cart item with the specified quantity
+
+  // إنشاء عنصر السلة
   final cartItem = CartItemModel(
     selectedColor: selectedColor!,
     selectedSize: selectedSize!,
-    quantity: quantity, // Use the quantity from the UI
+    quantity: quantity,
     totalPrice: cartCubit.calculateUpdatedTotalPrice(
       widget.product.price.toDouble(),
       quantity,
@@ -68,15 +63,25 @@ class AddToCartInDetails extends StatelessWidget {
     price: widget.product.price.toDouble(),
     id: widget.product.productId,
   );
-  
-  // Add to cart with the quantity from UI
-  cartCubit.addToCart(cartItem, userId);
+
+  // إضافة المنتج إلى السلة وإظهار رسالة نجاح
+  cartCubit.addToCart(cartItem, userId).then((_) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Product added to cart successfully!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  });
+
+  productscubit.incrementSalesCount(widget.product.productId);
 },
+
       child: const Row(
         children: [
-          Icon(Icons.add_shopping_cart),
+          Icon(Icons.add_shopping_cart,color: Colors.white,),
           Spacer(),
-          Text('Add to Cart'),
+          Text('Add to Cart',style: TextStyles.textinhome,),
         ],
       ),
     );

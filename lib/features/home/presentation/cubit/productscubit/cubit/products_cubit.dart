@@ -2,9 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
 import 'package:clothshop/features/home/domain/entities/product_entity.dart';
 import 'package:clothshop/features/home/domain/usecases/get_all_products_usecase.dart';
-import 'package:clothshop/features/home/domain/usecases/get_topselling_products.dart';
 import 'package:clothshop/features/home/domain/usecases/getproducts_byprice_usecase.dart';
-import 'package:clothshop/features/home/domain/usecases/new_products_usecase.dart';
 import 'package:clothshop/features/home/domain/usecases/products_usecase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -14,12 +12,10 @@ part 'products_state.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final ProductsUsecase productsUseCase;
-  final NewProductsUsecase newProductsUsecase;
-  final GetTopsellingProducts gettopsellingproductUsecase;
   final GetAllProductsUsecase getAllProductsUsecase;
   final GetproductsBypriceUsecase getproductsBypriceUsecase;
-  ProductsCubit(this.productsUseCase, this.newProductsUsecase, 
-  this.getAllProductsUsecase, this.getproductsBypriceUsecase, this.gettopsellingproductUsecase) : super(ProductsInitial());
+  ProductsCubit(this.productsUseCase, 
+  this.getAllProductsUsecase, this.getproductsBypriceUsecase) : super(ProductsInitial());
 
   Future<void> getProducts(String categoryId) async {
     emit(ProductsLoading());
@@ -27,17 +23,6 @@ class ProductsCubit extends Cubit<ProductsState> {
     result.fold((l) => emit(ProductsError(message: l.message)), (r) => emit(ProductsLoaded(products: r)));
   }
 
-  Future<void> getNewProducts() async {
-    emit(ProductsLoading());
-    var result = await newProductsUsecase.call();
-    result.fold((l) => emit(ProductsError(message: l.message)), (r) => emit(ProductsLoaded(products: r)));
-  }
-
-  Future<void> gettopsellingproduct() async {
-    emit(ProductsLoading());
-    var result = await gettopsellingproductUsecase.call();
-    result.fold((l) => emit(ProductsError(message: l.message)), (r) => emit(ProductsLoaded(products: r)));
-  }
 
   Future<void> getAllProducts(String query) async {
   emit(ProductsLoading());

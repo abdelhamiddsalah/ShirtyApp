@@ -136,17 +136,6 @@ Future<List<CartItemModel>> getCarts() async {
   }
 }
 
-Future<void> deleteCart(String cartId) async {
-  try {
-    var user =FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(user!.uid) // استخدم userId لتحديد المستخدم الصحيح
-        .collection('cart')
-        .doc(cartId)
-        .delete();
-  } catch (e) {
-    print('Error deleting cart: $e');
-  }
-}
+
+
 }

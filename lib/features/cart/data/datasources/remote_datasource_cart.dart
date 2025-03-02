@@ -3,7 +3,7 @@ import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
 
 abstract class RemoteDatasourceCart {
   Future<List<CartItemModel>> getCart();
-  Future<void> deletecart(String cartId);
+
 }
 
 class RemoteDatasourceCartImpl implements RemoteDatasourceCart {
@@ -15,7 +15,4 @@ class RemoteDatasourceCartImpl implements RemoteDatasourceCart {
     return firestoreService.getCarts();
   }
 
-  Future<void> deletecart(String cartId) async {
-    return firestoreService.deleteCart(cartId);
-  }
 }

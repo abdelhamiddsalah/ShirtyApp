@@ -20,10 +20,11 @@ class ContainerIncart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
-         int quantity = 1; // قيمة افتراضية
-    
+        // Use a key that includes all unique identifiers
+        final uniqueKey = Key('${cartItemEntity.id}_${cartItemEntity.selectedSize}_${cartItemEntity.selectedColor}');
+        
         return Dismissible(
-          key: Key(cartItemEntity.id.toString()),
+          key: uniqueKey,
           direction: DismissDirection.endToStart,
           background: Container(
             decoration: BoxDecoration(
@@ -35,9 +36,11 @@ class ContainerIncart extends StatelessWidget {
             child: const Icon(Icons.delete, color: Colors.white),
           ),
           onDismissed: (direction) {
+            // Call onRemove which should handle both UI and data updates
             onRemove();
           },
           child: Container(
+            // Rest of your container code remains the same
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
@@ -75,47 +78,11 @@ class ContainerIncart extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        // context.read<CartCubit>().increaseQuantity(cartItemEntity.product);
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    Text(
+                      cartItemEntity.quantity.toString(),
                     ),
                     const SizedBox(height: 8),
-                    Text( quantity.toString()),
-                    const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: () {
-                        // context.read<CartCubit>().decreaseQuantity(cartItemEntity.product);
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],

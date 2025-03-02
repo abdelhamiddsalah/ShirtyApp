@@ -14,7 +14,8 @@ class ProductModel extends ProductEntity {
     required super.colors,
     required super.category,
     required super.reviews,
-    required super.categoryId,
+    required super.categoryId, required super.salescount,
+    
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json, String id) {
@@ -33,6 +34,7 @@ class ProductModel extends ProductEntity {
           .map((review) => ReviewModel.fromJson(review))
           .toList(),
       categoryId: id,
+      salescount: json['salescount'] ?? 0
     );
   }
 

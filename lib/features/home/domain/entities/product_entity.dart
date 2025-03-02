@@ -15,10 +15,10 @@ class ProductEntity {
   final List<String> colors; 
   final String category;
   final List<ReviewEntity> reviews;
-  int? salescount;
+  final int salescount;
 
   ProductEntity({
-    this.salescount,
+  required  this.salescount,
     required this.categoryId,
     required this.productId,
     required this.name,
@@ -53,7 +53,7 @@ class ProductEntity {
         rating: review.rating, productId: productId, timestamp: review.timestamp,
         
       )).toList(),
-      categoryId: categoryId,
+      categoryId: categoryId, salescount: salescount,
     );
   }
 }

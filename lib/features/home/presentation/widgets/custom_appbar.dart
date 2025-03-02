@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
@@ -80,67 +78,53 @@ class CustomAppbarinhome extends StatelessWidget {
           ),
 
           // Cart Icon
-       // Cart Icon
-GestureDetector(
-  onTap: () {
-    context.push(Routes.cart);
-  },
-  child: Stack(
-    children: [
-      FilledConatiner(
-        screenWidth: screenWidth,
-        icon: Icons.shopping_bag_outlined,
-      ),
-
-      Positioned(
-        top: 0,
-        right: 0,
-        child: Builder(
-          builder: (context) {
-            // Print this message to confirm the widget is being rebuilt
-            print('Building cart badge widget');
-            
-            final cartCubit = sl<CartCubit>();
-            // Try to access cart items directly
-            print('Direct cart items count: ${cartCubit.cartItems.length}');
-            
-            return BlocConsumer<CartCubit, CartState>(
-              
-              listener: (context, state) {
-                // Print in the listener to catch all state changes
-                print('Cart state changed: $state');
-                if (state is CartLoaded) {
-                  print('CartLoaded state items count: ${state.cartItems.length}');
-                }
-              },
-              builder: (context, state) {
-                int itemCount = cartCubit.cartItems.length; // Use direct access
-                print('Building with cart count: $itemCount');
-                
-                return itemCount > 0 
-                  ? Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        itemCount.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(); // Hide if cart is empty
-              },
-            );
-          }
-        ),
-      ),
-    ],
-  ),
-),
+          GestureDetector(
+            onTap: () {
+              context.push(Routes.cart);
+            },
+            child: Stack(
+              children: [
+                FilledConatiner(
+                  screenWidth: screenWidth,
+                  icon: Icons.shopping_bag_outlined,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: BlocBuilder<CartCubit, CartState>(
+                    //bloc: sl<CartCubit>(),
+                    builder: (context, state) {
+                      int itemCount = 0;
+                      
+                      if (state is CartLoaded) {
+                        itemCount = state.cartItems.length;
+                      } else {
+                        // Use direct access as fallback
+                        itemCount = sl<CartCubit>().cartItems.length;
+                      }
+                      
+                      return itemCount > 0 
+                        ? Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              itemCount.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          )
+                        : const SizedBox();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

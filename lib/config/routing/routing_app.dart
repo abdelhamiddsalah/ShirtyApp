@@ -2,6 +2,7 @@ import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/widgets/custom_bottom_nav.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
+import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:clothshop/features/splashscreen/presentation/screens/splashscree
 
 class AppRouter {
   static final CartCubit cartCubit = sl<CartCubit>();
+  static final ProductsCubit productsCubit = sl<ProductsCubit>();
   static final CategoriesCubit categoriesCubit =
       sl<CategoriesCubit>()..fetchCategories();
   static final GoRouter router = GoRouter(
@@ -45,7 +47,7 @@ class AppRouter {
             (context, state) => MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: cartCubit),
-                BlocProvider.value(value:   categoriesCubit),
+                BlocProvider.value(value: categoriesCubit),
               ],
               child: const Salmon(),
             ),
@@ -80,8 +82,11 @@ class AppRouter {
         builder: (context, state) {
           final product =
               state.extra as ProductEntity; // تحويل البيانات القادمة
-          return BlocProvider.value(
-            value: cartCubit,
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: cartCubit),
+              BlocProvider.value(value: productsCubit),
+            ],
             child: DetailsView(product: product),
           );
         },

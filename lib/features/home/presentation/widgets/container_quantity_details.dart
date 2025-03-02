@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:clothshop/core/utils/app_colors.dart';
+import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,30 +32,45 @@ class _ContainerQuantityInDetailsState extends State<ContainerQuantityInDetails>
   @override
   Widget build(BuildContext context) {
    context.watch<CartCubit>();
-    return Row(
-      children: [
-        _QuantityButton(
-          icon: Icons.remove,
-          onTap: () {
-            if (tempQuantity > 1) {
-              setState(() {
-                tempQuantity--;
-              });
-              widget.onQuantityChanged(tempQuantity);
-            }
-          },
-        ),
-        Text('$tempQuantity'),
-        _QuantityButton(
-          icon: Icons.add,
-          onTap: () {
-            setState(() {
-              tempQuantity++;
-            });
-            widget.onQuantityChanged(tempQuantity);
-          },
-        ),
-      ],
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.secondBackground,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text('Quantity', style: TextStyles.textinhome),
+          ),
+          Row(
+            children: [
+              _QuantityButton(
+                icon: Icons.remove,
+                onTap: () {
+                  if (tempQuantity > 1) {
+                    setState(() {
+                      tempQuantity--;
+                    });
+                    widget.onQuantityChanged(tempQuantity);
+                  }
+                },
+              ),
+              Text('$tempQuantity'),
+              _QuantityButton(
+                icon: Icons.add,
+                onTap: () {
+                  setState(() {
+                    tempQuantity++;
+                  });
+                  widget.onQuantityChanged(tempQuantity);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

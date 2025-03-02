@@ -1,6 +1,7 @@
+
 import 'package:clothshop/core/widgets/details_shopping_prices.dart';
+import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
-import 'package:clothshop/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
@@ -16,7 +17,7 @@ class CartViewBody extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return BlocProvider.value(
-      value:sl<CartCubit>(),
+      value: sl<CartCubit>(),
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.only(
@@ -30,7 +31,7 @@ class CartViewBody extends StatelessWidget {
               SizedBox(height: screenHight * 0.02),
               BlocConsumer<CartCubit, CartState>(
                 listener: (context, state) {
-                  // TODO: تنفيذ أي منطق عند التغيير في الحالة
+                  // Listener for cart state changes if needed
                 },
                 builder: (context, state) {
                   if (state is CartLoading) {
@@ -84,124 +85,46 @@ Widget _buildHeader(BuildContext context) {
 }
 
 Widget _buildCartCount(int itemCount) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [Text('You have $itemCount items in your cart')],
+  return BlocBuilder<CartCubit, CartState>(
+    builder: (context, state) {
+      final count = state is CartLoaded ? state.cartItems.length : 0;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('You have $count items in your cart'),
+        ],
+      );
+    },
   );
 }
 
 Widget _buildCartList(BuildContext context, List<CartItemEntity> cartItems) {
   return Expanded(
-    child:
-        cartItems.isEmpty
-            ? const Center(child: Text('Your cart is empty'))
-            : ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  child: ContainerIncart(
-                    index: index,
-                    onRemove: () {
-                      //   context.read<CartCubit>().deletecart(cartItems[index].productId);
-                    },
-                    cartItemEntity: cartItems[index],
-                  ),
-                );
-              },
-            ),
+    child: cartItems.isEmpty
+        ? const Center(child: Text('Your cart is empty'))
+        : ListView.builder(
+            itemCount: cartItems.length,
+            itemBuilder: (context, index) {
+              final item = cartItems[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02,
+                ),
+                child: ContainerIncart(
+                  index: index,
+                  onRemove: () {
+                    // Make sure to pass the correct parameters
+                    context.read<CartCubit>().deletecart(
+                      item.id.toString(),
+                      item.selectedSize.toString(),
+                      item.selectedColor.toString()
+                    );
+                    print('Item removed from cart: ${item.id}');
+                  },
+                  cartItemEntity: item,
+                ),
+              );
+            },
+          ),
   );
 }
-
-/* @override
-  Widget build(BuildContext context) {
-    final cartCubit = context.read<CartCubit>();
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-   return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: screenWidth * 0.06,
-          left: screenWidth * 0.03,
-          right: screenWidth * 0.03,
-        ),
-        child: Column(
-          children: [
-            _buildHeader(context),
-            SizedBox(height: screenHeight * 0.02),
-            _buildCartCount(context), // ✅ يتم جلب العدد من الحالة مباشرة بدون BlocBuilder
-            _buildCartList(context),  // ✅ BlocBuilder للعناصر فقط
-            BlocBuilder<CartCubit, CartState>(
-           //   bloc: cartCubit,
-              builder: (context, state) {
-                if (state is CartLoaded && state.cartItems.isNotEmpty) {
-                  return DetailsAboutShoppingPrices(
-                    text1: 'Checkout',
-                    cartItems: state.cartItems,
-                    cartCubit: cartCubit,
-                  );
-                }
-                return const SizedBox(); // إخفاء زر Checkout إذا لم يكن هناك عناصر
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  Widget _buildCartCount(BuildContext context) {
-    final state = context.watch<CartCubit>().state;
-    final itemCount = state is CartLoaded ? state.cartItems.length : 0;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('You have $itemCount items in your cart'),
-      ],
-    );
-  }
-
-  Widget _buildCartList(BuildContext context) {
-  //   final cartCubit = sl<CartCubit>(); 
-    return Expanded(
-      child: BlocBuilder<CartCubit, CartState>(
-       // bloc: cartCubit,
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is CartError) {
-            return Center(child: Text(state.message));
-          }
-          if (state is CartLoaded) {
-            return state.cartItems.isEmpty
-                ? const Center(child: Text('Your cart is empty'))
-                : ListView.builder(
-                    itemCount: state.cartItems.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        child: ContainerIncart(
-                          index: index,
-                          onRemove: () {
-                            context.read<CartCubit>().deletecart(
-                                  state.cartItems[index].productId,
-                                );
-                          },
-                          cartItemEntity: state.cartItems[index],
-                        ),
-                      );
-                    },
-                  );
-          }
-          return const SizedBox();
-        },
-      ),
-    );
-  }
-}*/
