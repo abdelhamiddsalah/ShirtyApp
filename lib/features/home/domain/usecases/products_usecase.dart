@@ -6,8 +6,8 @@ import 'package:dartz/dartz.dart';
 class ProductsUsecase{
  final HomeRepositry homeRepositry;
   ProductsUsecase(this.homeRepositry);
-  Future<Either<Failure, List<ProductEntity>>> call(String categoryId) {
-    var result = homeRepositry.getProducts( categoryId);
+  Future<Either<Failure, List<ProductEntity>>> call(String categoryid) async {
+    var result = homeRepositry.getProducts( categoryid);
     return result;
   }
 

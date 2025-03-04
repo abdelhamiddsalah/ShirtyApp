@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clothshop/features/home/domain/entities/category_entity.dart';
 import 'package:go_router/go_router.dart';
+import 'package:clothshop/config/routing/routes.dart';
 
 class CategoryItem extends StatelessWidget {
   final CategoryEntity category;
@@ -19,8 +20,12 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/products/${category.id}');
+        GoRouter.of(context).push(
+          '${Routes.products}/${category.id}',
+          
+        );
       },
+      
       child: Padding(
         padding: EdgeInsets.only(right: screenWidth * 0.05),
         child: Column(

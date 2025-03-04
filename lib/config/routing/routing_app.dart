@@ -1,12 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:get_it/get_it.dart';
+
 import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/widgets/custom_bottom_nav.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
 import 'package:clothshop/features/home/presentation/cubit/productscubit/cubit/products_cubit.dart';
 import 'package:clothshop/features/reviews/presentation/widgets/reviews_view_body.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:clothshop/features/authintication/presentation/screens/forgetpassword_view.dart';
 import 'package:clothshop/features/authintication/presentation/screens/login_view.dart';
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
@@ -21,13 +24,17 @@ import 'package:clothshop/features/onboarding/presentation/screens/onboarding_vi
 import 'package:clothshop/features/profile/presentation/screens/profile_view.dart';
 import 'package:clothshop/features/splashscreen/presentation/screens/splashscreen_view.dart';
 
+final sl = GetIt.instance;
+
 class AppRouter {
   static final CartCubit cartCubit = sl<CartCubit>();
-  static final ProductsCubit productsCubit = sl<ProductsCubit>();
   static final CategoriesCubit categoriesCubit =
       sl<CategoriesCubit>()..fetchCategories();
+
+  static final ProductsCubit productsCubit = sl<ProductsCubit>();
+
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash, // تحديد المسار الافتراضي عند فتح التطبيق
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.splash,
@@ -52,13 +59,18 @@ class AppRouter {
               child: const Salmon(),
             ),
       ),
-      GoRoute(
-        path: '${Routes.products}/:categoryId',
-        builder: (context, state) {
-          final categoryId = state.pathParameters['categoryId']!;
-          return ProductsGridView(categoryId: categoryId);
-        },
-      ),
+       GoRoute(
+  path: '${Routes.products}/:categoryId',
+  builder: (context, state) {
+    final categoryId = state.pathParameters['categoryId']!;
+    print("Category ID: $categoryId");
+    return BlocProvider.value(
+      value:  sl<ProductsCubit>()..getProducts(categoryId),
+      child: ProductsGridView(categoryId: categoryId),
+    );
+  },
+),
+
       GoRoute(
         path: Routes.search,
         builder: (context, state) => const SearchView(),
@@ -80,8 +92,7 @@ class AppRouter {
       GoRoute(
         path: '/details',
         builder: (context, state) {
-          final product =
-              state.extra as ProductEntity; // تحويل البيانات القادمة
+          final product = state.extra as ProductEntity;
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(value: cartCubit),
@@ -99,7 +110,10 @@ class AppRouter {
               child: const ShopByCategories(),
             ),
       ),
-      GoRoute(path: Routes.profile, builder: (context, state) => ProfileView()),
+      GoRoute(
+        path: Routes.profile,
+        builder: (context, state) => const ProfileView(),
+      ),
       GoRoute(
         path: Routes.checkout,
         builder: (context, state) => const CheckoutView(),
@@ -107,7 +121,7 @@ class AppRouter {
       GoRoute(
         path: '/reviews',
         builder: (context, state) {
-          final product = state.extra as ProductEntity; // استخراج المنتج
+          final product = state.extra as ProductEntity;
           return ReviewsView(product: product);
         },
       ),
@@ -117,7 +131,6 @@ class AppRouter {
   );
 }
 
-// صفحة الخطأ الافتراضية
 class ErrorPage extends StatelessWidget {
   final String? routeName;
   const ErrorPage({super.key, this.routeName});

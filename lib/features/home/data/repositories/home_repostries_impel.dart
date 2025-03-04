@@ -67,24 +67,24 @@ class HomeRepostriesImpel extends HomeRepositry {
 
   /// -----------------------------------------------------------------------------✅ جلب المنتجات (Products)
   @override
-  Future<Either<Failure, List<ProductEntity>>> getProducts(String categoryId) async {
-    return await _fetchProducts( categoryId );
+  Future<Either<Failure, List<ProductEntity>>> getProducts(String categoryid) async {
+    return await _fetchProducts(   categoryid );
   }
 
   /// 🔹 دالة خاصة لجلب المنتجات من الـ API أو الكاش
-  Future<Either<Failure, List<ProductEntity>>> _fetchProducts(String categoryId) async {
+  Future<Either<Failure, List<ProductEntity>>> _fetchProducts(String categoryid) async {
     if (await networkInfo.isConnected) {
-      return await _fetchRemoteProducts( categoryId );
+      return await _fetchRemoteProducts(  categoryid );
     } else {
       return await _fetchLocalProducts();
     }
   }
 
   /// 🔹 جلب المنتجات من Firestore
-  Future<Either<Failure, List<ProductEntity>>> _fetchRemoteProducts(String categoryId) async {
+  Future<Either<Failure, List<ProductEntity>>> _fetchRemoteProducts(String categoryid) async {
     try {
       List<ProductModel> products =
-          await remoteProductdatasource.getremoteProducts( categoryId);
+          await remoteProductdatasource.getremoteProducts(categoryid );
       return Right(products); // ✅ لا حاجة لتحويل `ProductModel` إلى `ProductEntity` لأنه يرثها
     } catch (e) {
       return Left(ServerFailure('Server error: ${e.toString()}'));

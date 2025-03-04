@@ -14,7 +14,8 @@ class ProductModel extends ProductEntity {
     required super.colors,
     required super.category,
     required super.reviews,
-    required super.categoryId, required super.salescount,
+    required super.categoryId,
+     required super.salescount, 
     
   });
 

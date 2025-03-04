@@ -17,9 +17,9 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit(this.productsUseCase, 
   this.getAllProductsUsecase, this.getproductsBypriceUsecase) : super(ProductsInitial());
 
-  Future<void> getProducts(String categoryId) async {
+  Future<void> getProducts(String categoryid) async {
     emit(ProductsLoading());
-    var result = await productsUseCase.call( categoryId);
+    var result = await productsUseCase.call(  categoryid );
     result.fold((l) => emit(ProductsError(message: l.message)), (r) => emit(ProductsLoaded(products: r)));
   }
 
