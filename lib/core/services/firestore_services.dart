@@ -1,4 +1,5 @@
 import 'package:clothshop/features/cart/data/models/cart_item_model.dart';
+import 'package:clothshop/features/checkout/data/models/address_model.dart';
 import 'package:clothshop/features/home/data/models/product_model.dart';
 import 'package:clothshop/features/reviews/data/models/review_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -136,6 +137,14 @@ Future<List<CartItemModel>> getCarts() async {
   }
 }
 
-
+Future<AddressModel> getUserAddress(String userId) async {
+  try {
+    final result = await firestore.collection('Users').doc(userId).collection('address').get();
+    print('User address: ${result.docs.first.data()}');
+    return AddressModel.fromJson(result.docs.first.data());
+  } catch (e) {
+    throw Exception("Error fetching user address: $e");
+  }
+}
 
 }

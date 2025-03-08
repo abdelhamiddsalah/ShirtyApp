@@ -10,39 +10,39 @@ class ProfileInfoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
-      buildWhen: (previous, current) => current is ProfileLoaded,
-      builder: (context, state) {
-        final profile = state is ProfileLoaded ? state.profile : null;
+  buildWhen: (previous, current) => current is ProfileLoaded,
 
-        return Column(
-          children: [
-            ProfileInfoTile(
-              icon: Icons.email,
-              label: 'Email',
-              value: profile?.email ?? 'Not set',
-            ),
-            ProfileInfoTile(
-              icon: Icons.location_on_outlined,
-              label: 'Address',
-              value:'Not set',
-              onTap: () => _editAddress(context),
-            ),
-            ProfileInfoTile(
-              icon: Icons.calendar_month_outlined,
-              label: 'Age',
-              value: profile?.age.toString() ?? 'Not set',
-            ),
-            ProfileInfoTile(
-              icon: Icons.logout,
-              label: 'Logout',
-              value: 'Tap to logout',
-              onTap: () => _confirmLogout(context),
-              color: Colors.white,
-            ),
-          ],
-        );
-      },
+  builder: (context, state) {
+    final profile = (state is ProfileLoaded) ? state.profile  
+                  : null;
+
+   
+
+    return Column(
+      children: [
+        ProfileInfoTile(
+          icon: Icons.email,
+          label: 'Email',
+          value: profile?.email ?? 'Not set',
+        ),
+       
+        ProfileInfoTile(
+          icon: Icons.calendar_month_outlined,
+          label: 'Age',
+          value: profile?.age.toString() ?? 'Not set',
+        ),
+        ProfileInfoTile(
+          icon: Icons.logout,
+          label: 'Logout',
+          value: 'Tap to logout',
+          onTap: () => _confirmLogout(context),
+          color: Colors.white,
+        ),
+      ],
     );
+  },
+);
+
   }
 
   Future<void> _editAddress(BuildContext context) async {
@@ -61,9 +61,10 @@ class ProfileInfoList extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () =>GoRouter.of(context).pop(),
-            child: const Text('Logout'),
-          ),
+  onPressed: () => GoRouter.of(context).pop(true), // قم بإرجاع true عند الضغط على تسجيل الخروج
+  child: const Text('Logout'),
+),
+
         ],
       ),
     );

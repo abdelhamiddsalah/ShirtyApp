@@ -11,7 +11,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userid = FirebaseAuth.instance.currentUser!.uid;
-    print("User ID: $userid");
+  
     return BlocProvider(
       create: (context) =>sl<ProfileCubit>()..getUserData(userid),
       child: const ProfileViewBody(),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:clothshop/features/cart/presentation/cubit/cart_cubit.dart';
-import 'package:clothshop/features/checkout/presentation/screens/checkout_view.dart';
 import 'package:clothshop/core/utils/app_colors.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailsAboutShoppingPrices extends StatelessWidget {
   final List<CartItemEntity> cartItems;
   final CartCubit cartCubit;
   final String text1;
   final void Function()? onPressed;
+    final VoidCallback? onCheckoutPressed; // أضف هذا
 
   const DetailsAboutShoppingPrices({
     super.key,
     required this.cartItems,
-    required this.cartCubit, required this.text1, this.onPressed,
+    required this.cartCubit, required this.text1, this.onPressed, this.onCheckoutPressed,
   });
 
   @override
@@ -52,42 +52,36 @@ class DetailsAboutShoppingPrices extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckoutButton(
-    BuildContext context,
-    double screenHeight,
-    double screenWidth,
-  ) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BlocProvider.value(
-                value: cartCubit,
-                child: const CheckoutView(),
-              ),
-            ),
-          );
-        },
-        child: Text(
-          text1,
-          style: TextStyle(
-            fontSize: screenWidth * 0.05,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
+   Widget _buildCheckoutButton(
+  BuildContext context,
+  double screenHeight,
+  double screenWidth,
+) {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
-    );
-  }
+      onPressed: onCheckoutPressed ?? () async {
+        await context.push('/checkout'); // لا حاجة لتمرير extra
+        cartCubit.clearCart(); // مسح السلة بعد العودة
+      },
+      child: Text(
+        text1,
+        style: TextStyle(
+          fontSize: screenWidth * 0.05,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  );
+}
+
 
   Widget _buildPriceRow(String label, double amount, double screenWidth) {
     return Row(

@@ -25,7 +25,7 @@ class NotificationService {
     await _requestPermissions();
     await _initializeLocalNotifications();
     await _setupFirebaseMessaging();
-    await testLocalNotification();
+   // await testLocalNotification();
     print('✅ تم تهيئة خدمة الإشعارات بنجاح');
   }
 
@@ -175,29 +175,7 @@ class NotificationService {
     }
   }
   
-  static Future<void> testLocalNotification() async {
-    print('🔄 اختبار إرسال إشعار محلي...');
-    try {
-      await _localNotifications.show(
-        999,
-        'اختبار الإشعارات',
-        'هذا إشعار تجريبي للتأكد من عمل الإشعارات المحلية',
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: true,
-          ),
-        ),
-      );
-      print('✅ تم إرسال إشعار الاختبار بنجاح');
-    } catch (e) {
-      print('❌ فشل في إرسال إشعار الاختبار: $e');
-    }
-  }
+ 
   
   static Future<void> checkTopicSubscription() async {
     try {

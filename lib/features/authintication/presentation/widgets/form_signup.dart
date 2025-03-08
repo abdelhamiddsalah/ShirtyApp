@@ -92,7 +92,7 @@ class FormSignup extends StatelessWidget {
             text1: 'Already have an account?',
             text2: AppStrings.signinname,
             onPressed: () {
-              context.go(Routes.login);
+              context.push(Routes.login);
             },
           ),
         ],

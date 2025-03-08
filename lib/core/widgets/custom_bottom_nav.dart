@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 import 'package:clothshop/features/authintication/presentation/screens/signup_view.dart';
+import 'package:clothshop/features/cart/presentation/screens/cart_view.dart';
 import 'package:clothshop/features/home/presentation/screens/home_view.dart';
 import 'package:clothshop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:clothshop/features/notifications/presentation/screens/notification_view.dart';
@@ -24,10 +25,8 @@ class _SalmonState extends State<Salmon> {
       value: sl<NotificationsCubit>(),
       child: const NotificationView(),
     ),
-    const SignupView(),
+     const CartView(),
     const ProfileView(),
-   // const NotificationView(),
-  //  const NotificationView(),
   ];
 
   @override
@@ -49,7 +48,7 @@ class _SalmonState extends State<Salmon> {
             title: const Text(""),
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.shopping_cart),
             title: const Text(""),
           ),
           SalomonBottomBarItem(

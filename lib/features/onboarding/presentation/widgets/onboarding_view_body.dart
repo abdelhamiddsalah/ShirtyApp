@@ -1,10 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'package:clothshop/config/routing/routes.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/core/widgets/custom_button.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/data.dart';
 import 'package:clothshop/features/onboarding/presentation/widgets/listview_builder.dart';
-import 'package:clothshop/features/onboarding/presentation/widgets/movies_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,23 +22,28 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      double minScrollExtent1 = _scrollController1.position.minScrollExtent;
-      double maxScrollExtent1 = _scrollController1.position.maxScrollExtent;
-      double minScrollExtent2 = _scrollController2.position.minScrollExtent;
-      double maxScrollExtent2 = _scrollController2.position.maxScrollExtent;
-      double minScrollExtent3 = _scrollController3.position.minScrollExtent;
-      double maxScrollExtent3 = _scrollController3.position.maxScrollExtent;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController1.hasClients &&
+          _scrollController2.hasClients &&
+          _scrollController3.hasClients) {
+        double minScrollExtent1 = _scrollController1.position.minScrollExtent;
+        double maxScrollExtent1 = _scrollController1.position.maxScrollExtent;
+        double minScrollExtent2 = _scrollController2.position.minScrollExtent;
+        double maxScrollExtent2 = _scrollController2.position.maxScrollExtent;
+        double minScrollExtent3 = _scrollController3.position.minScrollExtent;
+        double maxScrollExtent3 = _scrollController3.position.maxScrollExtent;
 
-      animateToMaxMin(maxScrollExtent1, minScrollExtent1, maxScrollExtent1, 25,
-          _scrollController1);
-      animateToMaxMin(maxScrollExtent2, minScrollExtent2, maxScrollExtent2, 15,
-          _scrollController2);
-      animateToMaxMin(maxScrollExtent3, minScrollExtent3, maxScrollExtent3, 20,
-          _scrollController3);
+        animateToMaxMin(maxScrollExtent1, minScrollExtent1, maxScrollExtent1, 25,
+            _scrollController1);
+        animateToMaxMin(maxScrollExtent2, minScrollExtent2, maxScrollExtent2, 15,
+            _scrollController2);
+        animateToMaxMin(maxScrollExtent3, minScrollExtent3, maxScrollExtent3, 20,
+            _scrollController3);
+      }
     });
   }
-  animateToMaxMin(double max, double min, double direction, int seconds,
+
+  void animateToMaxMin(double max, double min, double direction, int seconds,
       ScrollController scrollController) {
     scrollController
         .animateTo(direction,
@@ -67,11 +70,16 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                   'Welcome to SHIRTY',
                   style: TextStyles.authtitle.copyWith(
                     color: Colors.white,
-                    fontSize: screenWidth * 0.06, // 6% من عرض الشاشة
+                    fontSize: screenWidth * 0.06,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.04), // 4% من ارتفاع الشاشة
-                MoviewsListview(scrollController1: _scrollController1, screenHeight: screenHeight, screenWidth: screenWidth),
+                SizedBox(height: screenHeight * 0.04),
+                MoviesListView(
+                  scrollController: _scrollController1,
+                  images: movies1,
+                  height: screenHeight * 0.15,
+                  imageWidth: screenWidth * 0.2,
+                ),
                 MoviesListView(
                   scrollController: _scrollController2,
                   images: movies2,
@@ -86,11 +94,23 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                 ),
               ],
             ),
-            CustomButton(screenWidth: screenWidth, screenHeight: screenHeight,
-                buttontext: 'Get Started', onPressed: () => context.go(Routes.home) )
+            CustomButton(
+              screenWidth: screenWidth,
+              screenHeight: screenHeight,
+              buttontext: 'Get Started',
+              onPressed: () => context.push(Routes.register),
+            )
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController1.dispose();
+    _scrollController2.dispose();
+    _scrollController3.dispose();
+    super.dispose();
   }
 }

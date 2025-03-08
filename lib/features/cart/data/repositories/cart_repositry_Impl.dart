@@ -75,7 +75,7 @@ class CartRepositryImpl extends CartRepositry{
 Future<Either<Failure, List<CartItemEntity>>> deletecart(String cartId,String selectedSize, String selectedColor) async {
   try {
     await firebaseAddServices.deletecart(cartId, selectedSize, selectedColor);
-    return Right([]);
+    return const Right([]);
   } catch (e) {
     return Left(CacheFailure('Failed to delete product from cart: ${e.toString()}'));
   }

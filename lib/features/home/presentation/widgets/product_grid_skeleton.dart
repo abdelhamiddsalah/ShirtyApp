@@ -16,7 +16,7 @@ class ProductGridSkeleton extends StatelessWidget {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      itemCount: 4, // عدد عناصر الهيكل العظمي
+      itemCount: 6, // عدد عناصر الهيكل العظمي
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,

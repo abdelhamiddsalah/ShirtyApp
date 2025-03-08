@@ -22,7 +22,7 @@ class ProductsGridView extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: () => context.pop(),
+                  onPressed: () => GoRouter.of(context).pop(),
                   icon: const Icon(Icons.arrow_back_ios),
                 ),
                 const Expanded(

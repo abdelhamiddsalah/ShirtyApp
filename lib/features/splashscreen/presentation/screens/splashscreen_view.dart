@@ -25,7 +25,7 @@ class SplashscreenView extends StatelessWidget {
           if (state is Authinticated) {
             context.go(Routes.home);
           } else if (state is UnAuthinticated) {
-            context.go(Routes.login);
+            context.go(Routes.onboarding);
           }
         },
         child: const Scaffold(

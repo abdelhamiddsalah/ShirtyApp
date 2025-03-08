@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:clothshop/features/checkout/domain/usecases/getaddress_usecase.dart';
 import 'package:clothshop/features/profile/domain/entities/user_entity.dart';
 import 'package:clothshop/features/profile/domain/usecases/profile_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -9,21 +10,25 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileUsecase profileUsecase;
+  final GetaddressUsecase getaddressUsecase;
   final ImagePicker imagePicker = ImagePicker();
   final SharedPreferences prefs;
   static const String KEY_PROFILE_IMAGE = 'profile_image_path';
-  ProfileCubit(this.profileUsecase, this.prefs) : super(ProfileInitial());
-  Future<void> getUserData(String userId) async {
-    emit(ProfileLoading());
-    final result = await profileUsecase.getUserData(userId);
-    result.fold(
-      (failure) {
-        print("Error in getUserData: $failure");
-        emit(ProfileError(failure.message));
-      },
-      (profile) => emit(ProfileLoaded(profile)),
-    );
-  }
+  ProfileCubit(this.profileUsecase, this.prefs, this.getaddressUsecase) : super(ProfileInitial());Future<void> getUserData(String userId) async {
+  emit(ProfileLoading());
+  final result = await profileUsecase.getUserData(userId);
+  result.fold(
+    (failure) {
+      print("Error in getUserData: $failure");
+      emit(ProfileError(failure.message));
+    },
+    (profile) async {
+      emit(ProfileLoaded(profile)); // أولًا تحميل المستخدم بدون عنوان
+    },
+  );
+}
+
+
 
   Future<void> logout() async {
     await profileUsecase.logout();
@@ -45,6 +50,10 @@ Future<void> pickImage( ImageSource source) async {
     emit(ImagePickedError("Error picking image: $e"));
   }
 }
+
+
+
+
 
 }
 

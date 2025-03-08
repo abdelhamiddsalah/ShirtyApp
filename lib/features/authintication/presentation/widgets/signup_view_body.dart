@@ -18,7 +18,7 @@ class SignupViewBody extends StatelessWidget {
     return BlocConsumer<AuthinticationCubit, AuthinticationState>(
       listener: (context, state) {
         if (state is AuthinticationSuccess) {
-         GoRouter.of(context).go(Routes.home);
+        context.push(Routes.home);
         } else if (state is AuthinticationFailure) {
           errormessage(context, state.message);
         }

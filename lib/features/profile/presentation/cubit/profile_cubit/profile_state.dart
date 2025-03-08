@@ -34,3 +34,5 @@ class ImagePickedError extends ProfileState {
   final String message;
   const ImagePickedError(this.message);
 }
+
+

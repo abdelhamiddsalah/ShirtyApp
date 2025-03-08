@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:clothshop/core/utils/text_styles.dart';
 import 'package:clothshop/features/reviews/presentation/cubit/reviews_cubit.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class AddReviewViewBody extends StatelessWidget {
@@ -27,7 +28,9 @@ class AddReviewViewBody extends StatelessWidget {
               SnackBar(content: Text(state.message)),
             );
           }
+        
         },
+        
         builder: (context, state) {
           var cubit = context.read<ReviewsCubit>();
           return Scaffold(
@@ -82,29 +85,27 @@ class AddReviewViewBody extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.04),
                       Center(
                         child:ElevatedButton(
-                                onPressed: () async {
-                                  if (cubit.formkey.currentState!.validate() &&
-                                      cubit.selectedRating > 0) {
-                                    final newReview = ReviewEntity(
-                                      id: const Uuid().v4(),
-                                      name: cubit.nameController.text,
-                                      review: cubit.reviewController.text,
-                                      rating: cubit.selectedRating.toInt(),
-                                      productId: cubit.productId,
-                                      timestamp: DateTime.now(),
-                                    );
-                                    await cubit.addReview(newReview);
-                                    if (context.mounted) {
-                                      Navigator.pop(context);
-                                    }
-                                  } else if (cubit.selectedRating == 0) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text("Please select a rating"),
-                                      ),
-                                    );
-                                  }
-                                },
+                               onPressed: () async {
+  if (cubit.formkey.currentState!.validate() && cubit.selectedRating > 0) {
+    final newReview = ReviewEntity(
+      id: const Uuid().v4(),
+      name: cubit.nameController.text,
+      review: cubit.reviewController.text,
+      rating: cubit.selectedRating.toInt(),
+      productId: cubit.productId,
+      timestamp: DateTime.now(),
+    );
+    
+    final addedReview = await cubit.addReview(newReview);
+    if (context.mounted && addedReview != null) {
+      Navigator.pop(context, addedReview); // ترجيع الـ review الجديد للصفحة السابقة
+    }
+  } else if (cubit.selectedRating == 0) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please select a rating")),
+    );
+  }
+},
                                 child: const Text("Submit Review",
                                     style: TextStyles.textinhome),
                               ),

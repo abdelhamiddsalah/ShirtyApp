@@ -46,11 +46,16 @@ class CartViewBody extends StatelessWidget {
                         children: [
                           _buildCartCount(state.cartItems.length),
                           _buildCartList(context, state.cartItems),
-                          DetailsAboutShoppingPrices(
-                            text1: 'Checkout',
-                            cartItems: state.cartItems,
-                            cartCubit: context.read<CartCubit>(),
-                          ),
+                         DetailsAboutShoppingPrices(
+  text1: 'Checkout',
+  cartItems: state.cartItems,
+  cartCubit: context.read<CartCubit>(),
+  onCheckoutPressed: () async{
+    await context.push('/checkout');
+ await   context.read<CartCubit>().clearCart();
+  },
+),
+
                         ],
                       ),
                     );

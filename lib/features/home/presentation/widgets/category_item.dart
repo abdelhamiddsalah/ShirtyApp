@@ -20,10 +20,9 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(
-          '${Routes.products}/${category.id}',
-          
-        );
+        GoRouter.of(context).push('${Routes.products}/${category.id}');
+      
+        print(category.id);
       },
       
       child: Padding(

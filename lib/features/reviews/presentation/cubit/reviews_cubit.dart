@@ -36,40 +36,37 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     );
   }
 
-  Future<void> addReview(ReviewEntity review) async {
-    if (productId.isEmpty) {
-      emit(const ReviewsError(message: 'Product ID is missing'));
-      return;
-    }
-
-    // Get current reviews
-    List<ReviewEntity> currentReviews = [];
-    if (state is ReviewsLoaded) {
-      currentReviews = List.from((state as ReviewsLoaded).reviews);
-    }
-
-    // Add new review to the beginning of the list
-    currentReviews.insert(0, review);
-    
-    // Update UI immediately
-    emit(ReviewsLoaded(reviews: currentReviews));
-
-    // Send to API
-    final result = await reviewsUsecase.addReview(review, productId);
-
-    result.fold(
-      (failure) {
-        // Remove the review if API call fails
-        currentReviews.removeWhere((r) => r.id == review.id);
-        emit(ReviewsLoaded(reviews: currentReviews));
-        emit(ReviewsError(message: failure.message));
-      },
-      (_) {
-        // Clear the form
-        reviewController.clear();
-        nameController.clear();
-        selectedRating = 0;
-      },
-    );
+  Future<ReviewEntity?> addReview(ReviewEntity review) async {
+  if (productId.isEmpty) {
+    emit(const ReviewsError(message: 'Product ID is missing'));
+    return null;
   }
+
+  // تحديث الـ UI مبدئيًا
+  List<ReviewEntity> currentReviews = [];
+  if (state is ReviewsLoaded) {
+    currentReviews = List.from((state as ReviewsLoaded).reviews);
+  }
+  currentReviews.insert(0, review);
+  emit(ReviewsLoaded(reviews: currentReviews));
+
+  // إرسال البيانات إلى API
+  final result = await reviewsUsecase.addReview(review, productId);
+
+  return result.fold(
+    (failure) {
+      currentReviews.removeWhere((r) => r.id == review.id);
+      emit(ReviewsLoaded(reviews: currentReviews));
+      emit(ReviewsError(message: failure.message));
+      return null;
+    },
+    (_) {
+      reviewController.clear();
+      nameController.clear();
+      selectedRating = 0;
+      return review;
+    },
+  );
+}
+
 }

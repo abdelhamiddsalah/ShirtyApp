@@ -1,4 +1,5 @@
 import 'package:clothshop/config/routing/routes.dart';
+import 'package:clothshop/features/home/presentation/widgets/category_loding_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clothshop/features/home/presentation/cubit/fetchcategories/cubit/categories_cubit.dart';
@@ -31,11 +32,11 @@ class HomeCategories extends StatelessWidget {
             // bloc: categoriesCubit, // استخدم نفس الكيوبت
             builder: (context, state) {
               if (state is CategoriesLoading) {
-                // return CategoryLoadingShimmer(
-                //  screenWidth: screenWidth,
-                //  screenHeight: screenHeight,
-                //  );
-                return const CircularProgressIndicator();
+                return CategoryLoadingShimmer(
+                screenWidth: screenWidth,
+                 screenHeight: screenHeight,
+                );
+           
               } else if (state is CategoriesLoaded) {
                 return CategoryList(
                   categories: state.categories,

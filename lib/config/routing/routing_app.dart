@@ -55,6 +55,7 @@ class AppRouter {
               providers: [
                 BlocProvider.value(value: cartCubit),
                 BlocProvider.value(value: categoriesCubit),
+                
               ],
               child: const Salmon(),
             ),
@@ -65,7 +66,7 @@ class AppRouter {
     final categoryId = state.pathParameters['categoryId']!;
     print("Category ID: $categoryId");
     return BlocProvider.value(
-      value:  sl<ProductsCubit>()..getProducts(categoryId),
+      value:  productsCubit..getProducts(categoryId),
       child: ProductsGridView(categoryId: categoryId),
     );
   },
@@ -114,10 +115,15 @@ class AppRouter {
         path: Routes.profile,
         builder: (context, state) => const ProfileView(),
       ),
-      GoRoute(
-        path: Routes.checkout,
-        builder: (context, state) => const CheckoutView(),
-      ),
+  GoRoute(
+  path: '/checkout',
+  builder: (context, state) => BlocProvider.value(
+    value: cartCubit, // استخدام BlocProvider لتوفير CartCubit
+    child: const CheckoutView(),
+  ),
+),
+
+
       GoRoute(
         path: '/reviews',
         builder: (context, state) {

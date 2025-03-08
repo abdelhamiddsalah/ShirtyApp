@@ -13,6 +13,7 @@ final class ProductsLoading extends ProductsState {}
 
 final class ProductsLoaded extends ProductsState {
   final List<ProductEntity> products;
+  
   const ProductsLoaded({required this.products});
 }
 

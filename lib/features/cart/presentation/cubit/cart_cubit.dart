@@ -149,4 +149,40 @@ Future<void> deletecart(String cartId, String selectedSize, String selectedColor
   }
 }
 
+
+Future<void> clearCart() async {
+  if (cartItems.isEmpty) return;
+
+  // نسخ القائمة للاحتفاظ بالعناصر قبل حذفها في حالة فشل العملية
+  final oldCartItems = List<CartItemEntity>.from(cartItems);
+
+  // حذف كل عنصر من السلة في `backend`
+  for (var item in oldCartItems) {
+    final result = await deletecartUsecase.call(
+      item.id.toString(),
+      item.selectedSize.toString(),
+      item.selectedColor.toString(),
+    );
+
+    result.fold(
+      (failure) {
+        print("Error deleting cart item: ${failure.message}");
+        emit(CartError(failure.message));
+        // في حالة الفشل، استعادة العناصر المحذوفة
+        cartItems.clear();
+        cartItems.addAll(oldCartItems);
+        emit(CartLoaded(List.from(cartItems)));
+      },
+      (_) {
+        print("Cart item deleted successfully");
+      },
+    );
+  }
+
+  // إذا نجح الحذف، قم بتفريغ القائمة وإعادة تحديث الحالة
+  cartItems.clear();
+  emit(CartLoaded(List.from(cartItems)));
+}
+
+
 }

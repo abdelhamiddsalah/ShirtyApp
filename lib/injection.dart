@@ -149,7 +149,7 @@ Future<void> init() async {
   sl.registerFactory(() => ForgetpasswordresetCubit(sl()));
    // sl.registerLazySingleton(() => CategoriesCubit( sl())..fetchCategories());
   sl.registerFactory(() => CategoriesCubit(sl()));
-  sl.registerFactory(()=> ProductsCubit(sl(),sl(),sl()));
+  sl.registerLazySingleton(()=> ProductsCubit(sl(),sl(),sl()));
   sl.registerLazySingleton(() => CartCubit( sl(),sl(),sl()));
   final notificationBox = await Hive.openBox<NotificationModel>('notificationsBox');
 sl.registerLazySingleton(() => notificationBox);
@@ -164,7 +164,7 @@ sl.registerLazySingleton<NotificationsCubit>(() => NotificationsCubit(sl()));
 );
 sl.registerFactory(()=> TopsellingandnewinCubit(sl(), sl()));
 //sl.registerFactory(() => OrdersCubit(sl()));
-sl.registerFactory(() => ProfileCubit(sl(), sl()));
+sl.registerFactory(() => ProfileCubit(sl(), sl(), sl()));
 sl.registerFactory(() => ComplaintCubit(sl()));
 sl.registerFactory(() => CheckoutCubit(sl(),sl()));
 

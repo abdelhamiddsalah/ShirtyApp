@@ -24,7 +24,7 @@ class NotificationViewBody extends StatelessWidget {
             children: [
               SizedBox(height: screenHeight * 0.05),
               Text(
-                'الإشعارات',
+                'notifications'.toUpperCase(),
                 style: TextStyles.authtitle.copyWith(
                   fontSize: screenWidth * 0.06,
                   color: Colors.white,
@@ -41,7 +41,7 @@ class NotificationViewBody extends StatelessWidget {
                           children: [
                             SizedBox(height: screenHeight * 0.2),
                             const Text(
-                              'لا توجد إشعارات',
+                              'You have no notifications yet',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,

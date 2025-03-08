@@ -11,12 +11,12 @@ class CategoryModel extends CategoryEntity {
     return CategoryModel(
       image: json['imageUrl'] ?? '',
       title: json['title'] ?? '',
-      productPath: json['productPath'] ?? '', id:json['id'] , // قراءة المسار من JSON
+      productPath: json['productPath'] ?? '', id:json['categoryId'] , // قراءة المسار من JSON
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
+        'categoryId': id,
         'imageUrl': image,
         'title': title,
         'productPath': productPath, // تضمين المسار في JSON
